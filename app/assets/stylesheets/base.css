@@ -1,0 +1,18 @@
+.site-wrap {
+}
+.header-wrap {
+	padding: 25px;
+}
+.content-wrap {
+	padding: 25px;
+}
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	padding: 25px;
+	background-color: #f5f5f5;
+}
+.company-form {
+	text-align: center;
+}
