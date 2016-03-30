@@ -20,6 +20,7 @@ namespace :data_import do
 			params_arr = []
 			keys = {}
 			begin
+				# note that quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
 				CSV.foreach(file, {:col_sep => "\t", :quote_char => "~", encoding: "ISO8859-1"}) do |row|
 					if firstline == 0
 						# changed updated to changedd inorder to avoid ActiveRecord conflict

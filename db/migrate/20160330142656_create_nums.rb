@@ -9,9 +9,7 @@ class CreateNums < ActiveRecord::Migration
       t.string :uom, :null => :false
       t.integer :coreg
       t.decimal :value
-      t.string :footnote 
-
-      t.timestamps null: false
+      t.string :footnote
     end
     add_index :nums, :adsh
   end

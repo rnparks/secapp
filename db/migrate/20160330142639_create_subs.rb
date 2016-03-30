@@ -38,8 +38,6 @@ class CreateSubs < ActiveRecord::Migration
       t.string :instance, :null => :false
       t.integer :nciks, :null => :false
       t.string :aciks
-
-      t.timestamps null: false
     end
   end
 end

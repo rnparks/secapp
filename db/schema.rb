@@ -17,17 +17,15 @@ ActiveRecord::Schema.define(version: 20160330142656) do
   enable_extension "plpgsql"
 
   create_table "nums", force: :cascade do |t|
-    t.string   "adsh"
-    t.string   "tag"
-    t.string   "version"
-    t.date     "ddate"
-    t.integer  "qtrs"
-    t.string   "uom"
-    t.integer  "coreg"
-    t.decimal  "value"
-    t.string   "footnote"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string  "adsh"
+    t.string  "tag"
+    t.string  "version"
+    t.date    "ddate"
+    t.integer "qtrs"
+    t.string  "uom"
+    t.integer "coreg"
+    t.decimal "value"
+    t.string  "footnote"
   end
 
   add_index "nums", ["adsh"], name: "index_nums_on_adsh", using: :btree
@@ -69,8 +67,6 @@ ActiveRecord::Schema.define(version: 20160330142656) do
     t.string   "instance"
     t.integer  "nciks"
     t.string   "aciks"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
 end
