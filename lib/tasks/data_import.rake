@@ -12,16 +12,18 @@ require 'csv'
 namespace :data_import do
 	desc "Import csv data into database record"
 	task :csv_table_import, [:dir] => :environment do |task, args|
-		files = Dir.glob("#{args[:dir]}/*.txt")
+		files = Dir.glob("#{args[:dir]}*.txt")
+		puts("Found #{files.count()} files")
 		# iterate through files in chosen path
 		files.each_with_index do |file, index|
+			puts("Importing #{file}")
 			model_name = file.split('/').last.split('.').first.camelize.singularize
 			firstline = 0
 			params_arr = []
 			keys = {}
 			begin
 				# note that quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
-				CSV.foreach(file, {:col_sep => "\t", :quote_char => "~", encoding: "ISO8859-1"}) do |row|
+				CSV.foreach(file, {:quote_char => "~", encoding: "ISO8859-1"}) do |row|
 					if firstline == 0
 						# changed updated to changedd inorder to avoid ActiveRecord conflict
 						row.first.gsub!("changed", "changedd")

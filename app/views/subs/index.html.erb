@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>List of all Filers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subs.each do |sub| %>
+      <tr>
+        <td><%= link_to sub.name, sub %></td>
+        <td><%= link_to 'Edit', edit_sub_path(sub) %></td>
+        <td><%= link_to 'Destroy', sub, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sub', new_sub_path %>
