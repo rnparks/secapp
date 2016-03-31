@@ -1,7 +1,5 @@
-<li><%= num.tag %> :
-<% if num.value_in_shares? %>
-<%= number_with_delimiter(num.value) %> <%= num.uom %>
-<% else %>
-<%= num.uom %> <%= number_to_currency(num.value) %>
-<% end %>
-</li>
+<tr>
+	<% @numKeys.each do |v| %>
+	<td><%=num[v]%></td>
+	<% end %>
+</tr>
