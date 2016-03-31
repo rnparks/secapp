@@ -26,6 +26,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Pry for debugging (binding.pry)
 gem 'pry'
 
+# Use colorize for command line coloring
+gem 'colorize'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
