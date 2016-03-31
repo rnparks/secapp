@@ -1,0 +1,75 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  adsh: MyString
+  cik: 1
+  name: MyString
+  sic: 1
+  countryba: MyString
+  stprba: MyString
+  cityba: MyString
+  zipba: MyString
+  bas1: MyString
+  bas2: MyString
+  baph: MyString
+  countryma: MyString
+  stprma: MyString
+  cityma: 
+  mas1: MyString
+  mas2: MyString
+  countryinc: MyString
+  stprinc: MyString
+  ein: 1
+  former: MyString
+  changed: MyString
+  afs: MyString
+  wksi: false
+  fye: MyString
+  form: MyString
+  period: 2016-03-30
+  fy: 1
+  fp: MyString
+  filed: 2016-03-30
+  accepted: 2016-03-30 10:26:39
+  prevrpt: false
+  detail: false
+  instance: MyString
+  nciks: 1
+  aciks: MyString
+
+two:
+  adsh: MyString
+  cik: 1
+  name: MyString
+  sic: 1
+  countryba: MyString
+  stprba: MyString
+  cityba: MyString
+  zipba: MyString
+  bas1: MyString
+  bas2: MyString
+  baph: MyString
+  countryma: MyString
+  stprma: MyString
+  cityma: 
+  mas1: MyString
+  mas2: MyString
+  countryinc: MyString
+  stprinc: MyString
+  ein: 1
+  former: MyString
+  changed: MyString
+  afs: MyString
+  wksi: false
+  fye: MyString
+  form: MyString
+  period: 2016-03-30
+  fy: 1
+  fp: MyString
+  filed: 2016-03-30
+  accepted: 2016-03-30 10:26:39
+  prevrpt: false
+  detail: false
+  instance: MyString
+  nciks: 1
+  aciks: MyString
