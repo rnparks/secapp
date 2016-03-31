@@ -12,6 +12,7 @@ class SubsController < ApplicationController
   def show
     @filer = @sub
     @nums = Num.where(adsh: @sub.adsh)
+    @numKeys = Num.new.attributes.keys
   end
 
   # GET /subs/new
