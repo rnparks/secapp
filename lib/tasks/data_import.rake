@@ -13,7 +13,6 @@ namespace :data_import do
 			if file.include? "num.txt" or file.include? "sub.txt"
 				model_name = file.split('/').last.split('.').first.camelize.singularize
 				firstline  = true
-				params_arr = []
 				keys       = {}
 				linecount  = 1.0
 				totalLines = File.open(file) { |f| f.count }
@@ -35,12 +34,11 @@ namespace :data_import do
 								break
 							end
 						end
-						params_arr << params if !firstline
+						eval(model_name).create(params) if !firstline
 						firstline = false
 						linecount += 1
 					end
 					puts ""
-					eval(model_name).create(params_arr)
 				rescue Exception => e
 					puts "#{e.message} : #{model_name}"
 				end
