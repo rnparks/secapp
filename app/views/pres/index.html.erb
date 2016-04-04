@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>List of all Filers</h1>
+<h1>List of all Pres</h1>
 
 <table>
   <thead>
@@ -10,14 +10,10 @@
   </thead>
 
   <tbody>
-    <% @subs.each do |sub| %>
+    <% @pres.each do |pre| %>
       <tr>
-        <td><%= link_to sub.name, sub %></td>
+        <td><%= link_to pre.adsh, pre %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Sub', new_sub_path %>

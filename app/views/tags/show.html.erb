@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+<h5><%= @tag.tag %></h5>
+<table class='sortable'>
+	<tr>
+	<%@tagKeys.each do |key| %>
+		<th><%=key%></th>
+	<% end %>
+	</tr>
+	<tr>
+	<% @tagKeys.each do |v| %>
+	<td><%=@tag[v]%></td>
+	<% end %>
+</tr>
+</table>

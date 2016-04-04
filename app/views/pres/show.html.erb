@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+<h5><%= @pre.adsh %></h5>
+<table class='sortable'>
+	<tr>
+	<%@preKeys.each do |key| %>
+		<th><%=key%></th>
+	<% end %>
+	</tr>
+	<tr>
+	<% @preKeys.each do |v| %>
+	<td><%=@pre[v]%></td>
+	<% end %>
+</tr>
+</table>

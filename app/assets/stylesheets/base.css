@@ -32,3 +32,6 @@ body {
 .sortable th {
 	cursor: pointer;
 }
+.sortable th, .sortable td {
+	padding: 0 6px;
+}

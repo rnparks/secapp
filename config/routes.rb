@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :pres
   resources :tags
   resources :nums
   resources :subs
