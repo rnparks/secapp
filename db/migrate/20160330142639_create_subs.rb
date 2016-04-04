@@ -1,4 +1,4 @@
-class CreateSubs < ActiveRecord::Migration
+      class CreateSubs < ActiveRecord::Migration
   def change
     create_table :subs, id: false do |t|
       t.string :adsh, :unique => true
@@ -38,6 +38,7 @@ class CreateSubs < ActiveRecord::Migration
       t.string :instance, :null => :false
       t.integer :nciks, :null => :false
       t.string :aciks
+      t.timestamps null: false
     end
   end
 end

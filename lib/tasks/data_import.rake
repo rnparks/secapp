@@ -10,7 +10,7 @@ namespace :data_import do
 		puts "Found #{files.count()} files"
 		# iterate through files in chosen path
 		files.each_with_index do |file, index|
-			if file.include? "num.txt" or file.include? "sub.txt"
+			if ['sub.txt','num.txt','tag.txt'].any? { |word| file.include?(word) }
 				model_name = file.split('/').last.split('.').first.camelize.singularize
 				firstline  = true
 				keys       = {}
@@ -43,7 +43,7 @@ namespace :data_import do
 					puts "#{e.message} : #{model_name}"
 				end
 			else
-				puts "Skipping #{file} (**will only import sub.txt and num.txt**)".red
+				puts "Skipping #{file} (**will only import sub.txt num.txt and tag.txt**)".red
 			end
 		end
 	end
