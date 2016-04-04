@@ -11,24 +11,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330142656) do
+ActiveRecord::Schema.define(version: 20160404174907) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "nums", force: :cascade do |t|
-    t.string  "adsh"
-    t.string  "tag"
-    t.string  "version"
-    t.date    "ddate"
-    t.integer "qtrs"
-    t.string  "uom"
-    t.integer "coreg"
-    t.decimal "value"
-    t.string  "footnote"
+    t.string   "adsh",       null: false
+    t.string   "tag",        null: false
+    t.string   "version",    null: false
+    t.date     "ddate",      null: false
+    t.integer  "qtrs",       null: false
+    t.string   "uom",        null: false
+    t.integer  "coreg"
+    t.decimal  "value"
+    t.string   "footnote"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "nums", ["adsh"], name: "index_nums_on_adsh", using: :btree
+  create_table "pres", force: :cascade do |t|
+    t.string   "adsh",       null: false
+    t.integer  "report",     null: false
+    t.integer  "line",       null: false
+    t.string   "stmt"
+    t.boolean  "inpth"
+    t.string   "rfile"
+    t.string   "tag"
+    t.string   "version"
+    t.string   "plabel"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "subs", id: false, force: :cascade do |t|
     t.string   "adsh"
@@ -67,6 +81,24 @@ ActiveRecord::Schema.define(version: 20160330142656) do
     t.string   "instance"
     t.integer  "nciks"
     t.string   "aciks"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "subs", ["adsh"], name: "index_subs_on_adsh", using: :btree
+
+  create_table "tags", force: :cascade do |t|
+    t.string   "tag",        null: false
+    t.string   "version",    null: false
+    t.boolean  "custom"
+    t.boolean  "abstract"
+    t.string   "datatype"
+    t.string   "iord"
+    t.string   "crdr"
+    t.text     "tlabel"
+    t.text     "doc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

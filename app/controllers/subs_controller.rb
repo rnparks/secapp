@@ -1,5 +1,6 @@
 class SubsController < ApplicationController
   before_action :set_sub, only: [:show, :edit, :update, :destroy]
+  before_action :set_keys
 
   # GET /subs
   # GET /subs.json
@@ -73,5 +74,9 @@ class SubsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def sub_params
       params.fetch(:sub, {})
+    end
+
+    def set_keys
+      @subKeys = Sub.new.attributes.keys
     end
 end

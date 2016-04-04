@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>List of all Filers</h1>
+<h1>List of all Tags</h1>
 
 <table>
   <thead>
@@ -10,14 +10,10 @@
   </thead>
 
   <tbody>
-    <% @subs.each do |sub| %>
+    <% @tags.each do |tag| %>
       <tr>
-        <td><%= link_to sub.name, sub %></td>
+        <td><%= link_to tag.tag, tag %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'New Sub', new_sub_path %>

@@ -1,0 +1,10 @@
+<p id="notice"><%= notice %></p>
+<h5><%= @num.adsh %></h5>
+<table class='sortable'>
+	<tr>
+	<%@numKeys.each do |key| %>
+		<th><%=key%></th>
+	<% end %>
+	</tr>
+	<%= render @num%>
+</table>

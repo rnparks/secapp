@@ -1,9 +1,9 @@
-class CreateSubs < ActiveRecord::Migration
+      class CreateSubs < ActiveRecord::Migration
   def change
     create_table :subs, id: false do |t|
-      t.string :adsh, :unique => true
+      t.string :adsh, unique: true
       t.integer :cik
-      t.string :name, :null => :false
+      t.string :name
       t.integer :sic
       t.string :countryba
       t.string :stprba
@@ -25,19 +25,21 @@ class CreateSubs < ActiveRecord::Migration
       # updated column changed to changedd inorder to avoid ActiveRecord namespacing conflict
       t.string :changedd
       t.string :afs
-      t.boolean :wksi, :null => :false
-      t.string :fye, :null => :false
-      t.string :form, :null => :false
-      t.date :period, :null => :false
-      t.integer :fy, :null => :false
-      t.string :fp, :null => :false
-      t.date :filed, :null => :false
-      t.datetime :accepted, :null => :false
-      t.boolean :prevrpt, :null => :false
-      t.boolean :detail, :null => :false
-      t.string :instance, :null => :false
-      t.integer :nciks, :null => :false
+      t.boolean :wksi
+      t.string :fye
+      t.string :form
+      t.date :period
+      t.integer :fy
+      t.string :fp
+      t.date :filed
+      t.datetime :accepted
+      t.boolean :prevrpt
+      t.boolean :detail
+      t.string :instance
+      t.integer :nciks
       t.string :aciks
+      t.timestamps null: false
     end
+    add_index :subs, :adsh
   end
 end
