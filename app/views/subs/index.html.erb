@@ -9,15 +9,19 @@
     </tr>
   </thead>
 
-  <tbody>
-    <% @subs.each do |sub| %>
-      <tr>
-        <td><%= link_to sub.name, sub %></td>
-      </tr>
+<table class='sortable'>
+  <tr>
+  <%@subKeys.each do |key| %>
+    <th><%=key%></th>
+  <% end %>
+  </tr>
+  <% @subs.limit(100).each do |sub| %>
+  <tr>
+    <% @subKeys.each do |v| %>
+    <td><%=link_to sub[v], sub%></td>
     <% end %>
-  </tbody>
+    </tr>
+  <% end %>
 </table>
-
 <br>
 
-<%= link_to 'New Sub', new_sub_path %>

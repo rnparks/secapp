@@ -13,4 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require typeahead.bundle
+//= require sortable
+//= require filer_search_dropdown_menu
 //= require_tree .

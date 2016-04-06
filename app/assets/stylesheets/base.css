@@ -1,25 +1,29 @@
-
 html {
 	height: 100%;
 	box-sizing: border-box;
 }
+
 body {
 	position: relative;
 	margin: 0;
 	padding-bottom: 6rem;
 	min-height: 100%;
 }
-.site-wrap {
-}
+
+.site-wrap {}
+
 .header-wrap {
 	padding: 1rem;
 }
+
 .content-wrap {
 	padding: 1rem;
 }
+
 .company-form {
 	text-align: center;
 }
+
 .footer {
 	position: absolute;
 	right: 0;
@@ -29,9 +33,42 @@ body {
 	background-color: #efefef;
 	text-align: center;
 }
+
 .sortable th {
 	cursor: pointer;
 }
-.sortable th, .sortable td {
+
+.sortable th,
+.sortable td {
 	padding: 0 6px;
+}
+
+#scrollable-dropdown-menu .tt-dropdown-menu {
+	max-height: 150px;
+	overflow-y: auto;
+}
+
+.header-wrap input {
+	color: black;
+}
+
+.header-wrap .form-group {
+	color: grey;
+}
+
+li:last-child {
+	border-right: none;
+}
+
+.header-wrap .logo a {
+	color: white;
+	float: left;
+	font-size: 1.2em;
+	border-right: 1px solid white;
+	margin: 0 9px 0 0;
+	padding: 4px 9px 0 0;
+}
+
+.tt-suggestion p {
+	margin: 0;
 }
