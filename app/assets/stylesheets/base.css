@@ -13,6 +13,7 @@ body {
 }
 .header-wrap {
 	padding: 1rem;
+	color; GREY;
 }
 .content-wrap {
 	padding: 1rem;
@@ -34,4 +35,31 @@ body {
 }
 .sortable th, .sortable td {
 	padding: 0 6px;
+}
+
+#scrollable-dropdown-menu .tt-dropdown-menu {
+	max-height: 150px;
+	overflow-y: auto;
+}
+
+.header-wrap input {
+	color: black;
+}
+
+.header-wrap .form-group {
+	color: grey;
+}
+.header-wrap .logo a {
+	color: white;
+	float: left;
+	font-size: 1.2em;
+	margin: 8px;
+}
+
+.tt-menu {
+	background-color: white;
+	max-height: 150px;
+	overflow-y: auto;
+	padding: 8px;
+	width: 420px;
 }
