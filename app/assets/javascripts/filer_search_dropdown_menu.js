@@ -7,9 +7,14 @@ $( document ).ready(function() {
 	});
 	subList.initialize();
 
-	$('.typeahead').typeahead(null, 
+	$('.typeahead').typeahead(
 	{
-		displayKey: 'name',
+		hint: false,
+		highlight: true
+	}, 
+	{
+		limit: 50,
+		display: function(item){ return item.name.toTitleCase()},
 		source: subList.ttAdapter(),
 		templates: {
 			empty: [
@@ -18,12 +23,21 @@ $( document ).ready(function() {
 			'</div>'
 			].join('\n'),
 			suggestion: function(item){
-				return '<div><strong><a href="' + subsUrl(item) + '">'+item.name+'</a></strong></div>';
+				return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + '</a></div>';
 			}
 		}
 	});
 
+	$('.typeahead').bind('typeahead:select', function(ev, suggestion) {
+		window.open(subsUrl(suggestion),"_self")
+});
+
 	function subsUrl(item) {
 		return '/subs/' + item.adsh 
 	}
+
+	String.prototype.toTitleCase = function() {
+		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+	}
+
 });
