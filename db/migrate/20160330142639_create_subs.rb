@@ -1,8 +1,8 @@
       class CreateSubs < ActiveRecord::Migration
   def change
     create_table :subs, id: false do |t|
-      t.string :adsh, unique: true
-      t.integer :cik
+      t.string :adsh, unique: true, null: false
+      t.integer :cik, null: false
       t.string :name
       t.integer :sic
       t.string :countryba

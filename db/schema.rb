@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20160407004740) do
     t.string   "adsh",       null: false
     t.string   "tag",        null: false
     t.string   "version",    null: false
-    t.date     "ddate",      null: false
+    t.date     "ddate"
     t.integer  "qtrs",       null: false
     t.string   "uom",        null: false
     t.integer  "coreg"
@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 20160407004740) do
 
   create_table "stocks", id: false, force: :cascade do |t|
     t.integer  "subs_id"
-    t.string   "cik"
+    t.string   "cik",          null: false
     t.string   "ticker"
     t.string   "name"
     t.string   "exchange"
@@ -61,12 +61,12 @@ ActiveRecord::Schema.define(version: 20160407004740) do
     t.datetime "updated_at",   null: false
   end
 
-  add_index "stocks", ["name"], name: "index_stocks_on_name", using: :btree
+  add_index "stocks", ["cik"], name: "index_stocks_on_cik", using: :btree
   add_index "stocks", ["subs_id"], name: "index_stocks_on_subs_id", using: :btree
 
   create_table "subs", id: false, force: :cascade do |t|
-    t.string   "adsh"
-    t.integer  "cik"
+    t.string   "adsh",       null: false
+    t.integer  "cik",        null: false
     t.string   "name"
     t.integer  "sic"
     t.string   "countryba"
