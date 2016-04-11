@@ -11,12 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160404174907) do
+ActiveRecord::Schema.define(version: 20160407004740) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "nums", force: :cascade do |t|
+    t.integer  "subs_id"
     t.string   "adsh",       null: false
     t.string   "tag",        null: false
     t.string   "version",    null: false
@@ -29,6 +30,8 @@ ActiveRecord::Schema.define(version: 20160404174907) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "nums", ["subs_id"], name: "index_nums_on_subs_id", using: :btree
 
   create_table "pres", force: :cascade do |t|
     t.string   "adsh",       null: false
@@ -43,6 +46,23 @@ ActiveRecord::Schema.define(version: 20160404174907) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "stocks", id: false, force: :cascade do |t|
+    t.integer  "subs_id"
+    t.string   "cik"
+    t.string   "ticker"
+    t.string   "name"
+    t.string   "exchange"
+    t.string   "sic"
+    t.string   "business"
+    t.string   "incorporated"
+    t.string   "irs"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "stocks", ["name"], name: "index_stocks_on_name", using: :btree
+  add_index "stocks", ["subs_id"], name: "index_stocks_on_subs_id", using: :btree
 
   create_table "subs", id: false, force: :cascade do |t|
     t.string   "adsh"
@@ -66,6 +86,7 @@ ActiveRecord::Schema.define(version: 20160404174907) do
     t.string   "stprinc"
     t.integer  "ein"
     t.string   "former"
+    t.string   "symbol"
     t.string   "changedd"
     t.string   "afs"
     t.boolean  "wksi"

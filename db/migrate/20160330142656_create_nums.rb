@@ -1,6 +1,7 @@
 class CreateNums < ActiveRecord::Migration
   def change
     create_table :nums do |t|
+      t.belongs_to :subs, index: true
       t.string :adsh, null: false
       t.string :tag, null: false
       t.string :version, null: false

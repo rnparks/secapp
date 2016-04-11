@@ -22,6 +22,7 @@
       t.string :stprinc
       t.integer :ein
       t.string :former
+      t.string :symbol
       # updated column changed to changedd inorder to avoid ActiveRecord namespacing conflict
       t.string :changedd
       t.string :afs
