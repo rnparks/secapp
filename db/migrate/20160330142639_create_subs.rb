@@ -2,9 +2,9 @@
   def change
     create_table :subs, id: false do |t|
       t.string :adsh, unique: true, null: false
-      t.integer :cik, null: false
+      t.integer :cik, unique: true, null: false
       t.string :name
-      t.integer :sic
+      t.integer :sic, references: :sics
       t.string :countryba
       t.string :stprba
       t.string :cityba
@@ -41,6 +41,6 @@
       t.string :aciks
       t.timestamps null: false
     end
-    add_index :subs, :adsh
+    add_index :subs, [:adsh, :cik], :unique => true
   end
 end

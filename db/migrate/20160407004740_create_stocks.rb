@@ -1,8 +1,7 @@
 class CreateStocks < ActiveRecord::Migration
   def change
     create_table :stocks, id: false do |t|
-      t.belongs_to :subs, index: true
-    	t.string :cik, unique: true, null: false
+    	t.integer :cik, unique: true, null: false, references: :subs
     	t.string :ticker, unique: true
     	t.string :name
     	t.string :exchange

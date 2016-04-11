@@ -11,27 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160407004740) do
+ActiveRecord::Schema.define(version: 20160411211308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "nums", force: :cascade do |t|
-    t.integer  "subs_id"
     t.string   "adsh",       null: false
-    t.string   "tag",        null: false
-    t.string   "version",    null: false
+    t.string   "tag"
+    t.string   "version"
     t.date     "ddate"
-    t.integer  "qtrs",       null: false
-    t.string   "uom",        null: false
+    t.integer  "qtrs"
+    t.string   "uom"
     t.integer  "coreg"
     t.decimal  "value"
     t.string   "footnote"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-
-  add_index "nums", ["subs_id"], name: "index_nums_on_subs_id", using: :btree
 
   create_table "pres", force: :cascade do |t|
     t.string   "adsh",       null: false
@@ -47,9 +44,17 @@ ActiveRecord::Schema.define(version: 20160407004740) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "sics", force: :cascade do |t|
+    t.integer  "sic",           null: false
+    t.string   "sic_descrip"
+    t.integer  "naics"
+    t.string   "naics_descrip"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "stocks", id: false, force: :cascade do |t|
-    t.integer  "subs_id"
-    t.string   "cik",          null: false
+    t.integer  "cik",          null: false
     t.string   "ticker"
     t.string   "name"
     t.string   "exchange"
@@ -62,7 +67,6 @@ ActiveRecord::Schema.define(version: 20160407004740) do
   end
 
   add_index "stocks", ["cik"], name: "index_stocks_on_cik", using: :btree
-  add_index "stocks", ["subs_id"], name: "index_stocks_on_subs_id", using: :btree
 
   create_table "subs", id: false, force: :cascade do |t|
     t.string   "adsh",       null: false
@@ -106,7 +110,7 @@ ActiveRecord::Schema.define(version: 20160407004740) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "subs", ["adsh"], name: "index_subs_on_adsh", using: :btree
+  add_index "subs", ["adsh", "cik"], name: "index_subs_on_adsh_and_cik", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string   "tag",        null: false

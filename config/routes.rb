@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  resources :sics
   resources :pres
   resources :tags
   
