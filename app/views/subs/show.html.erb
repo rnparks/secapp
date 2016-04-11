@@ -1,3 +1,20 @@
 <p id="notice"><%= notice %></p>
-<h5><%= @filer.name %></h5>
-<%= render 'sub_nums_grid'%>
+<div class='the-menu'>
+	<div class="subs-summary">
+		<span class="exchange"><%= @sub.stock.exchange%></span>
+		<span class="ticker">[<%= @sub.stock.ticker%>]</span><br>
+		<span class="name"><%= @sub.displayName %></span>
+	</div>
+	<div>
+		<h5>Industry</h5>
+		<h5>Identifiers</h5>
+		CIK: <%= @sub.cik%><br>
+		IRS: <%= @sub.stock.irs%><br>
+		ADSH: <%= @sub.adsh%><br>
+
+	</div>
+</div>
+<div class="filer"><%= render 'sub_nums_grid'%>
+</div>
+
+

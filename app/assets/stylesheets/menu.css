@@ -1,0 +1,11 @@
+.the-menu {
+    position: relative;
+    float: left;
+    left: 0;
+    bottom: 0;
+    width: 220px;
+    text-align: right;
+    background: white;
+    color: #111;
+    overflow: hidden;
+}
