@@ -32,8 +32,9 @@ namespace :data_import do
 						end
 						params = {}
 						keys.each_with_index do |key, i|
-							if !firstline && row[i]
-								params[key] = row[i].gsub(/"/,'/"')
+							if !firstline
+								row[i].gsub!(/"/,'/"') if row[i]
+								params[key] = row[i]
 							else
 								break
 							end
@@ -66,47 +67,97 @@ namespace :data_import do
 	
 	task :ticker_import => :environment do |task|
 		desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
-			addCount   = 0
-			failCount  = {}
-			firstline  = true
-			keys       = {}
-			linecount  = 1.0
-			totalLines = open("http://rankandfiled.com/static/export/cik_ticker.csv") { |f| f.count }
-			puts "Importing #{file} (#{totalLines} total rows)".green
-			begin
-				# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
-				CSV.foreach(open("http://rankandfiled.com/static/export/cik_ticker.csv"), {:quote_char => "~", col_sep: "|", encoding: "ISO8859-1"}) do |row|
-					print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
-					if firstline
-						keys = row if row.first
-					end
-					params = {}
-					keys.each_with_index do |key, i|
-						if !firstline && row[i]
-							params[key.downcase] = row[i].gsub(/"/,'/"')
-						else
-							break
-						end
-					end
-					begin
-						if !firstline
-							Stock.create(params)
-							addCount += 1
-						end
-					rescue ActiveRecord::ActiveRecordError => e
-						summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
-						if failCount[summary]
-							failCount[summary] += 1
-						else 
-							failCount[summary] = 1
-						end
-					end
-					firstline = false
-					linecount += 1
+		addCount   = 0
+		failCount  = {}
+		firstline  = true
+		keys       = {}
+		linecount  = 1.0
+		totalLines = open("http://rankandfiled.com/static/export/cik_ticker.csv") { |f| f.count }
+		puts "Importing #{file} (#{totalLines} total rows)".green
+		begin
+			# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
+			CSV.foreach(open("http://rankandfiled.com/static/export/cik_ticker.csv"), {:quote_char => "~", col_sep: "|", encoding: "ISO8859-1"}) do |row|
+				print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
+				if firstline
+					keys = row if row.first
 				end
-				puts ""
-			rescue Exception => e
-				puts e.message
+				params = {}
+				keys.each_with_index do |key, i|
+					if !firstline && row[i]
+						row[i].gsub!(/"/,'/"')
+						if keys[i].downcase == "cik"
+							params[key.downcase] = row[i].to_i
+						else
+							params[key.downcase] = row[i]
+						end
+					else
+						break
+					end
+				end
+				begin
+					if !firstline
+						Stock.create(params)
+						addCount += 1
+					end
+				rescue ActiveRecord::ActiveRecordError => e
+					summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
+					if failCount[summary]
+						failCount[summary] += 1
+					else 
+						failCount[summary] = 1
+					end
+				end
+				firstline = false
+				linecount += 1
 			end
+			puts ""
+		rescue Exception => e
+			puts e.message
+		end
+	end
+	task :sic_import => :environment do |task|
+		desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
+		addCount   = 0
+		failCount  = {}
+		firstline  = true
+		keys       = {}
+		linecount  = 1.0
+		totalLines = open("http://rankandfiled.com/static/export/sic_naics.csv") { |f| f.count }
+		puts "Importing #{file} (#{totalLines} total rows)".green
+		begin
+			# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
+			CSV.foreach(open("http://rankandfiled.com/static/export/sic_naics.csv"), {:quote_char => '"', col_sep: "|", encoding: "ISO8859-1"}) do |row|
+				print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
+				if firstline
+					keys = row if row.first
+				end
+				params = {}
+				keys.each_with_index do |key, i|
+					if !firstline && row[i]
+						params[key.downcase.gsub(' ','')] = row[i]
+					else
+						break
+					end
+				end
+				begin
+					if !firstline
+						Sic.create(params)
+						addCount += 1
+					end
+				rescue ActiveRecord::ActiveRecordError => e
+					summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
+					if failCount[summary]
+						failCount[summary] += 1
+					else 
+						failCount[summary] = 1
+					end
+				end
+				firstline = false
+				linecount += 1
+			end
+			puts ""
+		rescue Exception => e
+			puts e.message
+		end
 	end
 end
