@@ -6,7 +6,6 @@ html {
 body {
 	position: relative;
 	margin: 0;
-	padding-bottom: 6rem;
 	min-height: 100%;
 }
 
@@ -14,6 +13,7 @@ body {
 
 .header-wrap {
 	padding: 1rem;
+	border-bottom: 1px solid black;
 }
 
 .content-wrap {
@@ -75,4 +75,7 @@ li:last-child {
 
 .site-wrap .container-fluid {
 	padding: 0;
+}
+#notice {
+	margin: 0;
 }

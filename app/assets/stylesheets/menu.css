@@ -8,6 +8,7 @@
 	background: white;
 	color: #111;
 	overflow: hidden;
+	border-right: 1px solid black;
 }
 
 .ticker,
@@ -28,9 +29,9 @@
 	font-size: 1.8em;
 }
 
-.subs-summary {
-	border-bottom: 1px solid black;
+.subs-detail, .subs-summary {
 	padding: 12px;
+	border-bottom: 1px solid black;
 }
 
 .subs-detail div {
