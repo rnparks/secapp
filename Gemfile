@@ -31,6 +31,8 @@ gem 'colorize'
 
 gem 'pluck_to_hash'
 
+gem 'yahoo-finance'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
