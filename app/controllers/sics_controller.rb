@@ -1,0 +1,2 @@
+class SicsController < ApplicationController
+end

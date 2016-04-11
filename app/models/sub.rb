@@ -1,5 +1,20 @@
 class Sub < ActiveRecord::Base
-	self.primary_key = 'adsh'
-	has_many :nums
+	self.primary_key = :adsh
+	has_many :nums, :class_name => 'Num', :foreign_key => 'adsh'
+	has_one :stock, :class_name => 'Stock', :foreign_key => 'cik', :primary_key => 'cik'
+	has_many :sics, :class_name => 'Sic', :foreign_key => 'sic', :primary_key => 'sic'
 	validates_uniqueness_of :adsh
+	validates_uniqueness_of :cik
+
+
+		# yahoo_client = YahooFinance::Client.new
+		# YahooStock::ScripSymbol.new(‘Yahoo’)
+		# return yahoo_client.symbols_by_market('us', 'nyse')
+	def getStock
+		Stock.where("cik = #{self.cik}")
+	end
+
+	def displayName
+		return self.stock.name || self.name
+	end
 end

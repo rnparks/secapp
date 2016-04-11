@@ -1,0 +1,40 @@
+.the-menu {
+	position: relative;
+	float: left;
+	left: 0;
+	bottom: 0;
+	width: 220px;
+	text-align: right;
+	background: white;
+	color: #111;
+	overflow: hidden;
+	border-right: 1px solid black;
+}
+
+.ticker,
+.exchange {
+	color: #8F8F8F;
+}
+
+.echange {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.ticker {
+	font-size: 1.5em;
+}
+
+.subs-summary .name {
+	font-size: 1.8em;
+}
+
+.subs-detail, .subs-summary {
+	padding: 12px;
+	border-bottom: 1px solid black;
+}
+
+.subs-detail div {
+	clear: both;
+	font-size: .8em;
+}

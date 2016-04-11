@@ -1,10 +1,10 @@
       class CreateSubs < ActiveRecord::Migration
   def change
     create_table :subs, id: false do |t|
-      t.string :adsh, unique: true
-      t.integer :cik
+      t.string :adsh, unique: true, null: false
+      t.integer :cik, unique: true, null: false
       t.string :name
-      t.integer :sic
+      t.integer :sic, references: :sics
       t.string :countryba
       t.string :stprba
       t.string :cityba
@@ -22,6 +22,7 @@
       t.string :stprinc
       t.integer :ein
       t.string :former
+      t.string :symbol
       # updated column changed to changedd inorder to avoid ActiveRecord namespacing conflict
       t.string :changedd
       t.string :afs
@@ -40,6 +41,6 @@
       t.string :aciks
       t.timestamps null: false
     end
-    add_index :subs, :adsh
+    add_index :subs, [:adsh, :cik], :unique => true
   end
 end
