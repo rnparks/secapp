@@ -1,11 +1,39 @@
 .the-menu {
-    position: relative;
-    float: left;
-    left: 0;
-    bottom: 0;
-    width: 220px;
-    text-align: right;
-    background: white;
-    color: #111;
-    overflow: hidden;
+	position: relative;
+	float: left;
+	left: 0;
+	bottom: 0;
+	width: 220px;
+	text-align: right;
+	background: white;
+	color: #111;
+	overflow: hidden;
+}
+
+.ticker,
+.exchange {
+	color: #8F8F8F;
+}
+
+.echange {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.ticker {
+	font-size: 1.5em;
+}
+
+.subs-summary .name {
+	font-size: 1.8em;
+}
+
+.subs-summary {
+	border-bottom: 1px solid black;
+	padding: 12px;
+}
+
+.subs-detail div {
+	clear: both;
+	font-size: .8em;
 }
