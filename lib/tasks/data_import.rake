@@ -4,7 +4,7 @@ require 'colorize'
 require 'open-uri'
 
 namespace :data_import do
-	desc "Import csv data into database record"
+	desc "Import csv data into database record. ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
 	task :csv_table_import, [:dir] => :environment do |task, args|
 		args[:dir].chomp!("/")
 		acceptedFiles = ['sub.txt','num.txt','tag.txt', 'pre.txt']
@@ -64,9 +64,9 @@ namespace :data_import do
 			end
 		end
 	end
-	
+
+	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
 	task :ticker_import => :environment do |task|
-		desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -115,8 +115,9 @@ namespace :data_import do
 			puts e.message
 		end
 	end
+
+	desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
 	task :sic_import => :environment do |task|
-		desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
