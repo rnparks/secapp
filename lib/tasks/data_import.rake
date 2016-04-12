@@ -4,7 +4,7 @@ require 'colorize'
 require 'open-uri'
 
 namespace :data_import do
-	desc "Import csv data into database record. ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
+	desc "Import csv data into db ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
 	task :csv_table_import, [:dir] => :environment do |task, args|
 		args[:dir].chomp!("/")
 		acceptedFiles = ['sub.txt','num.txt','tag.txt', 'pre.txt']
