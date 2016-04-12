@@ -10,7 +10,11 @@ class Sub < ActiveRecord::Base
 	end
 
 	def displayName
-		return self.stock.name || self.name
+		if self.stock
+			self.stock.name
+		else 
+			self.name
+		end
 	end
 
 end
