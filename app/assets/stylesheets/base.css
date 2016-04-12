@@ -9,6 +9,10 @@ body {
 	min-height: 100%;
 }
 
+.site-wrap .container-fluid {
+	overflow: scroll;
+}
+
 .site-wrap {}
 
 .header-wrap {
@@ -76,6 +80,7 @@ li:last-child {
 .site-wrap .container-fluid {
 	padding: 0;
 }
+
 #notice {
 	margin: 0;
 }
