@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :pres
   resources :tags
   
-  resources :subs do
+  resources :subs, path: :filers do
     resources :nums
     resources :stocks
   end

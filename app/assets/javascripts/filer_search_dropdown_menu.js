@@ -33,7 +33,7 @@ $( document ).ready(function() {
 });
 
 	function subsUrl(item) {
-		return '/subs/' + item.adsh 
+		return '/filers/' + item.adsh 
 	}
 
 	String.prototype.toTitleCase = function() {
