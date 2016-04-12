@@ -1,4 +1,6 @@
+require 'HTTParty'
 class Stock < ActiveRecord::Base
+	include HTTParty
 	has_one :sub, :class_name => 'Sub', :foreign_key => 'cik'
 	validates_uniqueness_of :cik
 	MARKETS = OpenStruct.new(
@@ -6,6 +8,27 @@ class Stock < ActiveRecord::Base
 		url: "http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=amex&render=download"))
 	def self.seedStockData
 	end
+
+	def getMorningStarData(reportType="is", period=3)
+		# symbol: ticker
+		# reportType: is = Income Statement, cf = Cash Flow, bs = Balance Sheet
+		# period: 12 for annual reporting, 3 for quarterly reporting
+		url = "http://financials.morningstar.com/ajax/ReportProcess4CSV.html?t=#{self.ticker}&reportType=#{reportType}&period=12&dataType=A&order=asc&columnYear=5&number=3"
+		response = HTTParty.get(url)
+		parsedResponse = response.split("\n").map do |row|
+			row.split(",")
+		end
+		hash = {}
+		parsedResponse.each_with_index do |row, index|
+			if index == 0
+				hash[parsedResponse.first.first] = []
+			else
+				hash[parsedResponse.first.first].push(row)
+			end
+		end
+		hash
+	end
+
 	def getYahooFinanceData
 		yahoo_client = YahooFinance::Client.new
 		data = yahoo_client.quotes([self.ticker], [:after_hours_change_real_time,
@@ -92,6 +115,6 @@ class Stock < ActiveRecord::Base
 		:trade_date,
 		:trade_links,
 		:volume,
-		:weeks_range_52])
+		:weeks_range_52]).first.to_h
 	end
 end
