@@ -16,6 +16,6 @@ class StocksController < ApplicationController
 	end
 
 	def set_stockData
-		@stockData = @stock.getYahooFinanceData.first.to_h
+		@stockData = @stock.getYahooFinanceData
 	end
 end

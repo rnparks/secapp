@@ -6,8 +6,6 @@ class Stock < ActiveRecord::Base
 	MARKETS = OpenStruct.new(
 	us: OpenStruct.new(
 		url: "http://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=amex&render=download"))
-	def self.seedStockData
-	end
 
 	def getMorningStarData(reportType="is", period=3)
 		# symbol: ticker
