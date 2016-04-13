@@ -86,6 +86,11 @@ class SubsController < ApplicationController
       if @hasStock
         @stock = @sub.stock
         @stockData = @stock.getYahooFinanceData
+        @stockData[:change] = @stockData[:change].to_f
+        @stockData[:change_in_percent] = @stockData[:change_in_percent].to_f
+        @stockState = @stockData[:change] > 0 ? "up" : "down"
+        binding.pry
+        # @closedFloor = Time.now.strftime("%d/%m/%Y %H:%M")
       end
     end
 end

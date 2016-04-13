@@ -26,7 +26,7 @@ class Stock < ActiveRecord::Base
 		end
 		hash
 	end
-
+	
 	def getYahooFinanceData
 		yahoo_client = YahooFinance::Client.new
 		data = yahoo_client.quotes([self.ticker], [:after_hours_change_real_time,

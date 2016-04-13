@@ -1,55 +1,41 @@
-.yfi_rt_quote_summary {
-	padding: 5px 0 9px 5px;
-	margin-top: 0;
-	border-bottom: 2px solid #000;
-	font-size: 13px;
-}
-
-.yfi_rt_quote_summary .hd {
-	margin-top: 8px;
-	padding: 0;
-	font: normal 15px arial;
-	background: none;
-	color: #000;
-	border: none;
-}
-
-.yfi_rt_quote_summary .hd h2 {
+.hd h2 {
 	display: inline;
 	margin-right: 2px;
 	font: bold 15px arial;
 }
 
-.yfi_rt_quote_summary .rtq_exch {
+.hd .exchange {
 	color: #999;
 	font: normal 12px arial;
 }
 
-.yfi_rt_quote_summary_rt_top {
-	padding: 0;
-	margin: 0;
-	font: normal 93% arial;
-}
-
-.yfi_rt_quote_summary_rt_top .time_rtq_ticker {
+.stock-quote-summary .bid {
 	font: bold 30px arial;
-	padding-right: 6px;
 }
 
-.yfi_rt_quote_summary_rt_top .up_g,
-yfi_rt_quote_summary_rt_top .up_g span {
-	color: #080;
-	font-weight: bold;
+.stock-header {
+	padding: 13px 0 9px 5px;
+	margin-top: 0;
+	border-bottom: 2px solid #000;
+	font-size: 13px;
 }
 
-.yfi_rt_quote_summary_rt_top .time_rtq_content {
-	font: bold 20px arial;
+.stock-quote-summary div {
+	display: inline;
 }
 
-.yfi_rt_quote_summary_rt_top .time_rtq_content span {
+.stock-quote-summary .price-change,
+.stock-quote-summary .price-change-percent,
+.stock-quote-summary i {
+	font-weight: 200;
 	padding-right: 1px;
+	font-size: 20px;
 }
 
-.yfi_rt_quote_summary_rt_top .up_g span img {
-	margin-bottom: -1px;
+.stock-state-up {
+	color: #080;
+}
+
+.stock-state-down {
+	color: #800;
 }
