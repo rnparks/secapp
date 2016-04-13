@@ -10,6 +10,7 @@
 		<ul>
 			<%= link_to raw("<li class='bg-info'>Stock Data</li>"), [@sub, :stocks] if @sub.stock  %>
 			<%= link_to raw("<li class='bg-info'>Financials</li>"), [@sub, :financials] if @sub.stock %>
+			<%= link_to raw("<li class='bg-info'>Filings Index</li>"), [@sub, :xbrls] if @sub.stock %>
 		</ul>
 		</div>
 		<div class="subs-detail">
