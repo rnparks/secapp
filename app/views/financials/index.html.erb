@@ -1,7 +1,6 @@
+<div class="filer container-fluid">
 <%= render 'subs/subs_menu'%>
-
-<%= content_for :subs_content do %>
-	<div class="filer container-fluid">
+<div class="filer-content container-fluid">
 	<% @allMorningStarData.each_with_index do |report, index| %>
 			<h4><%= report.keys.first%></h4>
 			<table class='sortable'>
@@ -29,5 +28,5 @@
 			</table>
 	<% end %>
 	</div>
-<% end %>
+	</div>
 

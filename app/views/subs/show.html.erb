@@ -1,9 +1,7 @@
-<%= render 'subs_menu'%>
 <div class="filer container-fluid">
-	<%= yield :subs_content %>
+	<%= render 'subs_menu'%>
+		<%= yield :subs_content %>
+	<%= content_for :subs_content do %>
+		<%= render 'sub_home'%>
+	<% end %>
 </div>
-<%= content_for :subs_content do %>
-<div class="filer">
-	<%= render 'sub_nums_grid'%>
-</div>
-<% end %>
