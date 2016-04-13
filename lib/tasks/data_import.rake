@@ -164,7 +164,7 @@ namespace :data_import do
 		end
 	end
 
-desc "Import xbrl indexing"
+desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
 	task :xbrl_index => :environment do |task|
 		url = "ftp://ftp.sec.gov/edgar/full-index/"
 		content = nil
@@ -202,6 +202,7 @@ desc "Import xbrl indexing"
 		begin
 			# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
 			CSV.foreach(fileInfo.name, {:quote_char => '"', col_sep: "|", encoding: "ISO8859-1"}) do |row|
+				print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
 				if row.count > 1
 					if firstline
 						keys = row if row.first
@@ -216,8 +217,7 @@ desc "Import xbrl indexing"
 					end
 					begin
 						if !firstline
-							binding.pry
-							# Sic.create(params)
+							Xbrl.create(params)
 							addCount += 1
 						end
 					rescue ActiveRecord::ActiveRecordError => e
@@ -229,13 +229,13 @@ desc "Import xbrl indexing"
 						end
 					end
 					firstline = false
-					linecount += 1
 				end
+				linecount += 1
 				puts ""
 			end
 		rescue Exception => e
 			puts e.message
 		end
-	File.delete(entry.name)
+	File.delete(fileInfo.name)
 	end
 end
