@@ -1,0 +1,35 @@
+<%= render 'subs/subs_menu'%>
+
+<%= content_for :subs_content do %>
+	<div class="filer container-fluid">
+	<% @allMorningStarData.each_with_index do |report, index| %>
+			<h4><%= report.keys.first%></h4>
+			<table class='sortable'>
+				<tr>
+				<%report[report.keys.first].each_with_index do |val, i| %>
+					<% if i == 0%>
+					<thead>
+					<tr>
+						<% val.each do |v| %>
+						<th><%=v%></th>
+						<% end %>
+					</tr>
+					</thead>
+					<% else %>
+					<%if val.count == 1 %>
+						<tr><th><%=val[0]%></th></tr>
+					<%else%>
+						<tr>
+						<% val.each do |v| %>
+						<td><%=v%></td>
+						<% end %>
+					</tr>
+					<%end%>
+					<% end %>
+				<% end %>
+				</tr>
+			</table>
+	<% end %>
+	</div>
+<% end %>
+

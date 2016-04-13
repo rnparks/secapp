@@ -1,7 +1,5 @@
 <p id="notice"><%= notice %></p>
 
-<h1>List of all Nums</h1>
-
 <table>
   <thead>
     <tr>
@@ -10,9 +8,8 @@
   </thead>
 
   <tbody>
-    <% @nums.each do |num| %>
+    <% binding.pry %>
       <tr>
-        <td><%= link_to num.adsh, num %></td>
       </tr>
     <% end %>
   </tbody>

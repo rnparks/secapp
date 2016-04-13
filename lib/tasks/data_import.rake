@@ -2,12 +2,15 @@ require 'pry'
 require 'csv'
 require 'colorize'
 require 'open-uri'
+require 'net/ftp'
+require 'zip'
 
 namespace :data_import do
-	desc "Import csv data into database record. ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
+	desc "Import csv data into db ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
 	task :csv_table_import, [:dir] => :environment do |task, args|
+		puts "Importing csv data from #{args[:dir]}"
 		args[:dir].chomp!("/")
-		acceptedFiles = ['sub.txt','num.txt','tag.txt', 'pre.txt']
+		acceptedFiles = ['sub.txt']
 		files = Dir.glob("#{args[:dir]}/*.txt")
 		puts "Found #{files.count()} .txt files"
 		# iterate through files in chosen path
@@ -55,18 +58,19 @@ namespace :data_import do
 						firstline = false
 						linecount += 1
 					end
-					puts ""
 				rescue ActiveRecord::RecordNotUnique
 					puts "#{e.message} : #{model_name}"
 				end
+				puts ""
 			else
-				puts "Skipping #{file} (**will only import sub.txt, num.txt, pre.txt and tag.txt**)".red
+				puts "Skipping #{file} (**will only import sub.txt at the moment**)".red
 			end
 		end
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
 	task :ticker_import => :environment do |task|
+		puts "Importing ticker data from rankandfiled.com's database"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -110,14 +114,15 @@ namespace :data_import do
 				firstline = false
 				linecount += 1
 			end
-			puts ""
 		rescue Exception => e
 			puts e.message
 		end
+		puts ""
 	end
 
 	desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
 	task :sic_import => :environment do |task|
+		puts "Importing sic (business taxonomy) data from rankandfiled.com's database"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -156,9 +161,98 @@ namespace :data_import do
 				firstline = false
 				linecount += 1
 			end
-			puts ""
 		rescue Exception => e
 			puts e.message
 		end
+		puts ""
+	end
+
+	desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
+	task :xbrl_index => :environment do |task|
+		puts "Importing xbrl indexing data from the sec's ftp site"
+		url = "ftp.sec.gov"
+		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1', '2014/QTR4', '2014/QTR3', '2014/QTR2', '2014/QTR1']
+		qtrs.each do |qtr|
+			content = nil
+			fileInfo = nil
+			puts "Connecting to #{url}"
+			Net::FTP.open(url) do |ftp|
+				puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
+				puts "Pulling #{qtr} data"
+				ftp.chdir("/edgar/full-index/#{qtr}")
+				ftp.getbinaryfile("xbrl.zip")
+				Zip::File.open('xbrl.zip') do |zip_file|
+		  		# Handle entries one by one
+		  		zip_file.each do |entry|
+		  			fileInfo = entry
+						puts "Temporarily saving #{entry.name} locally"
+						begin
+							entry.extract(entry.name)
+						rescue
+							puts "#{entry.name} already exists! Deleting existing file".red
+							File.delete(entry.name)
+							entry.extract(entry.name)
+						end
+							puts "Successfully saved #{entry.name}".green
+					end
+				end
+			end
+			addCount   = 0
+			failCount  = {}
+			firstline  = true
+			keys       = {}
+			linecount  = 1.0
+			totalLines = open(fileInfo.name) { |f| f.count }
+			puts "Importing #{fileInfo.name} (#{totalLines} total rows)"
+			begin
+				# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
+				CSV.foreach(fileInfo.name, {:quote_char => '"', col_sep: "|", encoding: "ISO8859-1"}) do |row|
+					print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
+					if row.count > 1
+						if firstline
+							keys = row if row.first
+						end
+						params = {}
+						keys.each_with_index do |key, i|
+							if !firstline && row[i]
+								params[key.downcase.gsub(' ','')] = row[i]
+							else
+								break
+							end
+						end
+						begin
+							if !firstline
+								Xbrl.create(params)
+								addCount += 1
+							end
+						rescue ActiveRecord::ActiveRecordError => e
+							summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
+							if failCount[summary]
+								failCount[summary] += 1
+							else 
+								failCount[summary] = 1
+							end
+						end
+						firstline = false
+					end
+					linecount += 1
+				end
+			rescue Exception => e
+				puts e.message
+			end
+			puts ""
+			puts "Flushing local copy of #{fileInfo.name}"
+			File.delete(fileInfo.name)
+		end
+	end
+	desc "Perform all data import tasks"
+	task :all, [:dir] => :environment do |task, args|
+	  Rake::Task["db:drop"].execute
+	  Rake::Task["db:create"].execute
+	  Rake::Task["db:migrate"].execute
+	  Rake::Task["data_import:csv_table_import"].execute args
+	  Rake::Task["data_import:ticker_import"].execute
+		Rake::Task["data_import:sic_import"].execute 
+		Rake::Task["data_import:xbrl_index"].execute 
 	end
 end

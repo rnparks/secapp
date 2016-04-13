@@ -1,0 +1,11 @@
+<%= render 'subs/subs_menu'%>
+
+<%= content_for :subs_content do %>
+	<div class="filer container-fluid">
+		<ul>
+			<% @sub.xbrls.each do |xbrl| %>
+				<li><a href="ftp://<%= xbrl.getXbrlLink %>" target="_blank"><%= "#{xbrl.formtype} | filed on: #{xbrl.datefiled}"%></a></li>
+			<% end %>
+		</ul>
+	</div>
+<% end %>

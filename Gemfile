@@ -33,6 +33,12 @@ gem 'pluck_to_hash'
 
 gem 'yahoo-finance'
 
+gem 'httparty'
+
+gem 'rubyzip'
+
+gem 'awesome_print', '~> 1.6', '>= 1.6.1'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
