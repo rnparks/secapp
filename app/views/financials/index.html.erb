@@ -8,16 +8,14 @@
 				<tr>
 				<%report[report.keys.first].each_with_index do |val, i| %>
 					<% if i == 0%>
-					<thead>
 					<tr>
 						<% val.each do |v| %>
 						<th><%=v%></th>
 						<% end %>
 					</tr>
-					</thead>
 					<% else %>
 					<%if val.count == 1 %>
-						<tr><th><%=val[0]%></th></tr>
+						<tr><td><strong><%=val[0]%></strong></td></tr>
 					<%else%>
 						<tr>
 						<% val.each do |v| %>
