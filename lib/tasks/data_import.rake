@@ -70,7 +70,7 @@ namespace :data_import do
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
 	task :ticker_import => :environment do |task|
-		puts "Importing ticker data"
+		puts "Importing ticker data from rankandfiled.com's database"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -122,7 +122,7 @@ namespace :data_import do
 
 	desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
 	task :sic_import => :environment do |task|
-		puts "Importing sic (business taxonomy) data"
+		puts "Importing sic (business taxonomy) data from rankandfiled.com's database"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -169,7 +169,7 @@ namespace :data_import do
 
 	desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
 	task :xbrl_index => :environment do |task|
-		puts "Importing xbrl indexing data"
+		puts "Importing xbrl indexing data from the sec's ftp site"
 		url = "ftp.sec.gov"
 		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1', '2014/QTR4', '2014/QTR3', '2014/QTR2', '2014/QTR1']
 		qtrs.each do |qtr|
@@ -241,7 +241,7 @@ namespace :data_import do
 				puts e.message
 			end
 			puts ""
-			puts "Deleting local copy of #{fileInfo.name}"
+			puts "Flushing local copy of #{fileInfo.name}"
 			File.delete(fileInfo.name)
 		end
 	end
