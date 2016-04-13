@@ -5,14 +5,13 @@
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	<%= csrf_meta_tags %>
-	<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
-	<link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js' rel='stylesheet' type='text/css'>	
+	<%= javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js' %>
+	<%= stylesheet_link_tag    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' %>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<%= content_tag :div, class: "subs", data: {source: @subsQuery} {} %>
 </head>
 <body>
 	<div class="site-wrap">
-		<%= content_tag :div, class: "subs", data: {source: @subsQuery} do %>
-		<% end %>
 		<div class="header-wrap bg-primary">
 			<div class="logo"><%= link_to 'HOME', root_path %></div>
 			<form class="search-form">
@@ -20,8 +19,6 @@
 			</form>
 		</div>
 		<div class="container-fluid">
-			<%= yield :subs_menu %>
-			<%= yield :subs_content%>
 			<%= yield %>
 		</div>
 		<footer class="footer bg-info">

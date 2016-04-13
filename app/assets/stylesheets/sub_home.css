@@ -1,0 +1,55 @@
+.yfi_rt_quote_summary {
+	padding: 5px 0 9px 5px;
+	margin-top: 0;
+	border-bottom: 2px solid #000;
+	font-size: 13px;
+}
+
+.yfi_rt_quote_summary .hd {
+	margin-top: 8px;
+	padding: 0;
+	font: normal 15px arial;
+	background: none;
+	color: #000;
+	border: none;
+}
+
+.yfi_rt_quote_summary .hd h2 {
+	display: inline;
+	margin-right: 2px;
+	font: bold 15px arial;
+}
+
+.yfi_rt_quote_summary .rtq_exch {
+	color: #999;
+	font: normal 12px arial;
+}
+
+.yfi_rt_quote_summary_rt_top {
+	padding: 0;
+	margin: 0;
+	font: normal 93% arial;
+}
+
+.yfi_rt_quote_summary_rt_top .time_rtq_ticker {
+	font: bold 30px arial;
+	padding-right: 6px;
+}
+
+.yfi_rt_quote_summary_rt_top .up_g,
+yfi_rt_quote_summary_rt_top .up_g span {
+	color: #080;
+	font-weight: bold;
+}
+
+.yfi_rt_quote_summary_rt_top .time_rtq_content {
+	font: bold 20px arial;
+}
+
+.yfi_rt_quote_summary_rt_top .time_rtq_content span {
+	padding-right: 1px;
+}
+
+.yfi_rt_quote_summary_rt_top .up_g span img {
+	margin-bottom: -1px;
+}

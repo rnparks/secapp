@@ -1,6 +1,7 @@
 class SubsController < ApplicationController
   before_action :set_sub, only: [:show, :edit, :update, :destroy]
   before_action :set_keys
+  before_action :set_stock
 
   # GET /subs
   # GET /subs.json
@@ -80,4 +81,11 @@ class SubsController < ApplicationController
       @subKeys = Sub.new.attributes.keys
     end
 
+    def set_stock
+      @hasStock = @sub.stock
+      if @hasStock
+        @stock = @sub.stock
+        @stockData = @stock.getYahooFinanceData
+      end
+    end
 end
