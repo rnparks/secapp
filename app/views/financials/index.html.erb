@@ -1,32 +1,30 @@
-<div class="filer container-fluid">
-<%= render 'subs/subs_menu'%>
-<div class="filer-content container-fluid">
-	<% @allMorningStarData.each_with_index do |report, index| %>
-			<h4><%= report.keys.first%></h4>
+<%= content_for :subs_content do %>
+	<div class="filer-content container-fluid">
+		<% @allMorningStarData.each_with_index do |report, index| %>
+			<h4><%= report.keys.first %></h4>
 			<table class='sortable'>
 				<tr>
-				<%report[report.keys.first].each_with_index do |val, i| %>
-					<% if i == 0%>
+				<% report[report.keys.first].each_with_index do |val, i| %>
+					<% if i == 0 %>
 					<tr>
 						<% val.each do |v| %>
-						<th><%=v%></th>
+						<th><%= v %></th>
 						<% end %>
 					</tr>
 					<% else %>
 					<%if val.count == 1 %>
-						<tr><td><strong><%=val[0]%></strong></td></tr>
-					<%else%>
+						<tr><td><strong><%= val[0] %></strong></td></tr>
+					<% else %>
 						<tr>
 						<% val.each do |v| %>
-						<td><%=v%></td>
+						<td><%= v %></td>
 						<% end %>
 					</tr>
-					<%end%>
+					<% end %>
 					<% end %>
 				<% end %>
 				</tr>
 			</table>
-	<% end %>
+		<% end %>
 	</div>
-	</div>
-
+<% end %>
