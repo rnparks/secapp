@@ -3,16 +3,18 @@
 		<div class="yfi_rt_quote_summary" id="yfi_rt_quote_summary">
 			<div class="hd">
 				<div class="title">
-					<h2>JB Hunt Transport Services Inc. (JBHT)</h2>
+					<h2><%= @sub.displayName %> <%= "[#{@sub.stock.ticker}]" if @hasStock %></h2>
 					<span class="rtq_exch">
-					<span class="rtq_dash">-</span>NasdaqGS</span>
+					<span class="rtq_dash">-</span><%= @stockData[:exchange] if @hasStock %></span>
 					<span class="wl_sign">
 				</div>
 			</div>
 			<div class="yfi_rt_quote_summary_rt_top sigfig_promo_1">
-				<div> <span class="time_rtq_ticker"><span id="yfs_l84_jbht" class="">86.17</span></span> <span class="up_g time_rtq_content"><span id="yfs_c63_jbht" class=""><img width="10" height="14" border="0" style="margin-right:-2px;" src="http://l.yimg.com/a/i/us/fi/03rd/up_g.gif" alt="Up"> <span class="yfi-price-change-green">1.93</span></span><span id="yfs_p43_jbht" class=""><span class="yfi-price-change-green">(2.29%)</span></span> </span><span class="time_rtq"> <span id="yfs_t53_jbht">1:37PM EDT</span></span> - Nasdaq Real Time Price
-				</div>
-				<div>
+				<div> <span class="time_rtq_ticker"><span id="yfs_l84_jbht" class=""><%=@stockData[:bid]%></span></span>
+
+				<span class="up_g time_rtq_content"><span id="yfs_c63_jbht" class=""><img width="10" height="14" border="0" style="margin-right:-2px;" src="http://l.yimg.com/a/i/us/fi/03rd/up_g.gif" alt="Up"> <span class="yfi-price-change-green"><%=@stockData[:change]%></span></span><span id="yfs_p43_jbht" class=""><span class="yfi-price-change-green">(<%=@stockData[:change_in_percent]%>)</span></span> </span>
+
+
 				</div>
 			</div>
 			<div id="yfi_toolbox_mini_rtq">
@@ -20,3 +22,9 @@
 		</div>
 	</div>
 </div>
+
+	<ul>
+	<% @stockData.each do |row| %>
+		<li><%= "#{row[0]} : #{row[1]}" %></li>
+	<% end %>
+	</ul>
