@@ -57,10 +57,10 @@ namespace :data_import do
 						firstline = false
 						linecount += 1
 					end
-					puts ""
 				rescue ActiveRecord::RecordNotUnique
 					puts "#{e.message} : #{model_name}"
 				end
+				puts ""
 			else
 				puts "Skipping #{file} (**will only import sub.txt, num.txt, pre.txt and tag.txt**)".red
 			end
@@ -112,10 +112,10 @@ namespace :data_import do
 				firstline = false
 				linecount += 1
 			end
-			puts ""
 		rescue Exception => e
 			puts e.message
 		end
+		puts ""
 	end
 
 	desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
@@ -158,10 +158,10 @@ namespace :data_import do
 				firstline = false
 				linecount += 1
 			end
-			puts ""
 		rescue Exception => e
 			puts e.message
 		end
+		puts ""
 	end
 
 desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
@@ -169,27 +169,26 @@ desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4
 		url = "ftp://ftp.sec.gov/edgar/full-index/"
 		content = nil
 		fileInfo = nil
-		puts "Connecting to ftp.sec.gov/edgar/full-index/2015/QTR4".green
+		puts "Connecting to ftp.sec.gov/edgar/full-index/2015/QTR4..."
 		Net::FTP.open('ftp.sec.gov') do |ftp|
-			puts ftp.login("anonymous")
+			puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
+			puts "Pulling 2015/QTR4 data"
 			ftp.chdir('edgar/full-index/2015/QTR4')
 			ftp.getbinaryfile("xbrl.zip")
 			Zip::File.open('xbrl.zip') do |zip_file|
 	  		# Handle entries one by one
 	  		zip_file.each do |entry|
 	  			fileInfo = entry
-					# Extract to file/directory/symlink
-					puts "Reading #{entry.name}".green
-					# binding.pry
+					puts "Temporarily saving #{entry.name} locally"
 					begin
 						entry.extract(entry.name)
 					rescue
+						puts "#{entry.name} already exists! Deleting existing file".red
 						File.delete(entry.name)
+						entry.extract(entry.name)
 					end
-					# Read into memory
-					content = entry.get_input_stream.read
+						puts "Successfully saved #{entry.name}".green
 				end
-				# Find specific entry
 			end
 		end
 		addCount   = 0
@@ -197,7 +196,7 @@ desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4
 		firstline  = true
 		keys       = {}
 		linecount  = 1.0
-		totalLines = content.lines.count
+		totalLines = open(fileInfo.name) { |f| f.count }
 		puts "Importing #{fileInfo.name} (#{totalLines} total rows)"
 		begin
 			# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
@@ -231,11 +230,12 @@ desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4
 					firstline = false
 				end
 				linecount += 1
-				puts ""
 			end
 		rescue Exception => e
 			puts e.message
 		end
+	puts ""
+	puts "Deleting local copy of #{fileInfo.name}"
 	File.delete(fileInfo.name)
 	end
 end
