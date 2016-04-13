@@ -1,0 +1,2 @@
+class XbrlsController < ApplicationController
+end

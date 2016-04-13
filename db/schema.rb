@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160412170229) do
+ActiveRecord::Schema.define(version: 20160413144147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,16 @@ ActiveRecord::Schema.define(version: 20160412170229) do
     t.text     "doc"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "xbrls", force: :cascade do |t|
+    t.integer  "cik"
+    t.string   "companyname"
+    t.string   "formtype"
+    t.date     "datefiled"
+    t.string   "filename"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
 end
