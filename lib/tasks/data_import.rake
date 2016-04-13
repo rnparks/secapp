@@ -2,6 +2,8 @@ require 'pry'
 require 'csv'
 require 'colorize'
 require 'open-uri'
+require 'net/ftp'
+require 'zip'
 
 namespace :data_import do
 	desc "Import csv data into db ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
@@ -160,5 +162,80 @@ namespace :data_import do
 		rescue Exception => e
 			puts e.message
 		end
+	end
+
+desc "Import xbrl indexing"
+	task :xbrl_index => :environment do |task|
+		url = "ftp://ftp.sec.gov/edgar/full-index/"
+		content = nil
+		fileInfo = nil
+		puts "Connecting to ftp.sec.gov/edgar/full-index/2015/QTR4".green
+		Net::FTP.open('ftp.sec.gov') do |ftp|
+			puts ftp.login("anonymous")
+			ftp.chdir('edgar/full-index/2015/QTR4')
+			ftp.getbinaryfile("xbrl.zip")
+			Zip::File.open('xbrl.zip') do |zip_file|
+	  		# Handle entries one by one
+	  		zip_file.each do |entry|
+	  			fileInfo = entry
+					# Extract to file/directory/symlink
+					puts "Reading #{entry.name}".green
+					# binding.pry
+					begin
+						entry.extract(entry.name)
+					rescue
+						File.delete(entry.name)
+					end
+					# Read into memory
+					content = entry.get_input_stream.read
+				end
+				# Find specific entry
+			end
+		end
+		addCount   = 0
+		failCount  = {}
+		firstline  = true
+		keys       = {}
+		linecount  = 1.0
+		totalLines = content.lines.count
+		puts "Importing #{fileInfo.name} (#{totalLines} total rows)"
+		begin
+			# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
+			CSV.foreach(fileInfo.name, {:quote_char => '"', col_sep: "|", encoding: "ISO8859-1"}) do |row|
+				if row.count > 1
+					if firstline
+						keys = row if row.first
+					end
+					params = {}
+					keys.each_with_index do |key, i|
+						if !firstline && row[i]
+							params[key.downcase.gsub(' ','')] = row[i]
+						else
+							break
+						end
+					end
+					begin
+						if !firstline
+							binding.pry
+							# Sic.create(params)
+							addCount += 1
+						end
+					rescue ActiveRecord::ActiveRecordError => e
+						summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
+						if failCount[summary]
+							failCount[summary] += 1
+						else 
+							failCount[summary] = 1
+						end
+					end
+					firstline = false
+					linecount += 1
+				end
+				puts ""
+			end
+		rescue Exception => e
+			puts e.message
+		end
+	File.delete(entry.name)
 	end
 end
