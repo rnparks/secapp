@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<div class="filer container-fluid">
 <div class='the-menu'>
 	<div class="subs-summary">
 		<span class="exchange"><%= @sub.stock.exchange if @sub.stock %></span>
@@ -36,4 +36,8 @@
 		<div>ADSH: <%= @sub.adsh%></div>
 
 	</div>
+</div>
+
+<%= yield %>
+
 </div>

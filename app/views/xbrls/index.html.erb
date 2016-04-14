@@ -1,6 +1,4 @@
-<%= render 'subs/subs_menu'%>
-
-<%= content_for :subs_content do %>
+<%= render layout: 'subs' do %>
 	<div class="filer container-fluid">
 		<ul>
 			<% @sub.xbrls.each do |xbrl| %>

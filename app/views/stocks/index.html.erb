@@ -1,4 +1,4 @@
-<%= content_for :subs_content do %>
+<%= render layout: 'subs' do %>
 	<ul>
 	<% @stockData.each do |row| %>
 		<li><%= "#{row[0]} : #{row[1]}" %></li>
