@@ -6,16 +6,57 @@ require 'net/ftp'
 require 'zip'
 
 namespace :data_import do
-	desc "Import csv data into db ex: rake data_import:csv_table_import['/Users/gray/Downloads/2015q4/']"
-	task :csv_table_import, [:dir] => :environment do |task, args|
-		puts "Importing csv data from #{args[:dir]}"
-		args[:dir].chomp!("/")
+	# turn off console logging
+	dev_null = Logger.new("/dev/null")
+	Rails.logger = dev_null
+	ActiveRecord::Base.logger = dev_null
+
+	desc "Import sec archive data to database"
+	task :archive_import => :environment do |task|
 		acceptedFiles = ['sub.txt']
-		files = Dir.glob("#{args[:dir]}/*.txt")
-		puts "Found #{files.count()} .txt files"
-		# iterate through files in chosen path
-		files.each_with_index do |file, index|
-			if acceptedFiles.any? { |word| file.include?(word) }
+		secUrl   			= "www.sec.gov"
+		zipFiles 			= ["2015q4.zip"]
+		response 			= nil
+		temp_dir			= "temp_archive/"
+		zipFiles.each do |zipFile|
+			begin
+				tries ||= 3
+				Net::HTTP.start(secUrl) do |http|
+					response = http.get("/data/financial-statements/#{zipFile}")
+					open("temp_archive/#{zipFile}", "wb") { |file| file.write(response.body) }
+				end
+			rescue ActiveRecord::ActiveRecordError => e
+				puts e
+				if tries.zero?
+					puts "You'll have to try again later"
+				else
+					puts "Trying again..."
+					tries -= 1
+					retry
+				end
+			end
+			Zip::File.open("#{temp_dir}#{zipFile}") do |zip_file| 
+				# Handle entries one by one
+				zip_file.each do |entry|
+					if acceptedFiles.any? { |word| entry.name.include?(word) }
+						fileInfo = entry
+						puts "Temporarily saving #{entry.name} locally"
+						begin
+							entry.extract("#{temp_dir}#{entry.name}")
+						rescue
+							puts "#{entry.name} already exists! Deleting existing file".red
+							File.delete("#{temp_dir}#{entry.name}")
+							entry.extract("#{temp_dir}#{entry.name}")
+						end
+							puts "Successfully saved #{entry.name}".green
+					else
+						puts "Skipping #{file} (**will only import sub.txt at the moment**)".red
+					end
+				end
+			end
+			files = Dir.glob("#{temp_dir}*.txt")
+			puts "Found #{files.count()} .txt files"
+			files.each_with_index do |file, index|
 				addCount   = 0
 				failCount  = {}
 				model_name = file.split('/').last.split('.').first.camelize.singularize
@@ -62,15 +103,14 @@ namespace :data_import do
 					puts "#{e.message} : #{model_name}"
 				end
 				puts ""
-			else
-				puts "Skipping #{file} (**will only import sub.txt at the moment**)".red
 			end
 		end
+		puts "Flush all temporary data files"
+		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..'}
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
 	task :ticker_import => :environment do |task|
-		puts "Importing ticker data from rankandfiled.com's database"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -122,7 +162,6 @@ namespace :data_import do
 
 	desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
 	task :sic_import => :environment do |task|
-		puts "Importing sic (business taxonomy) data from rankandfiled.com's database"
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -176,25 +215,38 @@ namespace :data_import do
 			content = nil
 			fileInfo = nil
 			puts "Connecting to #{url}"
-			Net::FTP.open(url) do |ftp|
-				puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
-				puts "Pulling #{qtr} data"
-				ftp.chdir("/edgar/full-index/#{qtr}")
-				ftp.getbinaryfile("xbrl.zip")
-				Zip::File.open('xbrl.zip') do |zip_file|
-		  		# Handle entries one by one
-		  		zip_file.each do |entry|
-		  			fileInfo = entry
-						puts "Temporarily saving #{entry.name} locally"
-						begin
-							entry.extract(entry.name)
-						rescue
-							puts "#{entry.name} already exists! Deleting existing file".red
-							File.delete(entry.name)
-							entry.extract(entry.name)
-						end
+			begin
+				tries ||= 3
+				Net::FTP.open(url) do |ftp|
+					puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
+					puts "Pulling #{qtr} data"
+					ftp.chdir("/edgar/full-index/#{qtr}")
+					ftp.getbinaryfile("xbrl.zip")
+					Zip::File.open('xbrl.zip') do |zip_file|
+						# Handle entries one by one
+						zip_file.each do |entry|
+			  			fileInfo = entry
+							puts "Temporarily saving #{entry.name} locally"
+							begin
+								entry.extract(entry.name)
+							rescue
+								puts "#{entry.name} already exists! Deleting existing file".red
+								File.delete(entry.name)
+								entry.extract(entry.name)
+							end
 							puts "Successfully saved #{entry.name}".green
+						end
+						File.delete(fileInfo.name)
 					end
+				end
+			rescue ActiveRecord::ActiveRecordError => e
+				puts e
+				if tries.zero?
+					puts "You'll have to try again later"
+				else
+					puts "Trying again..."
+					tries -= 1
+					retry
 				end
 			end
 			addCount   = 0
@@ -246,13 +298,18 @@ namespace :data_import do
 		end
 	end
 	desc "Perform all data import tasks"
-	task :all, [:dir] => :environment do |task, args|
-	  Rake::Task["db:drop"].execute
-	  Rake::Task["db:create"].execute
-	  Rake::Task["db:migrate"].execute
-	  Rake::Task["data_import:csv_table_import"].execute args
-	  Rake::Task["data_import:ticker_import"].execute
-		Rake::Task["data_import:sic_import"].execute 
-		Rake::Task["data_import:xbrl_index"].execute 
+	task :all => :environment do |task, args|
+		puts "Resetting databases"
+		Rake::Task["db:drop"].execute
+		Rake::Task["db:create"].execute
+		Rake::Task["db:migrate"].execute
+		puts "Importing sec archive data from files located in https://www.sec.gov/dera/data/financial-statement-data-sets.html"
+		Rake::Task["data_import:archive_import"].execute
+		puts "Importing ticker data from rankandfiled.com's database"
+		Rake::Task["data_import:ticker_import"].execute
+		puts "Importing sic (business taxonomy) data from rankandfiled.com's database"
+		Rake::Task["data_import:sic_import"].execute
+		puts "Importing xbrl indexing data from the sec's ftp site"
+		Rake::Task["data_import:xbrl_index"].execute
 	end
 end
