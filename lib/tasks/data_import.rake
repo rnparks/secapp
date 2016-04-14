@@ -217,6 +217,7 @@ namespace :data_import do
 			begin
 				tries ||= 3
 				Net::FTP.open(url) do |ftp|
+					ftp.passive = true
 					begin
 						tries_b ||= 3
 						puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
