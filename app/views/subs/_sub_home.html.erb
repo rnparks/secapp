@@ -14,11 +14,10 @@
 		</div>
 	</div>
 
-	<!-- UPDATE THIS -->
-	<div class="After Hours">After Hours : <span id="yfs_l86_jbht">86.27</span></span> <span class="down_r"><span id="yfs_c85_jbht"><img width="10" height="14" style="margin-right:-2px;" border="0" src="http://l.yimg.com/os/mit/media/m/base/images/transparent-1093278.png" class="neg_arrow" alt="Down"> 0.11</span> <span id="yfs_c86_jbht">(0.12%)</span></span><span class="time_rtq"> <span id="yfs_t54_jbht">4:13PM EDT</span></span></div>
-</div>
+<%= render 'sub_stocks_grid' %>
 
 <ul>
+stockdata reference
 <% @stockData.each do |row| %>
 	<li><%= "#{row[0]} : #{row[1]}" %></li>
 <% end %>
