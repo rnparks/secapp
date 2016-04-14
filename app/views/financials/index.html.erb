@@ -1,4 +1,4 @@
-<%= content_for :subs_content do %>
+<%= render layout: 'subs' do %>
 	<div class="filer-content container-fluid">
 		<% @allMorningStarData.each_with_index do |report, index| %>
 			<h4><%= report.keys.first %></h4>
