@@ -1,6 +1,6 @@
 # require 'HTTParty'
 class Stock < ActiveRecord::Base
-	include 'HTTParty'
+	include HTTParty
 	has_one :sub, :class_name => 'Sub', :foreign_key => 'cik'
 	validates_uniqueness_of :cik
 	MARKETS = OpenStruct.new(
