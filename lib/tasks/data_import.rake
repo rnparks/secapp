@@ -208,7 +208,6 @@ namespace :data_import do
 
 	desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
 	task :xbrl_index => :environment do |task|
-		puts "Importing xbrl indexing data from the sec's ftp site"
 		url = "ftp.sec.gov"
 		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1', '2014/QTR4', '2014/QTR3', '2014/QTR2', '2014/QTR1']
 		qtrs.each do |qtr|
@@ -218,7 +217,19 @@ namespace :data_import do
 			begin
 				tries ||= 3
 				Net::FTP.open(url) do |ftp|
-					puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
+					begin
+						tries_b ||= 3
+						puts ftp.login("anonymous") ? "Successfully logged in".green : "Loggin unsuccessful".red
+					rescue ActiveRecord::ActiveRecordError => e
+						puts e
+						if tries_b.zero?
+							puts "You'll have to try again later"
+						else
+							puts "Trying again..."
+							tries_b -= 1
+							retry
+						end
+					end
 					puts "Pulling #{qtr} data"
 					ftp.chdir("/edgar/full-index/#{qtr}")
 					ftp.getbinaryfile("xbrl.zip")
@@ -236,7 +247,6 @@ namespace :data_import do
 							end
 							puts "Successfully saved #{entry.name}".green
 						end
-						File.delete(fileInfo.name)
 					end
 				end
 			rescue ActiveRecord::ActiveRecordError => e
