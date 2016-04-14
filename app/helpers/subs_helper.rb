@@ -1,3 +1,2 @@
 module SubsHelper
-
 end

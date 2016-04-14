@@ -6,19 +6,20 @@
 		</div>
 	</div>
 	<div class="stock-quote-summary">
-		<span class="bid"><%= @stockData[:bid] %></span>
+		<span class="bid"><%= @stockData[:data][:bid] %></span>
 		<div class=<%= "stock-state-#{@stockState}" %>>
 			<i class="<%= "fa fa-caret-#{@stockState}"%>" aria-hidden="true"></i>
-			<span class="price-change"><%= '%.2f' % @stockData[:change] %></span>
-			<span class="price-change-percent">(<%= '%.2f' % @stockData[:change_in_percent] %>%)</span>
+			<span class="price-change"><%= '%.2f' % @stockData[:data][:change] %></span>
+			<span class="price-change-percent">(<%= '%.2f' % @stockData[:data][:change_in_percent] %>%)</span>
 		</div>
 	</div>
+</div>
 
-<%= render 'sub_stocks_grid' %>
+<%= render 'sub_stock_grid' %>
 
 <ul>
-stockdata reference
-<% @stockData.each do |row| %>
-	<li><%= "#{row[0]} : #{row[1]}" %></li>
+<h5>stock data reference</h5>	
+<% @stockData[:labels].each do |row| %>
+	<li><%= "#{row[row.keys.first]} #{@stockData[:data][row.keys.first]}" %></li>
 <% end %>
 </ul>

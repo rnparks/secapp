@@ -80,23 +80,20 @@ class SubsController < ApplicationController
     def set_keys
       @subKeys = Sub.new.attributes.keys
     end
-Data
     def set_stock
       @hasStock = @sub.stock
       if @hasStock
         @stock = @sub.stock
         # binding.pry
         @stockData = @stock.getYahooFinanceData
-        @stockData[:close] = @stockData[:close].to_f
-        @stockData[:stock_current] = @stockData[:last_trade_price].to_f
+        @stockData[:data][:close] = @stockData[:data][:close].to_f
+        @stockData[:data][:stock_current] = @stockData[:data][:last_trade_price].to_f
         # @stockData[:change] = @stockData[:stock_current] - @stockData[:close]
         # @stockData[:change_in_percent] = (@stockData[:change]/@stockData[:close]).round(2)
-        @stockData[:change_in_percent] = @stockData[:change_in_percent].to_f
-        @stockData[:change] = @stockData[:change].to_f
-        @stockState = @stockData[:change] > 0 ? "up" : "down"
-# binding.pry
-@stock.formatStockData(@stockData)
-        # @closedFloor = Time.now.strftime("%d/%m/%Y %H:%M")
+        @stockData[:data][:change_in_percent] = @stockData[:data][:change_in_percent].to_f
+        @stockData[:data][:change] = @stockData[:data][:change].to_f
+        @stockState = @stockData[:data][:change] > 0 ? "up" : "down"
+
       end
     end
 end
