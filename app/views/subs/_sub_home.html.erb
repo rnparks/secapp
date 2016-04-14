@@ -1,30 +1,25 @@
-<div class="rtq_div">
-	<div class="yui-g">
-		<div class="yfi_rt_quote_summary" id="yfi_rt_quote_summary">
-			<div class="hd">
-				<div class="title">
-					<h2><%= @sub.displayName %> <%= "[#{@sub.stock.ticker}]" if @hasStock %></h2>
-					<span class="rtq_exch">
-					<span class="rtq_dash">-</span><%= @stockData[:exchange] if @hasStock %></span>
-					<span class="wl_sign">
-				</div>
-			</div>
-			<div class="yfi_rt_quote_summary_rt_top sigfig_promo_1">
-				<div> <span class="time_rtq_ticker"><span id="yfs_l84_jbht" class=""><%=@stockData[:bid]%></span></span>
-
-				<span class="up_g time_rtq_content"><span id="yfs_c63_jbht" class=""><img width="10" height="14" border="0" style="margin-right:-2px;" src="http://l.yimg.com/a/i/us/fi/03rd/up_g.gif" alt="Up"> <span class="yfi-price-change-green"><%=@stockData[:change]%></span></span><span id="yfs_p43_jbht" class=""><span class="yfi-price-change-green">(<%=@stockData[:change_in_percent]%>)</span></span> </span>
-
-
-				</div>
-			</div>
-			<div id="yfi_toolbox_mini_rtq">
-			</div>
+<div class="stock-header">
+	<div class="hd">
+		<div class="title">
+			<h2><%= @sub.displayName %> <%= "[#{@sub.stock.ticker}]" if @hasStock %></h2>
+			<span class="exchange"><%= "- #{@stock.exchange}" if @hasStock %></span>
+		</div>
+	</div>
+	<div class="stock-quote-summary">
+		<span class="bid"><%= @stockData[:data][:bid] %></span>
+		<div class=<%= "stock-state-#{@stockState}" %>>
+			<i class="<%= "fa fa-caret-#{@stockState}"%>" aria-hidden="true"></i>
+			<span class="price-change"><%= '%.2f' % @stockData[:data][:change] %></span>
+			<span class="price-change-percent">(<%= '%.2f' % @stockData[:data][:change_in_percent] %>%)</span>
 		</div>
 	</div>
 </div>
 
-	<ul>
-	<% @stockData.each do |row| %>
-		<li><%= "#{row[0]} : #{row[1]}" %></li>
-	<% end %>
-	</ul>
+<%= render 'sub_stock_grid' %>
+
+<ul>
+<h5>stock data reference</h5>	
+<% @stockData[:labels].each do |row| %>
+	<li><%= "#{row[row.keys.first]} #{@stockData[:data][row.keys.first]}" %></li>
+<% end %>
+</ul>
