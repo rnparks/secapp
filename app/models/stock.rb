@@ -1,4 +1,4 @@
-require 'HTTParty'
+# require 'HTTParty'
 class Stock < ActiveRecord::Base
 	include 'HTTParty'
 	has_one :sub, :class_name => 'Sub', :foreign_key => 'cik'
