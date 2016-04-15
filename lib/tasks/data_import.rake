@@ -10,13 +10,17 @@ namespace :data_import do
 	Rails.logger = dev_null
 	ActiveRecord::Base.logger = dev_null
 
-	desc "Import sec archive data to database"
-	task :archive_import => :environment do |task|
-		acceptedFiles = ['sub.txt']
+	desc "Import sec archive data to database. Pass any arguments (sub, num, tag, pre) to only import that resource *no whitespace between arguments*. If no variable is chosen, then all will import. Ex: rake data_import:archive[num,tag]"
+	task :archive => :environment do |task, args|
+		# set resources to import in acceptedFiles array
+		args.extras.map { |arg| arg+=".txt" }
+		acceptedFiles = args.extras.count > 0 ? args.extras.map{|arg|arg+=".txt"} : ['num.txt', 'sub.txt', "pre.txt", "tag.txt"]
 		secUrl   			= "www.sec.gov"
 		zipFiles 			= ["2015q4.zip"]
 		response 			= nil
 		temp_dir			= "temp_archive/"
+		puts "Flushing all existing temp files"
+		Dir["#{temp_dir}.*"].each{|f| FileUtils.rm(f) unless f == "#{temp_dir}.gitignore"}
 		zipFiles.each do |zipFile|
 			begin
 				tries ||= 3
@@ -49,7 +53,7 @@ namespace :data_import do
 						end
 							puts "Successfully saved #{entry.name}".green
 					else
-						puts "Skipping #{file} (**will only import sub.txt at the moment**)".red
+						puts "Skipping #{file} (**currently configured to import [#{acceptedFiles.join(', ')}]**)".red
 					end
 				end
 			end
@@ -109,7 +113,7 @@ namespace :data_import do
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
-	task :ticker_import => :environment do |task|
+	task :ticker => :environment do |task|
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -160,7 +164,7 @@ namespace :data_import do
 	end
 
 	desc "Import sic / naics data into database record via '|' delimited csv from rankandfiled.com"
-	task :sic_import => :environment do |task|
+	task :sic => :environment do |task|
 		addCount   = 0
 		failCount  = {}
 		firstline  = true
@@ -206,7 +210,7 @@ namespace :data_import do
 	end
 
 	desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
-	task :xbrl_index => :environment do |task|
+	task :xbrl => :environment do |task|
 		url = "ftp.sec.gov"
 		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1', '2014/QTR4', '2014/QTR3', '2014/QTR2', '2014/QTR1']
 		qtrs.each do |qtr|
@@ -314,12 +318,12 @@ namespace :data_import do
 		Rake::Task["db:create"].execute
 		Rake::Task["db:migrate"].execute
 		puts "Importing sec archive data from files located in https://www.sec.gov/dera/data/financial-statement-data-sets.html"
-		Rake::Task["data_import:archive_import"].execute
+		Rake::Task["data_import:archive"].execute
 		puts "Importing ticker data from rankandfiled.com's database"
-		Rake::Task["data_import:ticker_import"].execute
+		Rake::Task["data_import:ticker"].execute
 		puts "Importing sic (business taxonomy) data from rankandfiled.com's database"
-		Rake::Task["data_import:sic_import"].execute
+		Rake::Task["data_import:sic"].execute
 		puts "Importing xbrl indexing data from the sec's ftp site"
-		Rake::Task["data_import:xbrl_index"].execute
+		Rake::Task["data_import:xbrl"].execute
 	end
 end

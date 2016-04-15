@@ -1,15 +1,24 @@
-<p id="notice"><%= notice %></p>
-
-<table>
-  <thead>
-    <tr>
-      <th colspan="1"></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<%= render layout: 'subs' do %>
+  <table style="font-size: 8px" class="sortable table-striped table-bordered table-responsive table-condensed">
+    <tbody>
       <tr>
+        <% @tagKeys.each do |key| %>
+          <th colspan="2"><%= key %></th>
+        <% end %>
+        <% @numKeys.each do |key| %>
+          <th colspan="2"><%= key %></th>
+        <% end %>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% @nums.each do |row| %>
+        <tr>
+          <% row.get_tag_data.attributes.each do |attr_name, attr_value| %>
+            <td colspan="2"><%= attr_value unless attr_name == 'doc' || attr_name == 'tag' %></td>
+          <% end %>
+          <% row.attributes.each do |attr_name, attr_value| %>
+            <td colspan="2"><%= attr_value %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

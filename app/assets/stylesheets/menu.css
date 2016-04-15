@@ -7,9 +7,10 @@
 	text-align: right;
 	background: white;
 	color: #111;
-	overflow: hidden;
+	overflow: scroll;
 	border-right: 1px solid black;
-	margin-bottom: 40px;
+	border-bottom: 1px solid black;
+	height: 100%;
 }
 
 .ticker,
@@ -33,18 +34,26 @@
 .subs-detail,
 .subs-summary {
 	padding: 12px;
-	border-bottom: 1px solid black;
 }
 
 .subs-detail div {
 	clear: both;
 	font-size: .8em;
 }
+.subs-detail h5 span {
+	margin-right: 4px;
+	vertical-align: top;
+}
 
-.subs-nav li {
-	list-style: none;
+.subs-nav .active, .subs-nav .nav li:hover a {
+	background-color: #163550;
+}
+
+.subs-nav .active a, .subs-nav li:hover a {
+	color: white;
 }
 
 .subs-nav ul {
 	padding: 0;
 }
+
