@@ -6,10 +6,11 @@
 			<span class="name"><%= @sub.displayName %></span>
 		</div>
 		<div class="subs-nav">
-		<ul>
-			<%= link_to raw("<li class='bg-info'>Stock Data</li>"), [@sub, :stocks] if @sub.stock  %>
-			<%= link_to raw("<li class='bg-info'>Financials</li>"), [@sub, :financials] if @sub.stock %>
-			<%= link_to raw("<li class='bg-info'>Filings Index</li>"), [@sub, :xbrls] if @sub.stock %>
+		<ul class="nav nav-stacked">
+		<li class=<%= 'active' if params[:controller] == 'stocks' %>><%= link_to "Stock Data", [@sub, :stocks] if @sub.stock %></li>
+		<li class=<%= 'active' if params[:controller] == 'financials' %>><%= link_to "Morning Star Financials", [@sub, :financials] %></li>
+		<li class=<%= 'active' if params[:controller] == 'xbrls' %>><%= link_to "Filings Index (xbrls)", [@sub, :xbrls]  %></li>
+		<li class=<%= 'active' if params[:controller] == 'nums' %>><%= link_to "Archived Filings (nums)", [@sub, :nums] %></li>
 		</ul>
 		</div>
 		<div class="subs-detail">
