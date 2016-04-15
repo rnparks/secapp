@@ -40,6 +40,9 @@
 	clear: both;
 	font-size: .8em;
 }
+.subs-detail h5 {
+	margin-left: 4px;
+}
 
 .subs-nav .active, .subs-nav .nav li:hover a {
 	background-color: #163550;
