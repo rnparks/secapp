@@ -14,7 +14,6 @@ class FinancialsController < ApplicationController
 			@morningStarCfQt,
 			@morningStarCfYr,
 			@morningStarBsQt,
-			@morningStarBsYr,
 			@morningStarBsYr
 		]
   end

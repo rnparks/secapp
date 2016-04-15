@@ -6,3 +6,11 @@
 	overflow: scroll;
 	margin-bottom: 40px;
 }
+
+
+.table-responsive {
+width: 100%;
+}
+.report-heading {
+	margin-left: 12px;
+}

@@ -1,10 +1,18 @@
 <%= render layout: 'subs' do %>
 	<div class="filer-content container-fluid">
+			  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+  		<% @allMorningStarData.each_with_index do |report, index| %>
+    <li role="presentation" class="<%= 'active' if index == 0 %>"><a href="#<%=report["reportType"]+report["period"].to_s%>" aria-controls="<%=report["reportType"]+report["period"].to_s%>" role="tab" data-toggle="tab"><%=report["displayName"]%></a></li>
+    <% end %>
+  </ul>
+  <div class="tab-content">
 		<% @allMorningStarData.each_with_index do |report, index| %>
-			<h4><%= report.keys.first %></h4>
-			<table class='sortable'>
+  <div role="tabpanel" class="tab-pane fade in <%= 'active' if index == 0 %>" id="<%=report["reportType"]+report["period"].to_s%>">
+			<h4 class="report-heading"><%= report["data"].keys.first %></h4>
+			<table class='sortable table-striped table-bordered table-responsive table-condensed'>
 				<tr>
-				<% report[report.keys.first].each_with_index do |val, i| %>
+				<% report["data"][report["data"].keys.first].each_with_index do |val, i| %>
 					<% if i == 0 %>
 					<tr>
 						<% val.each do |v| %>
@@ -13,7 +21,7 @@
 					</tr>
 					<% else %>
 					<%if val.count == 1 %>
-						<tr><td><strong><%= val[0] %></strong></td></tr>
+						<tr><td colspan="<%= report["data"][report["data"].keys.first].count%>"><strong><%= val[0] %></strong></td></tr>
 					<% else %>
 						<tr>
 						<% val.each do |v| %>
@@ -25,6 +33,8 @@
 				<% end %>
 				</tr>
 			</table>
+			</div>
 		<% end %>
+		</div>
 	</div>
 <% end %>

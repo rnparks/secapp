@@ -9,20 +9,25 @@ class Stock < ActiveRecord::Base
 		# symbol: ticker
 		# reportType: is = Income Statement, cf = Cash Flow, bs = Balance Sheet
 		# period: 12 for annual reporting, 3 for quarterly reporting
-		url = "http://financials.morningstar.com/ajax/ReportProcess4CSV.html?t=#{self.ticker}&reportType=#{reportType}&period=12&dataType=A&order=asc&columnYear=5&number=3"
+		url = "http://financials.morningstar.com/ajax/ReportProcess4CSV.html?t=#{self.ticker}&reportType=#{reportType}&period=#{period}&dataType=A&order=asc&columnYear=5&number=3"
 		response = HTTParty.get(url)
 		parsedResponse = response.split("\n").map do |row|
 			CSV::parse_line(row)
 		end
 		hash = {}
+		key = nil
 		parsedResponse.each_with_index do |row, index|
 			if index == 0
-				hash[parsedResponse.first.first] = []
+				key = parsedResponse.first.first.gsub("???", "")
+				hash[key] = []
 			else
-				hash[parsedResponse.first.first].push(row)
+				hash[key].push(row)
 			end
 		end
-		hash
+		reportTypeName = { "is" => "Income Statement", "cf" => "Cash Flow", "bs" => "Balance Sheet" }
+		periodName = { "3" => "Qtly", "12" => "Yrly" }
+		displayName = "#{periodName[period.to_s]} #{reportTypeName[reportType]}"
+		finalHash = {"displayName" => displayName, "reportType" => reportType, "period" => period, "data" => hash}
 	end
 	
 	def getYahooFinanceData

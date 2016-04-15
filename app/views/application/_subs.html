@@ -7,7 +7,7 @@
 		</div>
 		<div class="subs-nav">
 		<ul class="nav nav-stacked">
-		<li class=<%= 'active' if params[:controller] == 'stocks' %>><%= link_to "Stock Data", [@sub, :stocks] if @sub.stock %></li>
+		<li class=<%= 'active' if params[:controller] == 'subs' %>><%= link_to "Stock Data", [@sub] if @sub.stock %></li>
 		<li class=<%= 'active' if params[:controller] == 'financials' %>><%= link_to "Morning Star Financials", [@sub, :financials] %></li>
 		<li class=<%= 'active' if params[:controller] == 'xbrls' %>><%= link_to "Filings Index (xbrls)", [@sub, :xbrls]  %></li>
 		<li class=<%= 'active' if params[:controller] == 'nums' %>><%= link_to "Archived Filings (nums)", [@sub, :nums] %></li>
@@ -43,7 +43,7 @@
 
 		</div>
 	</div>
-
-	<%= yield %>
-
+	<div class="filer container-fluid">
+		<%= yield %>
+	</div>
 </div>
