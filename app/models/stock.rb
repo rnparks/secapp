@@ -9,7 +9,7 @@ class Stock < ActiveRecord::Base
 		# symbol: ticker
 		# reportType: is = Income Statement, cf = Cash Flow, bs = Balance Sheet
 		# period: 12 for annual reporting, 3 for quarterly reporting
-		url = "http://financials.morningstar.com/ajax/ReportProcess4CSV.html?t=#{self.ticker}&reportType=#{reportType}&period=#{period}&dataType=A&order=asc&columnYear=5&number=3"
+		url = "http://financials.morningstar.com/ajax/ReportProcess4CSV.html?t=#{self.ticker}&reportType=#{reportType}&period=#{period}&dataType=A&order=asc&columnYear=10&number=1"
 		response = HTTParty.get(url)
 		parsedResponse = response.split("\n").map do |row|
 			CSV::parse_line(row)
