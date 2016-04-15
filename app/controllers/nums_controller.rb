@@ -1,25 +1,35 @@
 class NumsController < ApplicationController
-  before_action :set_num, only: [:show, :edit, :update, :destroy]
+  before_action :set_num, only: [:show]
+  before_action :set_sub, only: [:index, :show]
+  before_action :set_num_keys, only: [:index, :show]
+  before_action :set_tag_keys, only: [:index, :show]
 
-  # GET /nums
-  # GET /nums.json
   def index
-    @nums = Num.all
+    @nums = @sub.nums
   end
 
-  # GET /nums/1
-  # GET /nums/1.json
   def show
-    @numKeys = Num.new.attributes.keys
+    
   end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_num
       @num = Num.find(params[:id])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
+    def set_sub
+      @sub = Sub.find(params[:sub_id])
+    end
+
     def num_params
       params.fetch(:num, {})
+    end
+
+    def set_num_keys
+      @numKeys = Num.new.attributes.keys
+    end
+
+    def set_tag_keys
+      @tagKeys = Tag.new.attributes.keys
     end
 end

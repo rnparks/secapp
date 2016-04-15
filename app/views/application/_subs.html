@@ -1,43 +1,43 @@
 <div class="filer container-fluid">
-<div class='the-menu'>
-	<div class="subs-summary">
-		<span class="exchange"><%= @sub.stock.exchange if @sub.stock %></span>
-		<span class="ticker">[<%= @sub.stock.ticker if @sub.stock %>]</span><br>
-		<span class="name"><%= @sub.displayName %></span>
-	</div>
-	<div class="subs-nav">
-	<ul>
-		<%= link_to raw("<li class='bg-info'>Stock Data</li>"), [@sub, :stocks] if @sub.stock  %>
-		<%= link_to raw("<li class='bg-info'>Financials</li>"), [@sub, :financials] if @sub.stock %>
-		<%= link_to raw("<li class='bg-info'>Filings Index</li>"), [@sub, :xbrls] if @sub.stock %>
-	</ul>
-	</div>
-	<div class="subs-detail">
-		<h5>Industry</h5>
-		<% @sub.sics.each do |sic| %>
-		<div><%= "#{sic.sic_descrip} / #{sic.naics_descrip}" %></div>
-		<% end %>
-		<h5>Office Address</h5>
-		<div><%= @sub.bas1.capitalize if @sub.bas1%></div>
-		<div><%= @sub.bas2.capitalize if @sub.bas2%></div>
-		<div><%= "#{@sub.cityba.capitalize if @sub.cityba}, #{@sub.stprba} #{@sub.zipba}" %></div>
-		
-		<h5>Mailing Address</h5>
-		<div><%= @sub.mas1.capitalize if @sub.mas1%></div>
-		<div><%= @sub.mas2.capitalize if @sub.mas2 %></div>
-		<div><%= "#{@sub.cityma.capitalize if @sub.cityma}, #{@sub.stprma} #{@sub.zipma}" %></div>
-		
-		<h5>Incorporated</h5>
-		<div><%= getStateName(@sub.stock.incorporated) if @sub.stock.incorporated %></div>
-		
-		<h5>Identifiers</h5>
-		<div>CIK: <%= @sub.cik%></div>
-		<div>IRS: <%= @sub.stock.irs if @sub.stock %></div>
-		<div>ADSH: <%= @sub.adsh%></div>
+	<div class='the-menu'>
+		<div class="subs-summary">
+			<span class="exchange"><%= @sub.stock.exchange if @sub.stock %></span>
+			<span class="ticker">[<%= @sub.stock.ticker if @sub.stock %>]</span><br>
+			<span class="name"><%= @sub.displayName %></span>
+		</div>
+		<div class="subs-nav">
+		<ul>
+			<%= link_to raw("<li class='bg-info'>Stock Data</li>"), [@sub, :stocks] if @sub.stock  %>
+			<%= link_to raw("<li class='bg-info'>Financials</li>"), [@sub, :financials] if @sub.stock %>
+			<%= link_to raw("<li class='bg-info'>Filings Index</li>"), [@sub, :xbrls] if @sub.stock %>
+		</ul>
+		</div>
+		<div class="subs-detail">
+			<h5>Industry</h5>
+			<% @sub.sics.each do |sic| %>
+			<div><%= "#{sic.sic_descrip} / #{sic.naics_descrip}" %></div>
+			<% end %>
+			<h5>Office Address</h5>
+			<div><%= @sub.bas1.capitalize if @sub.bas1%></div>
+			<div><%= @sub.bas2.capitalize if @sub.bas2%></div>
+			<div><%= "#{@sub.cityba.capitalize if @sub.cityba}, #{@sub.stprba} #{@sub.zipba}" %></div>
+			
+			<h5>Mailing Address</h5>
+			<div><%= @sub.mas1.capitalize if @sub.mas1%></div>
+			<div><%= @sub.mas2.capitalize if @sub.mas2 %></div>
+			<div><%= "#{@sub.cityma.capitalize if @sub.cityma}, #{@sub.stprma} #{@sub.zipma}" %></div>
+			
+			<h5>Incorporated</h5>
+			<div><%= getStateName(@sub.stock.incorporated) if @sub.stock.incorporated %></div>
+			
+			<h5>Identifiers</h5>
+			<div>CIK: <%= @sub.cik%></div>
+			<div>IRS: <%= @sub.stock.irs if @sub.stock %></div>
+			<div>ADSH: <%= @sub.adsh%></div>
 
+		</div>
 	</div>
-</div>
 
-<%= yield %>
+	<%= yield %>
 
 </div>
