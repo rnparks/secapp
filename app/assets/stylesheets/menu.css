@@ -40,8 +40,9 @@
 	clear: both;
 	font-size: .8em;
 }
-.subs-detail h5 {
-	margin-left: 4px;
+.subs-detail h5 span {
+	margin-right: 4px;
+	vertical-align: top;
 }
 
 .subs-nav .active, .subs-nav .nav li:hover a {
