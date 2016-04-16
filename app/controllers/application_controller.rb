@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_subsQuery
   private
   def set_subsQuery
-  	@subsQuery = Sub.all.pluck_h(:name, :adsh)
+  	@subsQuery = Sub.all.pluck_h(:name, :adsh, :symbol)
+  	@subsQuery.map {|item| item[:searchName] = "#{item[:name]} #{item[:symbol]}"}
   end
 end

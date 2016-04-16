@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 
 	var subList = new Bloodhound({
-		datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.name); },
+		datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.searchName); },
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
 		local: $('.subs').data('source')
 	});
@@ -23,7 +23,7 @@ $( document ).ready(function() {
 			'</div>'
 			].join('\n'),
 			suggestion: function(item){
-				return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + '</a></div>';
+				return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + " [" + item.symbol +']</a></div>';
 			}
 		}
 	});

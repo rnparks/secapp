@@ -17,5 +17,8 @@ class Sub < ActiveRecord::Base
 			self.name
 		end
 	end
+	def self.get_ids_and_names
+  	self.connection.select_all("select id, name, username from users")
+	end
 
 end
