@@ -20,7 +20,6 @@ gem 'flag_icon_css_rails'
 gem 'awesome_print', '~> 1.6', '>= 1.6.1'
 gem 'pry'
 gem 'passenger'
-gem 'delayed_task'
 
 
 group :development, :test do
