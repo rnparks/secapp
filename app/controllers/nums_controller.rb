@@ -13,6 +13,7 @@ class NumsController < ApplicationController
       @numData[num.tag] ? @numData[num.tag].push(num) : @numData[num.tag] = [num]
       @periods.push(num.ddate)
     end
+    @periods.uniq!.sort!
   end
 
   def show
