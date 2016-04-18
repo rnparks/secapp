@@ -19,7 +19,7 @@ gem 'rubyzip'
 gem 'flag_icon_css_rails'
 gem 'awesome_print', '~> 1.6', '>= 1.6.1'
 gem 'pry'
-gem 'passenger'
+gem 'puma'
 
 
 group :development, :test do
@@ -32,7 +32,6 @@ group :development do
 end
 
 group :production do
-  gem 'rails_12factor'
 end
 
 
