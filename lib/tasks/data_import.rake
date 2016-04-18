@@ -16,7 +16,7 @@ namespace :data_import do
 	task :archive => :environment do |task, args|
 		# set resources to import in acceptedFiles array
 		args.extras.map { |arg| arg+=".txt" }
-		acceptedFiles = args.extras.count > 0 ? args.extras.map{|arg|arg+=".txt"} : ['num.txt', 'sub.txt', 'tag.txt']
+		acceptedFiles = args.extras.count > 0 ? args.extras.map{|arg|arg+=".txt"} : ['num.txt', 'sub.txt', 'tag.txt', 'pre.txt']
 		secUrl   			= "www.sec.gov"
 		zipFiles 			= ["2015q4.zip"]
 		response 			= nil
