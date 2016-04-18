@@ -12,7 +12,6 @@ class NumsController < ApplicationController
     @nums.each do |num|
       @numData[num.tag] ? @numData[num.tag].push(num) : @numData[num.tag] = [num]
       @periods.push(num.ddate)
-      binding.pry
     end
   end
 
