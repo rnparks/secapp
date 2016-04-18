@@ -1,7 +1,7 @@
 class SubsController < ApplicationController
   before_action :set_sub, only: [:show, :edit, :update, :destroy]
   before_action :set_keys
-  before_action :set_stock
+  before_action :set_stock, only: [:show]
 
   # GET /subs
   # GET /subs.json
