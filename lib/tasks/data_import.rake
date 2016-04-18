@@ -67,7 +67,7 @@ namespace :data_import do
 				ApplicationHelper.chunker(file)
 				File.delete(file)
 			end
-			files = Dir.glob("#{temp_dir}*.txt")
+			files = Dir.glob("#{temp_dir}*.txt*")
 			files.each_with_index do |file, index|
 				addCount   = 0
 				failCount  = {}
@@ -83,6 +83,7 @@ namespace :data_import do
 						print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
 						if firstline
 							# changed updated to changedd inorder to avoid ActiveRecord conflict
+							binding.pry
 							row.each { |val| val.gsub!("changed", "changedd") }
 							keys = row if row.first
 						end
@@ -118,7 +119,7 @@ namespace :data_import do
 			end
 		end
 		puts "Flush all temporary data files"
-		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..'}
+		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..' && f != '.gitignore'}
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
@@ -322,10 +323,6 @@ namespace :data_import do
 	end
 	desc "Perform all data import tasks"
 	task :all => :environment do |task, args|
-		puts "Resetting databases"
-		Rake::Task["db:drop"].execute
-		Rake::Task["db:create"].execute
-		Rake::Task["db:migrate"].execute
 		puts "Importing sec archive data from files located in https://www.sec.gov/dera/data/financial-statement-data-sets.html"
 		Rake::Task["data_import:archive"].execute
 		puts "Importing ticker data from rankandfiled.com's database"
