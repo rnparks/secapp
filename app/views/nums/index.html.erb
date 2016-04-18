@@ -13,12 +13,12 @@
         </tr>
         <% @numData.each do |tag, value| %>
         <tr>
-          <td><%= tag %></td>
+          <td><%= value.first.get_tag_data.tlabel %></td>
           <% @periods.each do |period| %>
             <td>
             <% value.each do |num| %>
               <% if period == num.ddate %>
-                <%=num.value%>
+                <%=number_with_delimiter(num.value)%>
               <%break%>
               <% end %>
             <% end %>
