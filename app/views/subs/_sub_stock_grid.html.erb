@@ -1,3 +1,10 @@
-<table><thead><tbody>
-	
-</tbody></thead></table>
+<div class="stock-data">
+	<% @stockData[:labels].each_with_index do |row, i| %>
+		<% if i == 0 || i == (@stockData[:labels].count/2).to_i %><table style="display:inline"><tbody><% end %>
+		<tr>
+			<th><%= row.last %></th><td><%= @stockData[:data][row.first] %></td>
+		</tr>
+		<% if i == @stockData[:labels].count - 1 || i == (@stockData[:labels].count/2).to_i - 1 %></table></tbody><% end %>
+		<% end %>
+		</tbody></table>
+</div>

@@ -33,23 +33,22 @@ class Stock < ActiveRecord::Base
 	def getYahooFinanceData
 		yahoo_client = YahooFinance::Client.new
 		data = {
-			labels: [
-				{ close: "Prev Close:"},
-				{ open: "Open:"},
-				{ bid: "Bid:"},
-				{ ask: "Ask:"},
-				{ one_year_target_price: "1y Target Est:"},
-				{ a: "Beta:"},
-				{ b: "Next Earnings Date:"},
-				{ c: "Day's Range:"},
-				{ d: "52wk Range:"},
-				{ e: "Volume:"},
-				{ f: "Avg Vol (3m)"},
-				{ g: "Market Cap:"},
-				{ h: "P/E (ttm)"},
-				{ i: "EPS (ttm)"},
-				{ j: "Div & Yield:"}
-			],
+			labels: { 
+				close: "Prev Close:",
+				open: "Open:",
+				bid: "Bid:",
+				ask: "Ask:",
+				one_year_target_price: "1y Target Est:",
+				days_range: "Day's Range:",
+				weeks_range_52: "52wk Range:",
+				volume: "Volume:",
+				average_daily_volume: "Avg Daily Vol (3m)",
+				market_capitalization: "Market Cap:",
+				# h: "P/E (ttm)",
+				# i: "EPS (ttm)",
+				dividend_per_share: "Div Per Share:",
+				dividend_yield: "Yield"
+			},
 		data: yahoo_client.quotes([self.ticker], [:after_hours_change_real_time,
 			:annualized_gain,
 			:ask,
@@ -108,7 +107,7 @@ class Stock < ActiveRecord::Base
 			:more_info,
 			:moving_average_200_day,
 			:moving_average_50_day,
-			:name,
+			# :name,
 			:notes,
 			:one_year_target_price,
 			:open,
