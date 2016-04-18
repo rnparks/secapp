@@ -3,6 +3,8 @@ require 'colorize'
 require 'open-uri'
 require 'net/ftp'
 require 'zip'
+require 'task_helpers/application_helper'
+
 
 namespace :data_import do
 	# turn off console logging
@@ -20,7 +22,8 @@ namespace :data_import do
 		response 			= nil
 		temp_dir			= "temp_archive/"
 		puts "Flushing all existing temp files"
-		Dir["#{temp_dir}.*"].each{|f| FileUtils.rm(f) unless f == "#{temp_dir}.gitignore"}
+		
+		Dir["#{temp_dir}*"].each{|f| FileUtils.rm(f) unless f == "#{temp_dir}.gitignore"}
 		zipFiles.each do |zipFile|
 			begin
 				tries ||= 3
@@ -38,6 +41,7 @@ namespace :data_import do
 					retry
 				end
 			end
+			puts "Opening #{zipFile} from #{secUrl}"
 			Zip::File.open("#{temp_dir}#{zipFile}") do |zip_file| 
 				# Handle entries one by one
 				zip_file.each do |entry|
@@ -59,6 +63,11 @@ namespace :data_import do
 			end
 			files = Dir.glob("#{temp_dir}*.txt")
 			puts "Found #{files.count()} .txt files"
+			files.each do |file| 
+				ApplicationHelper.chunker(file)
+				File.delete(file)
+			end
+			files = Dir.glob("#{temp_dir}*.txt*")
 			files.each_with_index do |file, index|
 				addCount   = 0
 				failCount  = {}
@@ -66,7 +75,7 @@ namespace :data_import do
 				firstline  = true
 				keys       = {}
 				linecount  = 1.0
-				totalLines = File.open(file) { |f| f.count }
+				totalLines = File.read(file).each_line.count
 				puts "Importing #{file} (#{totalLines} total rows)".green
 				begin
 					# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
@@ -109,7 +118,7 @@ namespace :data_import do
 			end
 		end
 		puts "Flush all temporary data files"
-		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..'}
+		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..' && f != '.gitignore'}
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
@@ -313,10 +322,6 @@ namespace :data_import do
 	end
 	desc "Perform all data import tasks"
 	task :all => :environment do |task, args|
-		puts "Resetting databases"
-		Rake::Task["db:drop"].execute
-		Rake::Task["db:create"].execute
-		Rake::Task["db:migrate"].execute
 		puts "Importing sec archive data from files located in https://www.sec.gov/dera/data/financial-statement-data-sets.html"
 		Rake::Task["data_import:archive"].execute
 		puts "Importing ticker data from rankandfiled.com's database"
@@ -325,5 +330,6 @@ namespace :data_import do
 		Rake::Task["data_import:sic"].execute
 		puts "Importing xbrl indexing data from the sec's ftp site"
 		Rake::Task["data_import:xbrl"].execute
+		Rake::Task["data_cleanse:ticker"].execute
 	end
 end
