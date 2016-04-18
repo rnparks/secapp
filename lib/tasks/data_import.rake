@@ -57,7 +57,7 @@ namespace :data_import do
 						end
 							puts "Successfully saved #{entry.name}".green
 					else
-						puts "Skipping #{file} (**currently configured to import [#{acceptedFiles.join(', ')}]**)".red if file
+						puts "Skipping #{file} (**currently configured to import [#{acceptedFiles.join(', ')}]**)".red if file.length > 0
 					end
 				end
 			end
