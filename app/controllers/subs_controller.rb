@@ -84,12 +84,9 @@ class SubsController < ApplicationController
       @hasStock = @sub.stock
       if @hasStock
         @stock = @sub.stock
-        # binding.pry
         @stockData = @stock.getYahooFinanceData
         @stockData[:data][:close] = @stockData[:data][:close].to_f
         @stockData[:data][:stock_current] = @stockData[:data][:last_trade_price].to_f
-        # @stockData[:change] = @stockData[:stock_current] - @stockData[:close]
-        # @stockData[:change_in_percent] = (@stockData[:change]/@stockData[:close]).round(2)
         @stockData[:data][:change_in_percent] = @stockData[:data][:change_in_percent].to_f
         @stockData[:data][:change] = @stockData[:data][:change].to_f
         @stockState = @stockData[:data][:change] > 0 ? "up" : "down"

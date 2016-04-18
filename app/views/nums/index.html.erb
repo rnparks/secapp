@@ -1,15 +1,45 @@
 <%= render layout: 'subs' do %>
+
+  Income Statement
+  Period Ending In
+
   <table style="font-size: 8px" class="sortable table-striped table-bordered table-responsive table-condensed">
     <tbody>
-      <tr>
-        <% @tagKeys.each do |key| %>
-          <th colspan="2"><%= key %></th>
+    <tr>
+      <th>Periods</th>
+      <%@periods.each do |period|%>
+        <th><%= period %></th>
+          <% end %>
+        </tr>
+        <% @numData.each do |tag, value| %>
+        <tr>
+          <td><%= value.first.get_tag_data.tlabel %></td>
+          <% @periods.each do |period| %>
+            <td>
+            <% value.each do |num| %>
+              <% if period == num.ddate %>
+                <%=number_with_delimiter(num.value)%>
+              <%break%>
+              <% end %>
+            <% end %>
+            </td>
+          <% end %>
+        </tr>
         <% end %>
-        <% @numKeys.each do |key| %>
-          <th colspan="2"><%= key %></th>
-        <% end %>
-      </tr>
-      <% @nums.each do |row| %>
+      </tbody>
+    </table>
+
+    <table style="font-size: 8px" class="sortable table-striped table-bordered table-responsive table-condensed">
+      <tbody>
+        <tr>
+          <% @tagKeys.each do |key| %>
+            <th colspan="2"><%= key %></th>
+          <% end %>
+          <% @numKeys.each do |key| %>
+            <th colspan="2"><%= key %></th>
+          <% end %>
+        </tr>
+        <% @nums.each do |row| %>
         <tr>
           <% row.get_tag_data.attributes.each do |attr_name, attr_value| %>
             <td colspan="2"><%= attr_value unless attr_name == 'doc' || attr_name == 'tag' %></td>
@@ -18,7 +48,7 @@
             <td colspan="2"><%= attr_value %></td>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
+        <% end %>
+      </tbody>
   </table>
 <% end %>

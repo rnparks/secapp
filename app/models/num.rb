@@ -10,4 +10,7 @@ class Num < ActiveRecord::Base
 	def get_tag_data
 		Tag.find_by_sql("Select * FROM tags WHERE tag = '#{self.tag}' AND version = '#{self.version}'").first
 	end
+	def get_pres
+		Pre.find_by_sql("Select * FROM pres WHERE tag = '#{self.tag}' AND version = '#{self.version}' AND adsh = '#{self.adsh}'")
+	end
 end

@@ -1,8 +1,8 @@
 class CreateTags < ActiveRecord::Migration
   def change
     create_table :tags do |t|
-      t.string :tag, null: false
-      t.string :version, null: false
+      t.string :tag, null: false, references: :nums
+      t.string :version, null: false, references: :nums
       t.boolean :custom
       t.boolean :abstract
       t.string :datatype

@@ -23,7 +23,12 @@ $( document ).ready(function() {
 			'</div>'
 			].join('\n'),
 			suggestion: function(item){
-				return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + " [" + item.symbol +']</a></div>';
+				if (item.symbol)
+					return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + "<span style='color: #20783F'> [" + item.symbol +']</span></a></div>';
+				else
+					return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + '</a></div>';
+				end
+
 			}
 		}
 	});

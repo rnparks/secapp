@@ -1,41 +1,62 @@
 .hd h2 {
-	display: inline;
-	margin-right: 2px;
-	font: bold 15px arial;
+    display: inline;
+    margin-right: 2px;
+    font: bold 15px arial;
 }
 
 .hd .exchange {
-	color: #999;
-	font: normal 12px arial;
+    color: #999;
+    font: normal 12px arial;
 }
 
 .stock-quote-summary .bid {
-	font: bold 30px arial;
+    font: bold 30px arial;
 }
 
-.stock-header {
-	padding: 13px 0 9px 5px;
-	margin-top: 0;
-	border-bottom: 2px solid #000;
-	font-size: 13px;
+.stock-header,
+.stock-data {
+    padding: 13px 0 9px 5px;
+    margin-top: 0;
+    border-bottom: 2px solid #000;
+    font-size: 13px;
 }
 
 .stock-quote-summary div {
-	display: inline;
+    display: inline;
 }
 
 .stock-quote-summary .price-change,
 .stock-quote-summary .price-change-percent,
 .stock-quote-summary i {
-	font-weight: 200;
-	padding-right: 1px;
-	font-size: 20px;
+    font-weight: 200;
+    padding-right: 1px;
+    font-size: 20px;
 }
 
 .stock-state-up {
-	color: #080;
+    color: #080;
 }
 
 .stock-state-down {
-	color: #800;
+    color: #800;
+}
+
+.filer .stock-data th,
+.filer .stock-data td {
+    border-bottom: 1px solid #e4e4e4;
+    padding: 5px 5px 5px 0;
+    text-align: left;
+    font: 93%/93% arial;
+    color: #333;
+    line-height: 1em!important;
+}
+
+.filer .stock-data td {
+    font-weight: bold;
+}
+
+.filer .stock-data table {
+    width: 100%;
+    min-width: 215px;
+    margin: 5px 0 5px 8px;
 }

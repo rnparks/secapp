@@ -9,7 +9,6 @@
 	color: #111;
 	overflow: scroll;
 	border-right: 1px solid black;
-	border-bottom: 1px solid black;
 	height: 100%;
 }
 
@@ -29,11 +28,13 @@
 
 .subs-summary .name {
 	font-size: 1.8em;
+	line-height: 1em;
 }
 
 .subs-detail,
 .subs-summary {
 	padding: 12px;
+	border-bottom: 1px solid #000;
 }
 
 .subs-detail div {
