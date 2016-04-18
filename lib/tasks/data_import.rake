@@ -57,7 +57,7 @@ namespace :data_import do
 						end
 							puts "Successfully saved #{entry.name}".green
 					else
-						puts "Skipping #{file} (**currently configured to import [#{acceptedFiles.join(', ')}]**)".red
+						puts "Skipping #{file} (**currently configured to import [#{acceptedFiles.join(', ')}]**)".red if file
 					end
 				end
 			end
@@ -83,7 +83,6 @@ namespace :data_import do
 						print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
 						if firstline
 							# changed updated to changedd inorder to avoid ActiveRecord conflict
-							binding.pry
 							row.each { |val| val.gsub!("changed", "changedd") }
 							keys = row if row.first
 						end
