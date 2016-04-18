@@ -5,7 +5,15 @@ class NumsController < ApplicationController
   before_action :set_tag_keys, only: [:index, :show]
 
   def index
+
     @nums = @sub.nums
+    @numData = {}
+    @periods = []
+    @nums.each do |num|
+      @numData[num.tag] ? @numData[num.tag].push(num) : @numData[num.tag] = [num]
+      @periods.push(num.ddate)
+    end
+    @periods.uniq!.sort!
   end
 
   def show
