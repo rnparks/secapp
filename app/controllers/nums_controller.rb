@@ -11,7 +11,7 @@ class NumsController < ApplicationController
     @periods = []
     @nums.each do |num|
       @numData[num.tag] ? @numData[num.tag].push(num) : @numData[num.tag] = [num]
-      @periods.push(num.ddate)
+      @periods.push(num.dd)
       binding.pry
     end
     @periods.uniq!.sort!

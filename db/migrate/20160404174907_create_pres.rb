@@ -8,9 +8,8 @@ class CreatePres < ActiveRecord::Migration
       t.boolean :inpth
       t.string :rfile
       t.string :tag
-      t.string :version
+      t.string :v
       t.string :plabel
     end
   end
-  add_index :pres, [:adsh, :report, :line], :unique => true
 end

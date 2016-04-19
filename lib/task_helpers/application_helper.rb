@@ -27,7 +27,7 @@ class ApplicationHelper
 		keys       = {}
 		linecount  = 1.0
 		index      = 0
-		headers    = File.open(file,"r") { |fh_in| fh_in.readline }.gsub("\n", "").gsub("changed", "changedd").split("\t").map {|header| header.to_sym}.join(", ")
+		headers    = File.open(file,"r") { |fh_in| fh_in.readline }.gsub("\n", "").gsub("changed", "changedd").gsub("version", "v").gsub("ddate", "dd").gsub("coreg", "cr").split("\t").map {|header| header.to_sym}.join(", ")
 		totalLines = File.read(file).each_line.count
 		puts "Importing #{file} (#{totalLines} total rows)".green
 		# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
@@ -67,5 +67,6 @@ class ApplicationHelper
 				p e_message if e_message != ""
 			end
 		end
+		puts ""
 	end
 end

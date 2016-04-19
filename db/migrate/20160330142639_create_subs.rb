@@ -40,6 +40,6 @@
       t.integer :nciks
       t.string :aciks
     end
-    add_index :subs, [:adsh, :cik], :unique => true
+    add_index :subs, :adsh, :unique => true
   end
 end

@@ -6,6 +6,7 @@ class PresController < ApplicationController
   # GET /tagss
   # GET /tags.json
   def index
+    binding.pry
     @pres = Pre.all
   end
 
