@@ -1,5 +1,5 @@
 <%= render layout: 'subs' do %>
-
+<% if @hasStock %>
 	<div class="stock-header">
 		<div class="hd">
 			<div class="title">
@@ -29,5 +29,5 @@
 			<% end %>
 		</tbody>
 	</table>
-	
+<% end %>
 <% end %>

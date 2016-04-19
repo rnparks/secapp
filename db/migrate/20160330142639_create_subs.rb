@@ -39,7 +39,6 @@
       t.string :instance
       t.integer :nciks
       t.string :aciks
-      t.timestamps null: false
     end
     add_index :subs, [:adsh, :cik], :unique => true
   end

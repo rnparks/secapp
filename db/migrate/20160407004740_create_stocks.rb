@@ -9,7 +9,6 @@ class CreateStocks < ActiveRecord::Migration
     	t.string :business
     	t.string :incorporated
     	t.string :irs
-      t.timestamps null: false
     end
     add_index :stocks, :cik
   end

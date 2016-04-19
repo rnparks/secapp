@@ -80,6 +80,7 @@ class SubsController < ApplicationController
     def set_keys
       @subKeys = Sub.new.attributes.keys
     end
+    
     def set_stock
       @hasStock = @sub.stock
       if @hasStock

@@ -7,10 +7,10 @@ class CreateNums < ActiveRecord::Migration
       t.date :ddate
       t.integer :qtrs
       t.string :uom
-      t.integer :coreg
+      t.string :coreg
       t.decimal :value
       t.string :footnote
-      t.timestamps null: false
     end
   end
+  add_index :nums, [:adsh, :tag, :version, :ddate, :qtrs, :uom, :coreg], :unique => true
 end

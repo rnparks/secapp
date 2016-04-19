@@ -6,8 +6,6 @@ class CreateXbrls < ActiveRecord::Migration
     	t.string :formtype
     	t.date :datefiled
     	t.string :filename, unique: true
-
-      t.timestamps null: false
     end
   end
 end

@@ -63,62 +63,17 @@ namespace :data_import do
 			end
 			files = Dir.glob("#{temp_dir}*.txt")
 			puts "Found #{files.count()} .txt files"
-			files.each do |file| 
-				ApplicationHelper.chunker(file)
-				File.delete(file)
-			end
+			# files.each do |file| 
+			# 	ApplicationHelper.chunker(file)
+			# 	File.delete(file)
+			# end
 			files = Dir.glob("#{temp_dir}*.txt*")
-			files.each_with_index do |file, index|
-				addCount   = 0
-				failCount  = {}
-				model_name = file.split('/').last.split('.').first.camelize.singularize
-				firstline  = true
-				keys       = {}
-				linecount  = 1.0
-				totalLines = File.read(file).each_line.count
-				puts "Importing #{file} (#{totalLines} total rows)".green
-				begin
-					# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
-					CSV.foreach(file, {:quote_char => "~", col_sep: "\t", encoding: "ISO8859-1"}) do |row|
-						print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
-						if firstline
-							# changed updated to changedd inorder to avoid ActiveRecord conflict
-							row.each { |val| val.gsub!("changed", "changedd") }
-							keys = row if row.first
-						end
-						params = {}
-						keys.each_with_index do |key, i|
-							if !firstline
-								row[i].gsub!(/"/,'/"') if row[i]
-								params[key] = row[i]
-							else
-								break
-							end
-						end
-						begin
-							if !firstline
-								eval(model_name).create(params)
-								addCount += 1
-							end
-						rescue ActiveRecord::ActiveRecordError => e
-							summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
-							if failCount[summary]
-								failCount[summary] += 1
-							else 
-								failCount[summary] = 1
-							end
-						end
-						firstline = false
-						linecount += 1
-					end
-				rescue ActiveRecord::RecordNotUnique
-					puts "#{e.message} : #{model_name}"
-				end
-				puts ""
+			files.each do |file|
+				ApplicationHelper.importToDatabase(file)
 			end
 		end
 		puts "Flush all temporary data files"
-		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..' && f != '.gitignore'}
+		# Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..' && f != '.gitignore'}
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"

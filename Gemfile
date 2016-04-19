@@ -21,7 +21,6 @@ gem 'awesome_print', '~> 1.6', '>= 1.6.1'
 gem 'pry'
 gem 'passenger'
 
-
 group :development, :test do
   gem 'byebug'
 end

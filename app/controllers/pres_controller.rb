@@ -1,6 +1,7 @@
 class PresController < ApplicationController
 	before_action :set_tag, only: [:show, :edit, :update, :destroy]
 	before_action :set_keys
+  before_action :set_sub
 
   # GET /tagss
   # GET /tags.json
@@ -26,5 +27,9 @@ class PresController < ApplicationController
 
     def set_keys
     	@preKeys = Pre.new.attributes.keys
+    end
+
+    def set_sub
+      @sub = Sub.find(params[:sub_id])
     end
 end
