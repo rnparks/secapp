@@ -1,7 +1,5 @@
 class Num < ActiveRecord::Base
 	belongs_to :sub, :class_name => 'Sub', :foreign_key => 'adsh', :primary_key => 'adsh'
-	has_one :tag_tag, :class_name => 'Tag', :foreign_key => 'tag', :primary_key => 'tag'
-	has_one :v_tag, :class_name => 'Tag', :foreign_key => 'v', :primary_key => 'v'
 	validates :adsh, uniqueness: {scope: [:tag, :v, :dd, :qtrs, :uom, :cr] }
 
 	def value_in_shares?
