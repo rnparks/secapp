@@ -11,64 +11,58 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160413144147) do
+ActiveRecord::Schema.define(version: 20160419221518) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "financials", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
-  create_table "nums", force: :cascade do |t|
-    t.string   "adsh",       null: false
-    t.string   "tag"
-    t.string   "version"
-    t.date     "ddate"
-    t.integer  "qtrs"
-    t.string   "uom"
-    t.integer  "coreg"
-    t.decimal  "value"
-    t.string   "footnote"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "nums", id: false, force: :cascade do |t|
+    t.string  "adsh",     null: false
+    t.string  "tag"
+    t.string  "v"
+    t.date    "dd"
+    t.integer "qtrs"
+    t.string  "uom"
+    t.string  "cr"
+    t.decimal "value"
+    t.string  "footnote"
   end
+
+  add_index "nums", ["adsh", "tag", "v", "dd", "qtrs", "uom", "cr"], name: "index_nums_on_adsh_and_tag_and_v_and_dd_and_qtrs_and_uom_and_cr", unique: true, using: :btree
 
   create_table "pres", force: :cascade do |t|
-    t.string   "adsh",       null: false
-    t.integer  "report",     null: false
-    t.integer  "line",       null: false
-    t.string   "stmt"
-    t.boolean  "inpth"
-    t.string   "rfile"
-    t.string   "tag"
-    t.string   "version"
-    t.string   "plabel"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string  "adsh",   null: false
+    t.integer "report", null: false
+    t.integer "line",   null: false
+    t.string  "stmt"
+    t.boolean "inpth"
+    t.string  "rfile"
+    t.string  "tag"
+    t.string  "v"
+    t.string  "plabel"
   end
 
+  add_index "pres", ["adsh", "report", "line"], name: "index_pres_on_adsh_and_report_and_line", unique: true, using: :btree
+
   create_table "sics", force: :cascade do |t|
-    t.integer  "sic",           null: false
-    t.string   "sic_descrip"
-    t.integer  "naics"
-    t.string   "naics_descrip"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.integer "sic",           null: false
+    t.string  "sic_descrip"
+    t.integer "naics"
+    t.string  "naics_descrip"
   end
 
   create_table "stocks", id: false, force: :cascade do |t|
-    t.integer  "cik",          null: false
-    t.string   "ticker"
-    t.string   "name"
-    t.string   "exchange"
-    t.string   "sic"
-    t.string   "business"
-    t.string   "incorporated"
-    t.string   "irs"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.integer "cik",          null: false
+    t.string  "ticker"
+    t.string  "name"
+    t.string  "exchange"
+    t.string  "sic"
+    t.string  "business"
+    t.string  "incorporated"
+    t.string  "irs"
   end
 
   add_index "stocks", ["cik"], name: "index_stocks_on_cik", using: :btree
@@ -111,34 +105,30 @@ ActiveRecord::Schema.define(version: 20160413144147) do
     t.string   "instance"
     t.integer  "nciks"
     t.string   "aciks"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
-  add_index "subs", ["adsh", "cik"], name: "index_subs_on_adsh_and_cik", unique: true, using: :btree
+  add_index "subs", ["adsh"], name: "index_subs_on_adsh", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
-    t.string   "tag",        null: false
-    t.string   "version",    null: false
-    t.boolean  "custom"
-    t.boolean  "abstract"
-    t.string   "datatype"
-    t.string   "iord"
-    t.string   "crdr"
-    t.text     "tlabel"
-    t.text     "doc"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string  "tag",      null: false
+    t.string  "v",        null: false
+    t.boolean "custom"
+    t.boolean "abstract"
+    t.string  "datatype"
+    t.string  "iord"
+    t.string  "crdr"
+    t.text    "tlabel"
+    t.text    "doc"
   end
 
+  add_index "tags", ["v", "tag"], name: "index_tags_on_v_and_tag", unique: true, using: :btree
+
   create_table "xbrls", force: :cascade do |t|
-    t.integer  "cik"
-    t.string   "companyname"
-    t.string   "formtype"
-    t.date     "datefiled"
-    t.string   "filename"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.integer "cik"
+    t.string  "companyname"
+    t.string  "formtype"
+    t.date    "datefiled"
+    t.string  "filename"
   end
 
 end

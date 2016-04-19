@@ -17,7 +17,7 @@
           <% @periods.each do |period| %>
             <td>
             <% value.each do |num| %>
-              <% if period == num.ddate %>
+              <% if period == num.dd %>
                 <%=number_with_delimiter(num.value)%>
               <%break%>
               <% end %>

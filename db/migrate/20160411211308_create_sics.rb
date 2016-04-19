@@ -5,7 +5,6 @@ class CreateSics < ActiveRecord::Migration
     	t.string :sic_descrip
     	t.integer :naics
     	t.string :naics_descrip
-      t.timestamps null: false
     end
   end
 end
