@@ -11,6 +11,7 @@
 		<li class=<%= 'active' if params[:controller] == 'financials' %>><%= link_to "Morning Star Financials", [@sub, :financials] if @sub.stock %></li>
 		<li class=<%= 'active' if params[:controller] == 'xbrls' %>><%= link_to "Filings Index (xbrls)", [@sub, :xbrls]  %></li>
 		<li class=<%= 'active' if params[:controller] == 'nums' %>><%= link_to "Archived Filings (nums)", [@sub, :nums] %></li>
+		<li class=<%= 'active' if params[:controller] == 'pres' %>><%= link_to "Archived Filings (pres)", [@sub, :pres] %></li>
 		</ul>
 		</div>
 		<div class="subs-detail">

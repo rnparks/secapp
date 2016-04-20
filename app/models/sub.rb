@@ -4,7 +4,7 @@ class Sub < ActiveRecord::Base
 	has_one :stock, :class_name => 'Stock', :foreign_key => 'cik', :primary_key => 'cik'
 	has_many :xbrls, :class_name => 'Xbrl', :foreign_key => 'cik', :primary_key => 'cik'
 	has_many :sics, :class_name => 'Sic', :foreign_key => 'sic', :primary_key => 'sic'
-	has_many :pres
+	has_many :pres, :foreign_key => 'adsh', :primary_key => 'adsh'
 	validates_uniqueness_of [:adsh, :cik]
 
 	def getStock
