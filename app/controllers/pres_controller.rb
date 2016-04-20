@@ -1,12 +1,14 @@
 class PresController < ApplicationController
-	before_action :set_tag, only: [:show, :edit, :update, :destroy]
+	before_action :set_tag, only: [:show]
 	before_action :set_keys
   before_action :set_sub
+  before_action :set_statement_names, only: [:show, :index]
 
   # GET /tagss
   # GET /tags.json
   def index
-    @pres = Pre.all
+    @pres = @sub.pres
+    set_table_data
   end
 
   # GET /tags/1
@@ -32,4 +34,28 @@ class PresController < ApplicationController
     def set_sub
       @sub = Sub.find(params[:sub_id])
     end
+
+    def set_table_data
+      @tableData = {}
+      @periods = []
+      @pres.each do |pre| 
+        stmt = pre.stmt.to_sym
+        nums = pre.get_nums
+        @tableData[stmt] ? @tableData[stmt][:pres].push(pre) : @tableData[stmt] = {pres: [pre], periods: []}
+        nums.each {|num|@tableData[stmt][:periods].push(num.dd)}
+      end
+      @tableData.each {|key, value| value[:periods].uniq!.sort!}
+    end
+
+    def set_statement_names
+      @statementNames = {
+        "BS" => "Balance Sheet",
+        "IS" => "Income Statement",
+        "CF" => "Cash Flow",
+        "EQ" => "Equity",
+        "CI" => "Comprehensive Income",
+        "UN" => "Unclassifiable Statement"
+      }
+    end
+       
 end
