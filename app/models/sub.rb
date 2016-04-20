@@ -1,9 +1,10 @@
 class Sub < ActiveRecord::Base
 	self.primary_key = :adsh
-	has_many :nums, :class_name => 'Num', :foreign_key => 'adsh'
+	has_many :nums, :class_name => 'Num', :foreign_key => 'adsh', :primary_key => 'adsh'
 	has_one :stock, :class_name => 'Stock', :foreign_key => 'cik', :primary_key => 'cik'
 	has_many :xbrls, :class_name => 'Xbrl', :foreign_key => 'cik', :primary_key => 'cik'
 	has_many :sics, :class_name => 'Sic', :foreign_key => 'sic', :primary_key => 'sic'
+	has_many :pres
 	validates_uniqueness_of [:adsh, :cik]
 
 	def getStock
