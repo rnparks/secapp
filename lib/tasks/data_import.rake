@@ -18,7 +18,7 @@ namespace :data_import do
 		args.extras.map { |arg| arg+=".txt" }
 		acceptedFiles = args.extras.count > 0 ? args.extras.map{|arg|arg+=".txt"} : ['num.txt', 'sub.txt', 'tag.txt', 'pre.txt']
 		secUrl   			= "www.sec.gov"
-		zipFiles 			= ["2015q4.zip"]
+		zipFiles 			= ["2015q4.zip", "2015q3.zip", "2015q2.zip", "2015q1.zip", "2014q4.zip", "2014q3.zip", "2014q2.zip", "2014q1.zip"]
 		response 			= nil
 		temp_dir			= "temp_archive/"
 		puts "Flushing all existing temp files"
@@ -63,17 +63,14 @@ namespace :data_import do
 			end
 			files = Dir.glob("#{temp_dir}*.txt")
 			puts "Found #{files.count()} .txt files"
-			# files.each do |file| 
-			# 	ApplicationHelper.chunker(file)
-			# 	File.delete(file)
-			# end
 			files = Dir.glob("#{temp_dir}*.txt*")
 			files.each do |file|
 				ApplicationHelper.importToDatabase(file)
 			end
+			File.delete("#{temp_dir}#{zipFile}")
 		end
 		puts "Flush all temporary data files"
-		# Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..' && f != '.gitignore'}
+		Dir.foreach(temp_dir) {|f| fn = File.join(temp_dir, f); File.delete(fn) if f != '.' && f != '..' && f != '.gitignore'}
 	end
 
 	desc "Import ticker data into database record via '|' delimited csv from rankandfiled.com"
@@ -175,10 +172,10 @@ namespace :data_import do
 
 	desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
 	task :xbrl => :environment do |task|
-		url = "ftp.sec.gov"
-		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1', '2014/QTR4', '2014/QTR3', '2014/QTR2', '2014/QTR1']
+		url  = "ftp.sec.gov"
+		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1']
 		qtrs.each do |qtr|
-			content = nil
+			content  = nil
 			fileInfo = nil
 			puts "Connecting to #{url}"
 			begin
@@ -275,6 +272,7 @@ namespace :data_import do
 			File.delete(fileInfo.name)
 		end
 	end
+
 	desc "Perform all data import tasks"
 	task :all => :environment do |task, args|
 		puts "Importing sec archive data from files located in https://www.sec.gov/dera/data/financial-statement-data-sets.html"
