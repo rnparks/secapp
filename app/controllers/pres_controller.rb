@@ -1,13 +1,13 @@
 class PresController < ApplicationController
 	before_action :set_tag, only: [:show]
 	before_action :set_keys
-  before_action :set_sub
+  before_action :set_filer
   before_action :set_statement_names, only: [:show, :index]
 
   # GET /tagss
   # GET /tags.json
   def index
-    @pres = @sub.pres
+    @pres = @filer.pres
     set_table_data
   end
 
@@ -31,8 +31,8 @@ class PresController < ApplicationController
     	@preKeys = Pre.new.attributes.keys
     end
 
-    def set_sub
-      @sub = Sub.find(params[:sub_id])
+    def set_filer
+      @filer = Filer.find(params[:filer_id])
     end
 
     def set_table_data
