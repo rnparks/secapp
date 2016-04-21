@@ -81,9 +81,6 @@ class ApplicationHelper
 		headers    = File.open(file,"r") { |fh_in| fh_in.readline }.gsub("\n", "").gsub("changed", "changedd").gsub("version", "v").gsub("ddate", "dd").gsub("coreg", "cr").split("\t").map {|header| header.to_sym}.join(", ")
 		totalLines = File.read(file).each_line.count
 		puts "Importing #{file} (#{totalLines} total rows)".green
-		# quote characters are being replaced with an unlikely symbol ('~') that must be gsub'd back at render
-
-		# Setup raw connection
 		conn = ActiveRecord::Base.connection
 		conn.execute('SET client_encoding=latin1;')
 		self.create_filer(file, conn) if model_name == "Sub"
@@ -92,7 +89,6 @@ class ApplicationHelper
 		file = File.open(file, 'r')
 		while !file.eof?
 		print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
-			# Add row to copy data
 			if !firstline
 				begin
 						rc.put_copy_data(file.readline) 
@@ -110,9 +106,7 @@ class ApplicationHelper
 			end
 			linecount += 1
 		end
-		# We are done adding copy data
 		rc.put_copy_end
-		# Display any error messages
 		while res = rc.get_result
 			if e_message = res.error_message
 				p e_message if e_message != ""

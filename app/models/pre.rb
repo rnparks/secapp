@@ -22,4 +22,13 @@ class Pre < ActiveRecord::Base
 	def prepare_table_data
 
 	end
+
+	def formatRows(periods)
+		array = Array.new(periods.size)
+		self.get_nums.each do |num|
+			array[periods.index(num.dd)] = num
+		end
+		array
+	end
+
 end

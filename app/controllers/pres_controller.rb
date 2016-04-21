@@ -37,14 +37,16 @@ class PresController < ApplicationController
 
     def set_table_data
       @tableData = {}
-      @periods = []
       @pres.each do |pre| 
         stmt = pre.stmt.to_sym
-        nums = pre.get_nums
         @tableData[stmt] ? @tableData[stmt][:pres].push(pre) : @tableData[stmt] = {pres: [pre], periods: []}
-        nums.each {|num|@tableData[stmt][:periods].push(num.dd)}
+        nums.each {|num| @tableData[stmt][:periods].push(num.dd)}
       end
       @tableData.each {|key, value| value[:periods].uniq!.sort!}
+      @tableData.each do |key, value|
+        value[:pres].each do |pre|
+        end
+      end
     end
 
     def set_statement_names
