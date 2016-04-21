@@ -36,6 +36,6 @@ class CreateFilers < ActiveRecord::Migration
     	t.string :incorporated
     	t.string :irs
     end
-    add_index :subs, :cik, :unique => true
+    add_index :filers, :cik, :unique => true
   end
 end

@@ -50,6 +50,8 @@ ActiveRecord::Schema.define(version: 20160421142223) do
     t.string  "irs"
   end
 
+  add_index "filers", ["cik"], name: "index_filers_on_cik", unique: true, using: :btree
+
   create_table "financials", force: :cascade do |t|
   end
 
@@ -142,7 +144,6 @@ ActiveRecord::Schema.define(version: 20160421142223) do
   end
 
   add_index "subs", ["adsh"], name: "index_subs_on_adsh", unique: true, using: :btree
-  add_index "subs", ["cik"], name: "index_subs_on_cik", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string  "tag",      null: false

@@ -104,7 +104,7 @@ namespace :data_import do
 				end
 				begin
 					if !firstline
-						Filer.create(params)
+						Stock.create(params)
 						addCount += 1
 					end
 				rescue ActiveRecord::ActiveRecordError => e

@@ -12,7 +12,7 @@ class SubsController < ApplicationController
   # GET /subs/1
   # GET /subs/1.json
   def show
-    @filer = @sub
+    # @filer = @sub
     @nums = Num.where(adsh: @sub.adsh)
     @numKeys = Num.new.attributes.keys
   end

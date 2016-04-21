@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<h1>List of all Filers</h1>
+
+<table class='sortable'>
+  <tr>
+  <%@filerKeys.each do |key| %>
+  <th><%=key%></th>
+  <% end %>
+  </tr>
+  <% @filers.limit(100).each do |filer| %>
+  <tr>
+  <% @filerKeys.each do |v| %>
+  <td><%=link_to filer[v], filer if filer[v]%></td>
+  <% end %>
+  </tr>
+  <% end %>
+</table>
+<br>
+

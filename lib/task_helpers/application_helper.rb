@@ -49,7 +49,6 @@ class ApplicationHelper
 			line = file.readline
 			params = {}
 			print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
-			# Add row to copy data
 			attrs = line.split("\t")
 			keeperAttrs.each {|i| params[headers[i].to_sym] = attrs[i]}
 			if !firstline

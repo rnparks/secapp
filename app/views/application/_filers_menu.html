@@ -1,0 +1,50 @@
+<div class="filer container-fluid">
+	<div class='the-menu'>
+		<div class="subs-summary">
+			<span class="exchange"><%= @filer.stock.exchange if @hasStock %></span>
+			<span class="ticker"><%= "[#{@filer.stock.ticker}]" if @hasStock %></span><br>
+			<span class="name"><%= @filer.displayName %></span>
+		</div>
+		<div class="subs-nav">
+		<ul class="nav nav-stacked">
+		<li class=<%= 'active' if params[:controller] == 'filers' %>><%= link_to "Stock Data", [@filer] if @filer.stock %></li>
+		<li class=<%= 'active' if params[:controller] == 'subs' %>><%= link_to "Archived Filings (subs)", [@filer] %></li>
+		<li class=<%= 'active' if params[:controller] == 'financials' %>><%= link_to "Morning Star Financials", [@filer, :financials] if @filer.stock %></li>
+		<li class=<%= 'active' if params[:controller] == 'xbrls' %>><%= link_to "Filings Index (xbrls)", [@filer, :xbrls]  %></li>
+		<li class=<%= 'active' if params[:controller] == 'nums' %>><%= link_to "Archived Filings (nums)", [@filer, :nums] %></li>
+		<li class=<%= 'active' if params[:controller] == 'pres' %>><%= link_to "Archived Filings (pres)", [@filer, :pres] %></li>
+		</ul>
+		</div>
+		<div class="subs-detail">
+		<% if @filer.sics.count > 1 %>
+			<h5>Industry</h5>
+			<% @filer.sics.each do |sic| %>
+			<div><%= "#{sic.sic_descrip} / #{sic.naics_descrip}" %></div>
+			<% end %>
+			<% end %>
+			<% if @filer.bas1 != "" %>
+			<h5><span class='<%= "flag-icon flag-icon-#{@filer.countryba.downcase}" %>'></span>Office Address</h5>
+			<div><%= @filer.bas1.titleize if @filer.bas1%></div>
+			<div><%= @filer.bas2.titleize if @filer.bas2%></div>
+			<div><%= "#{@filer.cityba.capitalize if @filer.cityba}, #{@filer.stprba} #{@filer.zipba}" %></div>
+			<% end %>
+			<% if @filer.mas1 != "" %>
+			<h5>Mailing Address</h5>
+			<div><%= @filer.mas1.titleize if @filer.mas1%></div>
+			<div><%= @filer.mas2.titleize if @filer.mas2 %></div>
+			<div><%= "#{@filer.cityma.titleize }, #{@filer.stprma} #{@filer.zipma}" if @filer.cityma%></div>
+			<% end %>
+			<% if @hasStock && @filer.stock.incorporated%>
+			<h5>Incorporated</h5>
+			<div><%= getStateName(@filer.stock.incorporated)%></div>
+			<% end %>
+			<h5>Identifiers</h5>
+			<div><%= "CIK: #{@filer.cik}" if @filer.cik %></div>
+			<div><%= "IRS: #{@filer.stock.irs}" if @hasStock %></div>
+
+		</div>
+	</div>
+	<div class="filer container-fluid">
+		<%= yield %>
+	</div>
+</div>
