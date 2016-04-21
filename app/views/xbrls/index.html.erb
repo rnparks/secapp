@@ -1,7 +1,7 @@
 <%= render layout: 'filers_menu' do %>
 	<div class="filer container-fluid">
 		<ul>
-			<% @sub.xbrls.each do |xbrl| %>
+			<% @filer.xbrls.each do |xbrl| %>
 				<li><a href="ftp://<%= xbrl.getXbrlLink %>" target="_blank"><%= "#{xbrl.formtype} | filed on: #{xbrl.datefiled}"%></a></li>
 			<% end %>
 		</ul>
