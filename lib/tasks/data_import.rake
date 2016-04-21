@@ -15,10 +15,10 @@ namespace :data_import do
 	desc "Import sec archive data to database. Pass any arguments (sub, num, tag, pre) to only import that resource *no whitespace between arguments*. If no variable is chosen, then all will import. Ex: rake data_import:archive[num,tag]"
 	task :archive => :environment do |task, args|
 		# set resources to import in acceptedFiles array
-		args.extras.map { |arg| arg+=".txt" }
+		args.extras.map { |arg| "#{arg.singularize}.txt" }
 		acceptedFiles = args.extras.count > 0 ? args.extras.map{|arg|arg+=".txt"} : ['num.txt', 'sub.txt', 'tag.txt', 'pre.txt']
 		secUrl   			= "www.sec.gov"
-		zipFiles 			= ["2015q4.zip", "2015q3.zip", "2015q2.zip", "2015q1.zip", "2014q4.zip", "2014q3.zip", "2014q2.zip", "2014q1.zip"]
+		zipFiles 			= ["2015q4.zip"]
 		response 			= nil
 		temp_dir			= "temp_archive/"
 		puts "Flushing all existing temp files"
@@ -104,7 +104,7 @@ namespace :data_import do
 				end
 				begin
 					if !firstline
-						Stock.create(params)
+						Filer.create(params)
 						addCount += 1
 					end
 				rescue ActiveRecord::ActiveRecordError => e

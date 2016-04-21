@@ -1,10 +1,10 @@
-      class CreateSubs < ActiveRecord::Migration
+class CreateFilers < ActiveRecord::Migration
   def change
-    create_table :subs, id: false do |t|
-      t.string :adsh, unique: true, null: false
-      t.integer :cik, null: false, references: :filers
+    create_table :filers, id: false do |t|
+
+      t.integer :cik, unique: true, null: false
       t.string :name
-      t.integer :sic, references: :sics
+      t.integer :sic
       t.string :countryba
       t.string :stprba
       t.string :cityba
@@ -28,18 +28,14 @@
       t.string :afs
       t.boolean :wksi
       t.string :fye
-      t.string :form
       t.date :period
-      t.integer :fy
-      t.string :fp
-      t.date :filed
-      t.datetime :accepted
-      t.boolean :prevrpt
-      t.boolean :detail
-      t.string :instance
-      t.integer :nciks
-      t.string :aciks
+      t.string :displayname
+    	t.string :exchange
+    	t.string :sic
+    	t.string :business
+    	t.string :incorporated
+    	t.string :irs
     end
-    add_index :subs, :adsh, :unique => true
+    add_index :subs, :cik, :unique => true
   end
 end

@@ -11,10 +11,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160419221518) do
+ActiveRecord::Schema.define(version: 20160421142223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "filers", id: false, force: :cascade do |t|
+    t.integer "cik",          null: false
+    t.string  "name"
+    t.string  "sic"
+    t.string  "countryba"
+    t.string  "stprba"
+    t.string  "cityba"
+    t.string  "zipba"
+    t.string  "bas1"
+    t.string  "bas2"
+    t.string  "baph"
+    t.string  "countryma"
+    t.string  "stprma"
+    t.string  "cityma"
+    t.string  "zipma"
+    t.string  "mas1"
+    t.string  "mas2"
+    t.string  "countryinc"
+    t.string  "stprinc"
+    t.integer "ein"
+    t.string  "former"
+    t.string  "symbol"
+    t.string  "changedd"
+    t.string  "afs"
+    t.boolean "wksi"
+    t.string  "fye"
+    t.date    "period"
+    t.string  "displayname"
+    t.string  "exchange"
+    t.string  "business"
+    t.string  "incorporated"
+    t.string  "irs"
+  end
 
   create_table "financials", force: :cascade do |t|
   end
@@ -108,6 +142,7 @@ ActiveRecord::Schema.define(version: 20160419221518) do
   end
 
   add_index "subs", ["adsh"], name: "index_subs_on_adsh", unique: true, using: :btree
+  add_index "subs", ["cik"], name: "index_subs_on_cik", unique: true, using: :btree
 
   create_table "tags", force: :cascade do |t|
     t.string  "tag",      null: false
