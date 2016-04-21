@@ -40,7 +40,7 @@
 			<% end %>
 			<h5>Identifiers</h5>
 			<div><%= "CIK: #{@filer.cik}" if @filer.cik %></div>
-			<div><%= "IRS: #{@filer.stock.irs}" if @hasStock %></div>
+			<div><%= "IRS: #{@filer.stock.irs}" if @hasStock && @hasStock.irs %></div>
 
 		</div>
 	</div>

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
   resources :filers do
     resources :financials
-    resources :subs, path: :filings
+    resources :subs
     resources :nums
     resources :xbrls
     resources :pres
