@@ -1,11 +1,12 @@
-$( document ).ready(function() {
+var ready;
+ready = function() {
 
-	var subList = new Bloodhound({
+	var filerList = new Bloodhound({
 		datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.searchName); },
 		queryTokenizer: Bloodhound.tokenizers.whitespace,
 		local: $('.subs').data('source')
 	});
-	subList.initialize();
+	filerList.initialize();
 
 	$('.typeahead').typeahead(
 	{
@@ -15,7 +16,7 @@ $( document ).ready(function() {
 	{
 		limit: 50,
 		display: function(item){ return item.name.toTitleCase()},
-		source: subList.ttAdapter(),
+		source: filerList.ttAdapter(),
 		templates: {
 			empty: [
 			'<div class="empty-message">',
@@ -24,9 +25,9 @@ $( document ).ready(function() {
 			].join('\n'),
 			suggestion: function(item){
 				if (item.symbol)
-					return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + "<span style='color: #20783F'> [" + item.symbol +']</span></a></div>';
+					return '<div><a href="' + filersUrl(item) + '">' + item.name.toTitleCase() + "<span style='color: #20783F'> [" + item.symbol +']</span></a></div>';
 				else
-					return '<div><a href="' + subsUrl(item) + '">' + item.name.toTitleCase() + '</a></div>';
+					return '<div><a href="' + filersUrl(item) + '">' + item.name.toTitleCase() + '</a></div>';
 				end
 
 			}
@@ -34,15 +35,17 @@ $( document ).ready(function() {
 	});
 
 	$('.typeahead').bind('typeahead:select', function(ev, suggestion) {
-		window.open(subsUrl(suggestion),"_self")
+		window.open(filersUrl(suggestion),"_self")
 });
 
-	function subsUrl(item) {
-		return '/filers/' + item.adsh 
+	function filersUrl(item) {
+		return '/filers/' + item.cik
 	}
 
 	String.prototype.toTitleCase = function() {
 		return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
 
-});
+};
+$(document).ready(ready);
+$(document).on('page:load', ready);

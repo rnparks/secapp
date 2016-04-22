@@ -1,5 +1,5 @@
 class XbrlsController < ApplicationController
-	before_action :set_sub
+	before_action :set_filer
 	before_action :set_xbrls
 	before_action :set_xbrl_data
 
@@ -8,12 +8,12 @@ class XbrlsController < ApplicationController
 
 	private
 	# Use callbacks to share common setup or constraints between actions.
-	def set_sub
-		@sub = Sub.find(params[:sub_id])
+	def set_filer
+		@filer = Filer.find(params[:filer_id])
 	end
 
 	def set_xbrls
-		@xbrls = @sub.xbrls
+		@xbrls = @filer.xbrls
 	end
 	def set_xbrl_data
 		@html = ""

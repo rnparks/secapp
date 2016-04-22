@@ -1,16 +1,15 @@
 Rails.application.routes.draw do
 
+  
   resources :sics
   resources :tags
-  
-  resources :subs, path: :filers do
-    resources :nums
-    resources :stocks
+
+  resources :filers do
     resources :financials
+    resources :subs
+    resources :nums
     resources :xbrls
     resources :pres
-
-
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

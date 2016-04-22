@@ -1,44 +1,49 @@
-<%= render layout: 'subs' do %>
+<%= render layout: 'filers_menu' do %>
   <div class="filer-content container-fluid">
-<ul class="nav nav-tabs" role="tablist">
-      <% @tableData.each do |key, value| %>
-    <li role="presentation" class="<%= 'active' if key == :BS %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
-    <% end %>
-</ul>
-<div class="tab-content">
-  <%@tableData.each do |key, value|%>
-    <div role="tabpanel" class="tab-pane fade in <%= 'active' if key == :BS %>" id="<%=key%>">
-      <h4 class="report-heading"><%= @statementNames[key.to_s] %></h4>
-    <table class="sortable table-striped table-responsive">
-    <thead>
-      <tr>
-        <th colspan="1"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% value[:pres].each do |pre| %>
-        <tr>
-        <% if pre.get_tags.count > 0 %>
-          <% if pre.get_tags.first.abstract == true %>
-            <th colspan="16"><span><%=pre.plabel%></span><span><%=pre.get_tags.first.doc%></span></th>
-          <% else %>
-            <td></td>
-            <td><%= pre.plabel %></td>
-            <% if pre.get_nums.count > 0%>
-              <% num = pre.get_nums.first %>
-              <td><%= num.dd %></td>
-              <td><%= "# of quarters represented: #{num.qtrs}" %></td>
-              <td style="text-align: right"><%= "#{number_with_delimiter(num.value)}   #{num.uom}" %></td>
-            <% end %>
-          <% end %>
+    <ul class="nav nav-tabs" role="tablist">
+          <% @tableData.each do |key, value| %>
+        <li role="presentation" class="<%= 'active' if key == "BS" %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
         <% end %>
-        </tr>
+    </ul>
+    <div class="tab-content">
+      <%@tableData.each do |key, value|%>
+        <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
+          <table class="sortable table-striped table-responsive one-line-table">
+          <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
+
+          <thead>
+            <tr>
+              <th colspan="1"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th></th><th></th>
+
+            <% @periods[key].each do |period| %>
+              <th><%= period %></th>
+            <% end %></tr>
+            <% value.each do |tag| %>
+              <tr>
+
+<!-- heading -->
+                <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
+                  <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
+                <% else %>
+                  <td></td>
+                  <td><%= tag[1].first.plabel %></td>
+                  <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
+                    <td><%= num.value if num %></td>
+                  <% end %>
+
+                  <% end %>
+
+               
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
       <% end %>
-    </tbody>
-  </table>
-  </div>
-  <% end %>
-  </div>
+    </div>
   </div>
 <% end %>
-

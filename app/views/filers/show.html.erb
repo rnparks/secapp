@@ -3,7 +3,7 @@
 	<div class="stock-header">
 		<div class="hd">
 			<div class="title">
-				<h2><%= @sub.displayName %> <%= "[#{@sub.stock.ticker}]" if @hasStock %></h2>
+				<h2><%= @filer.displayName %> <%= "[#{@filer.stock.ticker}]" if @hasStock %></h2>
 				<span class="exchange"><%= "- #{@stock.exchange}" if @hasStock %></span>
 			</div>
 		</div>
@@ -17,7 +17,7 @@
 		</div>
 	</div>
 
-	<%= render 'sub_stock_grid' %>
+	<%= render 'filer_stock_grid' %>
 
 	<h3>STOCK DATA FOR REFERENCE</h3>
 	<table>

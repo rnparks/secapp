@@ -1,13 +1,13 @@
 class PresController < ApplicationController
 	before_action :set_tag, only: [:show]
 	before_action :set_keys
-  before_action :set_sub
+  before_action :set_filer
   before_action :set_statement_names, only: [:show, :index]
 
   # GET /tagss
   # GET /tags.json
   def index
-    @pres = @sub.pres
+    @pres = @filer.pres
     set_table_data
   end
 
@@ -31,20 +31,24 @@ class PresController < ApplicationController
     	@preKeys = Pre.new.attributes.keys
     end
 
-    def set_sub
-      @sub = Sub.find(params[:sub_id])
+    def set_filer
+      @filer = Filer.find(params[:filer_id])
     end
 
     def set_table_data
-      @tableData = {}
-      @periods = []
-      @pres.each do |pre| 
-        stmt = pre.stmt.to_sym
-        nums = pre.get_nums
-        @tableData[stmt] ? @tableData[stmt][:pres].push(pre) : @tableData[stmt] = {pres: [pre], periods: []}
-        nums.each {|num|@tableData[stmt][:periods].push(num.dd)}
+      @periods = {}
+      @tableData = @pres.group_by(&:stmt)
+      @tableData.each do |key, value|
+        value.each do|pre|
+          if @periods[key]
+            @periods[key] += pre.get_nums.map(&:dd)
+          else
+            @periods[key] = pre.get_nums.map(&:dd)
+          end
+        end
       end
-      @tableData.each {|key, value| value[:periods].uniq!.sort!}
+      @periods.map{|index, value| value.uniq!.sort!}
+      @tableData.each {|key, value| @tableData[key] = value.group_by(&:tag)}
     end
 
     def set_statement_names

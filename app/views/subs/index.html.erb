@@ -1,20 +1,2 @@
-<p id="notice"><%= notice %></p>
-
-<h1>List of all Filers</h1>
-
-<table class='sortable'>
-  <tr>
-  <%@subKeys.each do |key| %>
-  <th><%=key%></th>
-  <% end %>
-  </tr>
-  <% @subs.limit(100).each do |sub| %>
-  <tr>
-  <% @subKeys.each do |v| %>
-  <td><%=link_to sub[v], sub if sub[v]%></td>
-  <% end %>
-  </tr>
-  <% end %>
-</table>
-<br>
-
+<%= render layout: 'filers_menu' do %>
+<% end %>
