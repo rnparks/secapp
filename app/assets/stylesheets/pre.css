@@ -1,4 +1,18 @@
 .one-line-table td,
 .one-line-table th {
-    white-space: nowrap
+    white-space: nowrap;
+    padding: 0 4px;
+}
+
+.one-line-table td {
+    text-align: right;
+}
+
+.one-line-table th {
+    max-width: 300px;
+    overflow: scroll;
+}
+.table-popup {
+	position: absolute;
+	background-color: blue
 }

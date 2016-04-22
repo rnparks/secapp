@@ -7,12 +7,11 @@
 		</div>
 		<div class="subs-nav">
 		<ul class="nav nav-stacked">
-		<li class=<%= 'active' if params[:controller] == 'filers' %>><%= link_to "Stock Data", [@filer] if @filer.stock %></li>
-		<li class=<%= 'active' if params[:controller] == 'subs' %>><%= link_to "Archived Filings (subs)", [@filer] %></li>
-		<li class=<%= 'active' if params[:controller] == 'financials' %>><%= link_to "Morning Star Financials", [@filer, :financials] if @filer.stock %></li>
-		<li class=<%= 'active' if params[:controller] == 'xbrls' %>><%= link_to "Filings Index (xbrls)", [@filer, :xbrls]  %></li>
-		<li class=<%= 'active' if params[:controller] == 'nums' %>><%= link_to "Archived Filings (nums)", [@filer, :nums] %></li>
-		<li class=<%= 'active' if params[:controller] == 'pres' %>><%= link_to "Archived Filings (pres)", [@filer, :pres] %></li>
+		<li class=<%= 'active' if params[:controller] == 'filers' %>><%= link_to "Overview", [@filer] if @filer.stock %></li>
+		<li class=<%= 'active' if params[:controller] == 'pres' %>><%= link_to "Financials (SEC)", [@filer, :pres] %></li>
+		<li class=<%= 'active' if params[:controller] == 'financials' %>><%= link_to "Financials (Morning Star)", [@filer, :financials] if @filer.stock %></li>
+		<li class=<%= 'active' if params[:controller] == 'xbrls' %>><%= link_to "**REFERENCE Filings Index (xbrls)", [@filer, :xbrls]  %></li>
+		<li class=<%= 'active' if params[:controller] == 'nums' %>><%= link_to "**REFERENCE Archived Filings (nums)", [@filer, :nums] %></li>
 		</ul>
 		</div>
 		<div class="subs-detail">

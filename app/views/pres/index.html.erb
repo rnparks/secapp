@@ -8,41 +8,37 @@
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
         <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
-          <table class="sortable table-striped table-responsive one-line-table">
-          <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
-
-          <thead>
-            <tr>
-              <th colspan="1"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><th></th><th></th>
-
-            <% @periods[key].each do |period| %>
-              <th><%= period %></th>
-            <% end %></tr>
-            <% value.each do |tag| %>
+          <table class="table-striped table-bordered table-responsive one-line-table">
+            <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
+            <tbody>
               <tr>
-
-<!-- heading -->
-                <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
-                  <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
-                <% else %>
-                  <td></td>
-                  <td><%= tag[1].first.plabel %></td>
-                  <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
-                    <td><%= num.value if num %></td>
-                  <% end %>
-
-                  <% end %>
-
-               
+                <th colspan="2"></th>
+                <% @periods[key].each do |period| %>
+                  <th><%= period %></th>
+                <% end %>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+              <% value.each do |tag| %>
+                <tr>
+                  <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
+                    <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
+                  <% else %>
+                    <td></td>
+                    <th><%= tag[1].first.plabel %></th>
+                    <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
+                      <td>
+                      <% if num %>
+                      <% sub = num.sub %>
+                      <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank"%>
+                      <% end %>
+                      </td>
+
+                    <% end %>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% end %>
     </div>
   </div>

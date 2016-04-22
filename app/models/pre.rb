@@ -16,20 +16,19 @@ class Pre < ActiveRecord::Base
 	end
 
 	def get_num_attr(attr)
-		Tag.find_by_sql("Select #{attr} FROM nums WHERE tag = '#{self.tag}' AND v = '#{self.v}'")
-	end
-
-	def prepare_table_data
-
-	end
-
-	def formatRows(periods)
-		array = Array.new(periods.size)
-		self.get_nums.each do |num|
-			array[periods.index(num.dd)] = num
-		end
-		array
-		binding.pry
+		Num.find_by_sql("Select #{attr} FROM nums WHERE tag = '#{self.tag}' AND v = '#{self.v}' AND adsh = '#{self.adsh}'")
 	end
 
 end
+
+# class HtmlParserIncluded < HTTParty::Parser
+#   def html
+#     Nokogiri::HTML(body)
+#   end
+# end
+
+# class Page
+#   include HTTParty
+#   parser HtmlParserIncluded
+# end
+
