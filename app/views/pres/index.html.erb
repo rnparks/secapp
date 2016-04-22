@@ -25,13 +25,13 @@
                     <td></td>
                     <th><%= tag[1].first.plabel %></th>
                     <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
-                      <td>
+                      <td on>
                       <% if num %>
-                      <% sub = num.sub %>
-                      <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank"%>
-                      <div class="container"></div>
-                      <% end %>
+                      <% sub = num.sub.pluck %>
 
+                      <a href="#" data-toggle="popover" title="" data-content="<%=Page.get("http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm")%>" data-original-title="A Title"><%="#{number_with_delimiter(num.value)}   #{num.uom}"%></a>
+
+                      <% end %>
                       </td>
 
                     <% end %>
@@ -45,3 +45,8 @@
     </div>
   </div>
 <% end %>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>

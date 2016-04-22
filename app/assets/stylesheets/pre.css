@@ -12,3 +12,7 @@
     max-width: 300px;
     overflow: scroll;
 }
+.table-popup {
+	position: absolute;
+	background-color: blue
+}
