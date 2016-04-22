@@ -9,34 +9,30 @@
       <%@tableData.each do |key, value|%>
         <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
           <table class="table-striped table-bordered table-responsive one-line-table">
-          <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
-          <tbody>
-            <tr><th colspan="2"></th>
-
-            <% @periods[key].each do |period| %>
-              <th><%= period %></th>
-            <% end %></tr>
-            <% value.each do |tag| %>
+            <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
+            <tbody>
               <tr>
-
-<!-- heading -->
-                <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
-                  <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
-                <% else %>
-                  <td></td>
-                  <th><%= tag[1].first.plabel %></th>
-                  <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
-                    <td><%= "#{number_with_delimiter(num.value)}   #{num.uom}" if num %></td>
-                  <% end %>
-
-                  <% end %>
-
-               
+                <th colspan="2"></th>
+                <% @periods[key].each do |period| %>
+                  <th><%= period %></th>
+                <% end %>
               </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
+              <% value.each do |tag| %>
+                <tr>
+                  <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
+                    <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
+                  <% else %>
+                    <td></td>
+                    <th><%= tag[1].first.plabel %></th>
+                    <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
+                      <td><%= "#{number_with_delimiter(num.value)}   #{num.uom}" if num %></td>
+                    <% end %>
+                  <% end %>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       <% end %>
     </div>
   </div>

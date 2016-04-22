@@ -19,17 +19,4 @@ class Pre < ActiveRecord::Base
 		Tag.find_by_sql("Select #{attr} FROM nums WHERE tag = '#{self.tag}' AND v = '#{self.v}'")
 	end
 
-	def prepare_table_data
-
-	end
-
-	def formatRows(periods)
-		array = Array.new(periods.size)
-		self.get_nums.each do |num|
-			array[periods.index(num.dd)] = num
-		end
-		array
-		binding.pry
-	end
-
 end
