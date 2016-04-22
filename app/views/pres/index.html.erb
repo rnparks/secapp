@@ -8,16 +8,10 @@
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
         <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
-          <table class="sortable table-striped table-responsive one-line-table">
+          <table class="table-striped table-bordered table-responsive one-line-table">
           <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
-
-          <thead>
-            <tr>
-              <th colspan="1"></th>
-            </tr>
-          </thead>
           <tbody>
-            <tr><th></th><th></th>
+            <tr><th colspan="2"></th>
 
             <% @periods[key].each do |period| %>
               <th><%= period %></th>
@@ -30,9 +24,9 @@
                   <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
                 <% else %>
                   <td></td>
-                  <td><%= tag[1].first.plabel %></td>
+                  <th><%= tag[1].first.plabel %></th>
                   <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
-                    <td><%= num.value if num %></td>
+                    <td><%= "#{number_with_delimiter(num.value)}   #{num.uom}" if num %></td>
                   <% end %>
 
                   <% end %>
