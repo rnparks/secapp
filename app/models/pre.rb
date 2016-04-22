@@ -29,6 +29,7 @@ class Pre < ActiveRecord::Base
 			array[periods.index(num.dd)] = num
 		end
 		array
+		binding.pry
 	end
 
 end

@@ -2,14 +2,14 @@
   <div class="filer-content container-fluid">
     <ul class="nav nav-tabs" role="tablist">
           <% @tableData.each do |key, value| %>
-        <li role="presentation" class="<%= 'active' if key == :BS %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
+        <li role="presentation" class="<%= 'active' if key == "BS" %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
         <% end %>
     </ul>
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
-        <div role="tabpanel" class="tab-pane fade in <%= 'active' if key == :BS %>" id="<%=key%>">
+        <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
           <h4 class="report-heading"><%= @statementNames[key.to_s] %></h4>
-          <table class="sortable table-striped table-responsive">
+          <table class="sortable table-striped table-responsive one-line-table">
           <thead>
             <tr>
               <th colspan="1"></th>
@@ -17,25 +17,26 @@
           </thead>
           <tbody>
             <tr><th></th><th></th>
-            <% @tableData[key][:periods].each do |period| %>
+
+            <% @periods[key].each do |period| %>
               <th><%= period %></th>
             <% end %></tr>
-            <% value[:pres].each do |pre| %>
+            <% value.each do |tag| %>
               <tr>
-              <% if pre.get_tags.count > 0 %>
-                <% if pre.get_tags.first.abstract == true %>
-                  <th colspan="16"><span><%=pre.plabel%></span><span><%=pre.get_tags.first.doc%></span></th>
+
+<!-- heading -->
+                <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
+                  <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
                 <% else %>
                   <td></td>
-                  <td><%= pre.plabel %></td>
-                  <% if pre.get_nums.count > 0 %>
-                    <% pre.formatRows(@tableData[pre[:stmt].to_sym][:periods]).each do |num| %>
-                    <%binding.pry%>
-                      <td style="text-align: right"><%= "#{number_with_delimiter(num.value)}   #{num.uom}" if num %></td>                      
-                    <% end %>
-                <% end %>   
-                <% end %>
-              <% end %>
+                  <td><%= tag[1].first.plabel %></td>
+                  <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
+                    <td><%= num.value if num %></td>
+                  <% end %>
+
+                  <% end %>
+
+               
               </tr>
             <% end %>
           </tbody>
