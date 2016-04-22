@@ -8,8 +8,9 @@
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
         <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
-          <h4 class="report-heading"><%= @statementNames[key.to_s] %></h4>
           <table class="sortable table-striped table-responsive one-line-table">
+          <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
+
           <thead>
             <tr>
               <th colspan="1"></th>

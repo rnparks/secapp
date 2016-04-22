@@ -6,25 +6,25 @@ namespace :data_cleanse do
 	Rails.logger = dev_null
 	ActiveRecord::Base.logger = dev_null
 
-	desc "Add Ticker Data to subs"
+	desc "Add Ticker Data to filers"
 	task :ticker => :environment do |task, args|
 		success = 0
 		failure = 0
 		fixed   = 0 
 		Stock.all.each do |stock|
-			sub = Sub.find_by(cik: stock.cik)
-			if sub
-				if !sub.symbol
-					puts "Saving #{stock.ticker} to #{sub.name}".green
-					sub.update(symbol: stock.ticker)
+			filer = Filer.find_by(cik: stock.cik)
+			if filer
+				if !filer.symbol
+					puts "Saving #{stock.ticker} to #{filer.name}".green
+					filer.update(symbol: stock.ticker)
 					fixed += 1
 				else
-					puts "#{sub.name} already has symbol #{sub.symbol}".yellow			
+					puts "#{filer.name} already has symbol #{filer.symbol}".yellow			
 				end
 			end
 		end
-	Sub.all.each do |sub|
-		sub.symbol ? success += 1 : failure += 1
+	Filer.all.each do |filer|
+		filer.symbol ? success += 1 : failure += 1
 	end
 		puts "#{fixed} symbols were fixed\n#{success} have symbols : #{failure} don't"
 	end

@@ -1,3 +1,4 @@
-.one-line-table td {
-white-space: nowrap
+.one-line-table td,
+.one-line-table th {
+    white-space: nowrap
 }
