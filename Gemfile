@@ -19,7 +19,9 @@ gem 'rubyzip'
 gem 'flag_icon_css_rails'
 gem 'awesome_print', '~> 1.6', '>= 1.6.1'
 gem 'pry'
-gem 'passenger', require: "phusion_passenger/rack_handler"
+# gem 'passenger', require: "phusion_passenger/rack_handler"
+gem 'puma'
+
 
 group :development, :test do
   gem 'byebug'

@@ -85,9 +85,6 @@ GEM
     multi_xml (0.5.5)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    passenger (5.0.27)
-      rack
-      rake (>= 0.8.1)
     pg (0.18.4)
     pluck_to_hash (0.2.0)
       activerecord (>= 4.0.2)
@@ -96,6 +93,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    puma (3.4.0)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -174,10 +172,10 @@ DEPENDENCIES
   httparty
   jbuilder
   jquery-rails
-  passenger
   pg
   pluck_to_hash
   pry
+  puma
   rails (= 4.2.6)
   rubyzip
   sass-rails (~> 5.0)
