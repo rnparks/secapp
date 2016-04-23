@@ -4,5 +4,5 @@
     "log_file": "log/passenger_server.log"
     "max_pool_size": 10,
     "min_instances": 5,
-    "daemonize": true
+    "daemonize": true,
 }
