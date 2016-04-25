@@ -26,12 +26,20 @@
                     <th><%= tag[1].first.plabel %></th>
                     <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
                       <td>
-                      <% if num %>
-                      <% sub = num.sub %>
-                      <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank"%>
-                      <% end %>
+                        <% if num %>
+                          <% num = num.uniq { |p| p.value } %>
+                          <% count = num.count %>
+                          <% num = num.first %>
+                          <% sub = num.sub %>
+                          <% if num.uom && num.value %>
+                            <% if count == 1 %>
+                              <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank" %>
+                            <% elsif count > 1 %>
+                              <%= link_to "** #{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank" %>
+                            <% end %>
+                          <% end %>
+                        <% end %>
                       </td>
-
                     <% end %>
                   <% end %>
                 </tr>

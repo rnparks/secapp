@@ -9,6 +9,10 @@
     font: normal 12px arial;
 }
 
+.filer-index {
+    margin-bottom: 20px;
+}
+
 .stock-quote-summary .bid {
     font: bold 30px arial;
 }

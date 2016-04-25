@@ -19,6 +19,17 @@ class Pre < ActiveRecord::Base
 		Num.find_by_sql("Select #{attr} FROM nums WHERE tag = '#{self.tag}' AND v = '#{self.v}' AND adsh = '#{self.adsh}'")
 	end
 
+	 def self.to_csv
+    attributes = %w{id email name}
+
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+
+      all.each do |user|
+        csv << attributes.map{ |attr| user.send(attr) }
+      end
+    end
+  end
 end
 
 # class HtmlParserIncluded < HTTParty::Parser

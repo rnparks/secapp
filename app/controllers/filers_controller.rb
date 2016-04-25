@@ -9,8 +9,7 @@ class FilersController < ApplicationController
 	    @filers = Filer.all
 	  end
 	  def show
-	    # @filer = @sub
-	    # @nums = Num.where(adsh: @sub.adsh)
+      redirect_to filer_pres_path(@filer) if !@hasStock
 	    @numKeys = Num.new.attributes.keys
 	  end
       def set_keys
@@ -29,7 +28,6 @@ class FilersController < ApplicationController
         @stockData[:data][:change_in_percent] = @stockData[:data][:change_in_percent].to_f
         @stockData[:data][:change] = @stockData[:data][:change].to_f
         @stockState = @stockData[:data][:change] > 0 ? "up" : "down"
-
       end
     end
     def set_subs

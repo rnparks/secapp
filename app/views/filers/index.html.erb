@@ -1,20 +1,15 @@
-<p id="notice"><%= notice %></p>
-
+<div class="container-fluid filer-index">
 <h1>List of all Filers</h1>
 
-<table class='sortable'>
+<table class='sortable table-striped table-bordered table-responsive table-condensed table table-hover'>
   <tr>
-  <%@filerKeys.each do |key| %>
-  <th><%=key%></th>
-  <% end %>
+  <th>cik</th>
+  <th>Company Name</th>
+  <th>Symbol</th>
   </tr>
   <% @filers.limit(100).each do |filer| %>
-  <tr>
-  <% @filerKeys.each do |v| %>
-  <td><%=link_to filer[v], filer if filer[v]%></td>
-  <% end %>
-  </tr>
+  <tr data-link="<%=filer_url(filer)%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
   <% end %>
 </table>
 <br>
-
+</div>
