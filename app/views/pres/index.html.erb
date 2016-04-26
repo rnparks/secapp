@@ -1,9 +1,9 @@
 <%= render layout: 'filers_menu' do %>
   <div class="filer-content container-fluid">
     <ul class="nav nav-tabs" role="tablist">
-          <% @tableData.each do |key, value| %>
+      <% @tableData.each do |key, value| %>
         <li role="presentation" class="<%= 'active' if key == "BS" %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
-        <% end %>
+      <% end %>
     </ul>
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
@@ -35,13 +35,15 @@
                             <% if count == 1 %>
                               <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank" %>
                             <% elsif count > 1 %>
-                              <% content = "" %>
+                              <% content = '<div style="position:relative">' %>
                               <% nums.each do|num| %>
                               <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{num.sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank"%>
                               <% content += "<br>"%>
                               <% end %>
-                              <a data-toggle="popover" data-placement="top" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
-
+                              <% content += '</div>' %>
+                              <div class="modal-body">
+                                <a href="javascript:void(0);" data-toggle="popover" data-placement="right" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
+                              </div>
                             <% end %>
                           <% end %>
                         <% end %>

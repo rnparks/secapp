@@ -8,7 +8,7 @@
     <th>Symbol</th>
     </tr>
     <% @filers.limit(100).each do |filer| %>
-    <tr data-link="<%=filer_url(filer)%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
+      <tr data-link="<%=filer_url(filer)%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
     <% end %>
     </tbody>
   </table>
