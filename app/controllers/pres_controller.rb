@@ -8,6 +8,7 @@ class PresController < ApplicationController
   # GET /tags.json
   def index
     @pres = @filer.pres
+    @nums = @filer.nums.select { |nums| nums.dd.year > 2013 }
     set_table_data
   end
 
@@ -36,18 +37,8 @@ class PresController < ApplicationController
     end
 
     def set_table_data
-      @periods = {}
+      @periods = @filer.get_periods
       @tableData = @pres.group_by(&:stmt)
-      @tableData.each do |key, value|
-        value.each do|pre|
-          if @periods[key]
-            @periods[key] += pre.get_nums.map(&:dd)
-          else
-            @periods[key] = pre.get_nums.map(&:dd)
-          end
-        end
-      end
-      @periods.map{|index, value| value.uniq!.sort!}
       @tableData.each {|key, value| @tableData[key] = value.group_by(&:tag)}
     end
 

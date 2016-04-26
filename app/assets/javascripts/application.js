@@ -17,4 +17,5 @@
 //= require sortable
 //= require filer_search_dropdown_menu
 //= require filers
+//= require bootstrap-table-sticky-header
 //= require_tree .

@@ -4,11 +4,11 @@ class Precollection < ActiveRecord::Base
 		collection.each do |pre|
 			# pre.get_nums.each do |num|
 			pre.get_num_attr("dd, adsh, value, uom, tag, v").each do |num|
-
-				if array[periods.index(num.dd)]
-					array[periods.index(num.dd)].push(num)
+				dd = num.dd.to_s
+				if array[periods.index(dd)]
+					array[periods.index(dd)].push(num)
 				else
-					array[periods.index(num.dd)] = [num]
+					array[periods.index(dd)] = [num]
 				end
 			end
 		end
