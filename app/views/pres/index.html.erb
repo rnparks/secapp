@@ -12,7 +12,7 @@
             <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
             <tbody>
               <tr>
-                <th colspan="2"></th>
+                <th colspan="2"><%= "Fiscal year ends in #{Date::MONTHNAMES[Date.strptime(@filer.fye, '%m%d').month]}" %></th>
                 <% @periods[key].each do |period| %>
                   <th><%= period %></th>
                 <% end %>
@@ -24,18 +24,24 @@
                   <% else %>
                     <td></td>
                     <th><%= tag[1].first.plabel %></th>
-                    <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
+                    <%Precollection.formatRows(tag[1], @periods[key]).each do |nums|%>
                       <td>
-                        <% if num %>
-                          <% num = num.uniq { |p| p.value } %>
-                          <% count = num.count %>
-                          <% num = num.first %>
+                        <% if nums %>
+                          <% nums = nums.uniq { |p| p.value } %>
+                          <% count = nums.count %>
+                          <% num = nums.first %>
                           <% sub = num.sub %>
                           <% if num.uom && num.value %>
                             <% if count == 1 %>
                               <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank" %>
                             <% elsif count > 1 %>
-                              <%= link_to "** #{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank" %>
+                              <% content = "" %>
+                              <% nums.each do|num| %>
+                              <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{num.sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank"%>
+                              <% content += "<br>"%>
+                              <% end %>
+                              <a data-toggle="popover" data-placement="top" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
+
                             <% end %>
                           <% end %>
                         <% end %>

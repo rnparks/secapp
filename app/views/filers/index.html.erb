@@ -1,15 +1,16 @@
 <div class="container-fluid filer-index">
-<h1>List of all Filers</h1>
-
-<table class='sortable table-striped table-bordered table-responsive table-condensed table table-hover'>
-  <tr>
-  <th>cik</th>
-  <th>Company Name</th>
-  <th>Symbol</th>
-  </tr>
-  <% @filers.limit(100).each do |filer| %>
-  <tr data-link="<%=filer_url(filer)%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
-  <% end %>
-</table>
-<br>
+  <table class='sortable table-striped table-bordered table-responsive table-condensed table table-hover'>
+  <caption><h4 class="report-heading">List of all Filers</h4></caption>
+  <tbody>
+    <tr>
+    <th>cik</th>
+    <th>Company Name</th>
+    <th>Symbol</th>
+    </tr>
+    <% @filers.limit(100).each do |filer| %>
+    <tr data-link="<%=filer_url(filer)%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
+    <% end %>
+    </tbody>
+  </table>
+  <br>
 </div>

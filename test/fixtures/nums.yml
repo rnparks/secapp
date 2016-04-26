@@ -3,21 +3,10 @@
 one:
   adsh: MyString
   tag: MyString
-  version: MyString
-  ddate: 2016-03-30
+  v: MyString
+  dd: 2016-03-30
   qtrs: 1
   uom: MyString
-  coreg: 1
-  value: 9.99
-  footnote: MyString
-
-two:
-  adsh: MyString
-  tag: MyString
-  version: MyString
-  ddate: 2016-03-30
-  qtrs: 1
-  uom: MyString
-  coreg: 1
+  cr: 1
   value: 9.99
   footnote: MyString
