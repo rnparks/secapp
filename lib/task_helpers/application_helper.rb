@@ -19,18 +19,8 @@ class ApplicationHelper
 		end
 	end
 
-	# def vet_subs(file, conn)
-	# 	file = File.open(file, 'r')
-	# 	while !file.eof?
-	# 		line = file.readline
-	# 		cik  = line.split("\t")[1]
-	# 		adsh = line.split("\t")[0]
-	# 		rc   = conn.raw_connection
-	# 		if rc.exec("select exists (select true from subss where adsh='#{adsh})';").first == "f"
-	# 			self.create_filer(line)
-	# 		end
-	# 	end
-	# end
+	def self.check_tag_dup(line)
+	end
 
 	def self.create_filer(file, conn)
 		puts "Creating Filers off of subs data"
@@ -91,8 +81,10 @@ class ApplicationHelper
 		print "\r\tProgress: %#{(linecount/totalLines*100).round(1)} | Added: #{addCount} | Rejected: #{failCount}".green
 			if !firstline
 				begin
-						rc.put_copy_data(file.readline) 
-						addCount += 1
+					line = file.readline
+					# ApplicationHelper.check_tag_dup(line) if model_name == "Tag"
+					rc.put_copy_data(line)
+					addCount += 1
 				rescue ActiveRecord::ActiveRecordError => e
 					summary = e.message[/#{'PG::'}(.*?)#{': ERROR'}/m, 1]
 					if failCount[summary]
