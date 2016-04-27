@@ -38,7 +38,7 @@ class PresController < ApplicationController
 
     def set_table_data
       @periods = @filer.get_periods
-      @tableData = @pres.group_by(&:stmt)
+      @tableData = @pres.order('report, line').group_by(&:stmt)
       @tableData.each {|key, value| @tableData[key] = value.group_by(&:tag)}
     end
 

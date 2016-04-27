@@ -31,3 +31,8 @@
 table .modal-body {
     padding: 0;
 }
+
+.filer table .total {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}

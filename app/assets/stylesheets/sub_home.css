@@ -45,6 +45,13 @@
     color: #800;
 }
 
+.stock-data table {
+  display: -moz-inline-stack;
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+}
+
 .filer .stock-data th,
 .filer .stock-data td {
     border-bottom: 1px solid #e4e4e4;
@@ -60,7 +67,5 @@
 }
 
 .filer .stock-data table {
-    width: 100%;
-    min-width: 215px;
     margin: 5px 0 5px 8px;
 }

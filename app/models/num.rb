@@ -14,5 +14,9 @@ class Num < ActiveRecord::Base
 	def get_pres
 		Pre.find_by_sql("Select * FROM pres WHERE tag = '#{self.tag}' AND v = '#{self.v}' AND adsh = '#{self.adsh}'")
 	end
+
+	def get_sec_table_link
+		"#{self.sub.getSecDataPath}R#{self.get_pres.first.report}.htm"
+	end
 end
 

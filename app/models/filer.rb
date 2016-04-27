@@ -30,9 +30,8 @@ class Filer < ActiveRecord::Base
 		hash
 	end
 
-	def self.to_csv
+	def to_csv
     attributes = %w{id email name}
-
     CSV.generate(headers: true) do |csv|
       csv << attributes
 
