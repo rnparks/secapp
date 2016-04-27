@@ -2,6 +2,7 @@ class FinancialsController < ApplicationController
 	before_action :set_filer
 
 	def index
+		@hasStock = @filer.stock
 		@morningStarIsQt = @filer.stock.getMorningStarData("is", 3)
 		@morningStarIsYr = @filer.stock.getMorningStarData("is", 12)
 		@morningStarCfQt = @filer.stock.getMorningStarData("cf", 3)

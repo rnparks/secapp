@@ -18,7 +18,7 @@ class FilersController < ApplicationController
     def set_filer
       @filer = Filer.find(params[:id])
     end
-        def set_stock
+    def set_stock
       @hasStock = @filer.stock
       if @hasStock
         @stock = @filer.stock

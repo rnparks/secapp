@@ -16,7 +16,8 @@ class Num < ActiveRecord::Base
 	end
 
 	def get_sec_table_link
-		"#{self.sub.getSecDataPath}R#{self.get_pres.first.report}.htm"
+		pre = self.get_pres.first
+		"#{self.sub.getSecDataPath}R#{pre.report}.#{pre.rfile=='H' ? 'htm' : 'xml'}"
 	end
 end
 

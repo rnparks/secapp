@@ -9,6 +9,7 @@ class PresController < ApplicationController
   def index
     @pres = @filer.pres
     @nums = @filer.nums.select { |nums| nums.dd.year > 2013 }
+    @hasStock = @filer.stock
     set_table_data
   end
 
@@ -38,8 +39,9 @@ class PresController < ApplicationController
 
     def set_table_data
       @periods = @filer.get_periods
-      @tableData = @pres.order('report, line').group_by(&:stmt)
-      @tableData.each {|key, value| @tableData[key] = value.group_by(&:tag)}
+      @tableData = @pres.order('line').group_by(&:stmt)
+      # @tableData.each {|key, value| @tableData[key].each{key} = value.map{group_by { |p| p.get_tags.first }}}
+      @tableData.each {|key, value| @tableData[key] = value.group_by { |p| "#{p.report}-#{p.plabel}-#{p.tag}" }}
     end
 
     def set_statement_names

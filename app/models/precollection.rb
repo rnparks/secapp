@@ -3,7 +3,7 @@ class Precollection < ActiveRecord::Base
 		array = Array.new(periods.size)
 		collection.each do |pre|
 			# pre.get_nums.each do |num|
-			pre.get_num_attr("dd, adsh, value, uom, tag, v").each do |num|
+			pre.get_num_attr("dd, adsh, value, uom, tag, v, qtrs").each do |num|
 				dd = num.dd.to_s
 				if array[periods.index(dd)]
 					array[periods.index(dd)].push(num)

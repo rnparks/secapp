@@ -21,10 +21,12 @@
               <tbody>
               <% value.each do |tag| %>
                 <% unless tag[1].first.plabel == "Statement [Table]" || tag[1].first.plabel == "Statement [Line Items]" %>
-                  <% if tag[1].first.plabel %>
+                  <% isAbstract = tag[1].first.get_tags.first.abstract if tag[1].first.get_tags.first%>
+                  <% hasNoNums = tag.last.first.get_nums.count == 0 %>
+                  <% if tag[1].first.plabel && (!isAbstract && !hasNoNums)%>
                     <% isTotal = tag[1].first.plabel.downcase.include? "total" %>
                     <tr class="<%= 'total' if isTotal %>">
-                      <% if tag[1].first.get_nums.count == 0 %>
+                      <% if isAbstract %>
                         <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
                       <% else %>
                         <td></td>
@@ -41,7 +43,7 @@
                                 <% elsif count > 1 %>
                                   <% content = '<div style="position:relative">' %>
                                   <% nums.each do|num| %>
-                                  <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_sec_table_link, :target => "_blank"%>
+                                  <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_sec_table_link, :target => "_blank"%>
                                   <% content += "<br>"%>
                                   <% end %>
                                   <% content += '</div>' %>
