@@ -1,6 +1,6 @@
 <div class="stock-data">
 	<% @stockData[:labels].each_with_index do |row, i| %>
-		<% if i == 0 || i == (@stockData[:labels].count/2).to_i %><table style="display:inline"><tbody><% end %>
+		<% if i == 0 || i == (@stockData[:labels].count/2).to_i %><table><tbody><% end %>
 		<tr>
 			<th><%= row.last %></th><td><%= @stockData[:data][row.first] %></td>
 		</tr>

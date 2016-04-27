@@ -16,4 +16,5 @@
 //= require typeahead.bundle
 //= require sortable
 //= require filer_search_dropdown_menu
+//= require filers
 //= require_tree .

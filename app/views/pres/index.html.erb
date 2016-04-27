@@ -1,40 +1,64 @@
 <%= render layout: 'filers_menu' do %>
   <div class="filer-content container-fluid">
     <ul class="nav nav-tabs" role="tablist">
-          <% @tableData.each do |key, value| %>
+      <% @tableData.each do |key, value| %>
         <li role="presentation" class="<%= 'active' if key == "BS" %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
-        <% end %>
+      <% end %>
     </ul>
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
         <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
-          <table class="table-striped table-bordered table-responsive one-line-table">
+          <table class="table table-sm table-bordered table-condensed table-striped table-responsive one-line-table">
             <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
-            <tbody>
+            <thead>
               <tr>
-                <th colspan="2"></th>
+                <th colspan="2"><%= "Fiscal year ends in #{Date::MONTHNAMES[Date.strptime(@filer.fye, '%m%d').month]}" %></th>
                 <% @periods[key].each do |period| %>
                   <th><%= period %></th>
                 <% end %>
               </tr>
+              </thead>
+              <tbody>
               <% value.each do |tag| %>
-                <tr>
-                  <% if tag[1].first.get_tags.first && tag[1].first.get_tags.first.abstract == true %>
-                    <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
-                  <% else %>
-                    <td></td>
-                    <th><%= tag[1].first.plabel %></th>
-                    <%Precollection.formatRows(tag[1], @periods[key]).each do |num|%>
-                      <td>
-                      <% if num %>
-                      <% sub = num.sub %>
-                      <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", "http://www.sec.gov/Archives/edgar/data/#{sub.cik}/#{sub.adsh.gsub('-','')}/R#{num.get_pres.first.report}.htm", :target => "_blank"%>
+                <% unless tag[1].first.plabel == "Statement [Table]" || tag[1].first.plabel == "Statement [Line Items]" %>
+                  <% isAbstract = tag[1].first.get_tags.first.abstract if tag[1].first.get_tags.first%>
+                  <% hasNoNums = tag.last.first.get_nums.count == 0 %>
+                  <% if tag[1].first.plabel && (!isAbstract && !hasNoNums)%>
+                    <% isTotal = tag[1].first.plabel.downcase.include? "total" %>
+                    <tr class="<%= 'total' if isTotal %>">
+                      <% if isAbstract %>
+                        <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
+                      <% else %>
+                        <td></td>
+                        <th data-field="<%=tag[1].first.tag%>"><%= tag[1].first.plabel %></th>
+                        <%Precollection.formatRows(tag[1], @periods[key]).each do |nums|%>
+                          <td>
+                            <% if nums %>
+                              <% nums = nums.uniq { |p| p.value } %>
+                              <% count = nums.count %>
+                              <% num = nums.first %>
+                              <% if num.uom && num.value %>
+                                <% if count == 1 %>
+                                  <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_sec_table_link, :target => "_blank" %>
+                                <% elsif count > 1 %>
+                                  <% content = '<div style="position:relative">' %>
+                                  <% nums.each do|num| %>
+                                  <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_sec_table_link, :target => "_blank"%>
+                                  <% content += "<br>"%>
+                                  <% end %>
+                                  <% content += '</div>' %>
+                                  <div class="modal-body">
+                                    <a href="javascript:void(0);" data-toggle="popover" data-placement="right" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
+                                  </div>
+                                <% end %>
+                              <% end %>
+                            <% end %>
+                          </td>
+                        <% end %>
                       <% end %>
-                      </td>
-
-                    <% end %>
+                    </tr>
                   <% end %>
-                </tr>
+                <% end %>
               <% end %>
             </tbody>
           </table>
