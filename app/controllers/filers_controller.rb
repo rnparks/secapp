@@ -4,7 +4,6 @@ class FilersController < ApplicationController
   before_action :set_stock, only: [:show]
   before_action :set_subs
 
-	
 	  def index
 	    @filers = Filer.all
 	  end

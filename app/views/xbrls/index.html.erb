@@ -2,7 +2,7 @@
 	<div class="filer container-fluid">
 		<ul>
 			<% @filer.xbrls.each do |xbrl| %>
-				<li><a href="ftp://<%= xbrl.getXbrlLink %>" target="_blank"><%= "#{xbrl.formtype} | filed on: #{xbrl.datefiled}"%></a></li>
+				<li><a href="ftp://<%= xbrl.get_xbrl_link %>" target="_blank"><%= "#{xbrl.formtype} | filed on: #{xbrl.datefiled}"%></a></li>
 			<% end %>
 		</ul>
 	</div>

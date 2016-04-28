@@ -19,19 +19,21 @@
               </tr>
               </thead>
               <tbody>
-              <% value.each do |tag| %>
-                <% unless tag[1].first.plabel == "Statement [Table]" || tag[1].first.plabel == "Statement [Line Items]" %>
-                  <% isAbstract = tag[1].first.get_tags.first.abstract if tag[1].first.get_tags.first%>
-                  <% hasNoNums = tag.last.first.get_nums.count == 0 %>
-                  <% if tag[1].first.plabel && (!isAbstract && !hasNoNums)%>
-                    <% isTotal = tag[1].first.plabel.downcase.include? "total" %>
+              <% value.each do |pres| %>
+                <% unless pres.first.include?('[Table]') || pres.first.include?('[Line Items]') || pres.first.include?('[Axis]') %>
+                  <% all_nums = Precollection.get_nums(pres[1]) %>
+                  <% isAbstract = pres[1].first.get_tags.first.abstract if pres[1].first.get_tags.first%>
+                  <% hasNoNums = all_nums.count == 0 %>
+                  <% parenthetical = pres[1].first.inpth %>
+                  <% if pres[1].first.plabel && (!isAbstract && !hasNoNums) && !parenthetical %>
+                    <% isTotal = pres[1].first.plabel.downcase.include? "total" %>
                     <tr class="<%= 'total' if isTotal %>">
                       <% if isAbstract %>
-                        <th colspan="<%= @periods[key].count + 2%>"><span><%=tag[1].first.plabel%></span></th>
+                        <th colspan="<%= @periods[key].count + 2%>"><span><%=pres[1].first.plabel%></span></th>
                       <% else %>
                         <td></td>
-                        <th data-field="<%=tag[1].first.tag%>"><%= tag[1].first.plabel %></th>
-                        <%Precollection.formatRows(tag[1], @periods[key]).each do |nums|%>
+                        <th data-field="<%=pres[1].first.tag%>"><%= pres[1].first.plabel %></th>
+                        <%Precollection.formatRows(all_nums, @periods[key]).each do |nums|%>
                           <td>
                             <% if nums %>
                               <% nums = nums.uniq { |p| p.value } %>
@@ -39,11 +41,11 @@
                               <% num = nums.first %>
                               <% if num.uom && num.value %>
                                 <% if count == 1 %>
-                                  <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_sec_table_link, :target => "_blank" %>
+                                  <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_pre(pres[1].first.stmt,pres[1].first.report).get_sec_table_link, :target => "_blank" %>
                                 <% elsif count > 1 %>
                                   <% content = '<div style="position:relative">' %>
                                   <% nums.each do|num| %>
-                                  <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_sec_table_link, :target => "_blank"%>
+                                  <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_pre(pres[1].first.stmt,pres[1].first.report).get_sec_table_link, :target => "_blank"%>
                                   <% content += "<br>"%>
                                   <% end %>
                                   <% content += '</div>' %>

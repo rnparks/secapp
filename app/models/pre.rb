@@ -19,6 +19,10 @@ class Pre < ActiveRecord::Base
 		Num.find_by_sql("Select #{attr} FROM nums WHERE tag = '#{self.tag}' AND v = '#{self.v}' AND adsh = '#{self.adsh}'").select { |nums| nums.dd.year > 2013 }
 	end
 
+	def get_sec_table_link
+		"#{self.sub.get_sub_data_path}R#{self.report}.#{self.rfile=='H' ? 'htm' : 'xml'}"
+	end
+
 	def self.to_csv
     attributes = %w{id email name}
     CSV.generate(headers: true) do |csv|

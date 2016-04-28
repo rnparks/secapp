@@ -170,10 +170,10 @@ namespace :data_import do
 		puts ""
 	end
 
-	desc "Import xbrl indexing (currently for testing as it only brings in 2015/QTR4"
+	desc "Import xbrl indexing"
 	task :xbrl => :environment do |task|
 		url  = "ftp.sec.gov"
-		qtrs = ['2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1']
+		qtrs = ['2016/QTR2', '2016/QTR1', '2015/QTR4', '2015/QTR3', '2015/QTR2', '2015/QTR1', '2014/QTR4', '2014/QTR3', '2014/QTR2', '2014/QTR1']
 		qtrs.each do |qtr|
 			content  = nil
 			fileInfo = nil
