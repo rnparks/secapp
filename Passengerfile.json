@@ -1,7 +1,7 @@
 {
     "address": "localhost",
     "port": 3000,
-    "log_file": "log/passenger_server.log"
+    "log_file": "log/passenger_server.log",
     "max_pool_size": 10,
     "min_instances": 5,
     "daemonize": true,

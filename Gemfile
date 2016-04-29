@@ -15,13 +15,13 @@ gem 'colorize'
 gem 'pluck_to_hash'
 gem 'yahoo-finance'
 gem 'httparty'
-gem 'rubyzip'
+gem 'rubyzip', require: 'zip'
 gem 'flag_icon_css_rails'
 gem 'awesome_print', '~> 1.6', '>= 1.6.1'
 gem 'pry'
 gem 'rails-perftest'
 gem 'ruby-prof'
-gem 'passenger', require: "phusion_passenger/rack_handler"
+gem 'mechanize'
 
 group :development, :test do
   gem 'byebug'
@@ -33,6 +33,8 @@ group :development do
 end
 
 group :production do
+	gem 'passenger', require: "phusion_passenger/rack_handler"
+
 end
 
 
