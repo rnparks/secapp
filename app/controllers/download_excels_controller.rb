@@ -25,7 +25,6 @@ class DownloadExcelsController < ApplicationController
   end
   
   def download_excel
-    binding.pry
     cik = @filer.cik
     ticker = @filer.symbol
     @subs.each do |sub|
@@ -36,6 +35,5 @@ class DownloadExcelsController < ApplicationController
         type: "application/xlsx")
       end
     end
-    binding.pry
   end
 end

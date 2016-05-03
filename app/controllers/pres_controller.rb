@@ -59,6 +59,11 @@ class PresController < ApplicationController
         "CI" => "Comprehensive Income",
         "UN" => "Unclassifiable Statement"
       }
+      @periodNames = {
+        "8-K" => "Current",
+        "10-Q" => "Quarterly",
+        "10-K" => "Yearly"
+      }
     end
 
     def set_sec_excel_links

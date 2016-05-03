@@ -8,15 +8,14 @@
     <h4 class="report-heading">Compiled Financials</h4>
     <ul class="nav nav-tabs" role="tablist">
       <% @tableData.each_with_index do |(key, value), i| %>
-        <li role="presentation" class="<%= 'active' if i == 0 %>, dropdown">
+        <li role="presentation" class="<%= 'active' if i == 0 %> dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-controls="<%=key%>" role="button" aria-haspopup="true" aria-expanded="false">
           <%= @statementNames[key.to_s] %><span class="caret"></span>
           </a>
-
           <ul id="<%=key%>" class="dropdown-menu">
             <% value.each_with_index do |(key2, value), i2| %>
               <li role="presentation" class="<%= 'active' if i == 0 && i2 == 0 %>">
-                <a href="#<%="#{key}#{key2}"%>" aria-controls="#{key}#{key2}" role="tab" data-toggle="tab"><%= key2.to_s %></a>
+                <a href="#<%="#{key}#{key2}"%>" aria-controls="#{key}#{key2}" role="tab" data-toggle="tab"><%= @periodNames[key2.to_s] %></a>
               </li>
             <% end %>
           </ul>
@@ -26,15 +25,15 @@
     </ul>
 
     <div class="tab-content">
-      <%@tableData.each do |key, value|%>
-        <% value.each do |key2, value|%>
-        <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if "#{key}#{key2}" == "BS10-Q" %>" id="<%=key%><%=key2%>">
+      <%@tableData.each_with_index do |(key, value), i|%>
+        <% value.each_with_index do |(key2, value), i2|%>
+        <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if i == 0 && i2 == 0 %>" id="<%=key%><%=key2%>">
           <table class="table table-sm table-bordered table-condensed table-striped table-responsive one-line-table">
             <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
             <thead>
               <tr>
                 <th colspan="2"><%= "Fiscal year ends in #{Date::MONTHNAMES[Date.strptime(@filer.fye, '%m%d').month]}" %></th>
-                <% @periods.each do |period| %>
+                <% @periods[key2].each do |period| %>
                   <th><%= period %></th>
                 <% end %>
               </tr>
@@ -50,11 +49,19 @@
                   <% unless (hasNoNums && !isAbstract) || isAbstract && isStructural %>
                   <tr class="<%= 'total' if isTotal %>">
                     <% if isAbstract %>
-                      <th style="color:red"colspan="<%= @periods.count + 2%>"><span><%="#{pres.first.plabel}"%></span></th>
+                      <th style="color: white; background-color: black;"colspan="<%= @periods[key2].count + 2%>">
+                      <% if pres.first.get_tag.doc %>
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="<%=pres.first.get_tag.doc%>">
+                          <span><%="#{pres.first.plabel}!!!!!!!!!!!!!!!!!!!!"%></span>
+                        </a>
+                      <%else%>
+                        <span><%="#{pres.first.plabel}"%></span>
+                      <%end%>
+                      </th>
                     <% else %>
                       <td></td>
                       <th data-field="<%=pres.first.tag%>"><%= "#{pres.first.plabel}" %></th>
-                      <%Precollection.format_rows(all_nums, @periods).each do |nums|%>
+                      <%Precollection.format_rows(all_nums, @periods[key2]).each do |nums|%>
                         <td>
                           <% if nums %>
                             <% nums = nums.uniq { |p| p.value } %>
@@ -71,7 +78,7 @@
                                 <% end %>
                                 <% content += '</div>' %>
                                 <div class="modal-body">
-                                  <a href="javascript:void(0);" data-toggle="popover" data-placement="right" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
+                                  <a href="javascript:void(0);" data-toggle="popover" data-placement="bottom" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
                                 </div>
                               <% end %>
                             <% end %>
@@ -90,3 +97,8 @@
     </div>
   </div>
 <% end %>
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+</script>
