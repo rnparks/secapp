@@ -1,70 +1,93 @@
 <%= render layout: 'filers_menu' do %>
   <div class="filer-content container-fluid">
-    <ul class="nav nav-tabs" role="tablist">
-      <% @tableData.each do |key, value| %>
-        <li role="presentation" class="<%= 'active' if key == "BS" %>"><a href="#<%=key%>" aria-controls="<%=key%>" role="tab" data-toggle="tab"><%= @statementNames[key.to_s] %></a></li>
+    <h4 class="report-heading">Download Individual Reports From The SEC</h4>
+    <ul class="link-section"><%@subs.sort_by { |sub| sub.period }.each do |sub|%>
+      <li><%= link_to "#{sub.form} | #{sub.fy} | #{sub.fp} | #{sub.period}", sub.get_excel_path, :class => "btn btn-success", :role => "button" %></li>
       <% end %>
     </ul>
+
+
+    <ul class="nav nav-tabs" role="tablist">
+      <% @tableData.each_with_index do |(key, value), i| %>
+        <li role="presentation" class="<%= 'active' if i == 0 %>, dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-controls="<%=key%>" role="button" aria-haspopup="true" aria-expanded="false">
+          <%= @statementNames[key.to_s] %><span class="caret"></span>
+          </a>
+
+          <ul id="<%=key%>" class="dropdown-menu">
+            <% value.each_with_index do |(key2, value), i2| %>
+              <li role="presentation" class="<%= 'active' if i == 0 && i2 == 0 %>">
+                <a href="#<%="#{key}#{key2}"%>" aria-controls="#{key}#{key2}" role="tab" data-toggle="tab"><%= key2.to_s %></a>
+              </li>
+            <% end %>
+          </ul>
+
+        </li>
+      <% end %>
+    </ul>
+
+
     <div class="tab-content">
       <%@tableData.each do |key, value|%>
-        <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if key == "BS" %>" id="<%=key%>">
+        <% value.each do |key2, value|%>
+        <div role="tabpanel" class="container-fluid tab-pane fade in <%= 'active' if "#{key}#{key2}" == "BS10-Q" %>" id="<%=key%><%=key2%>">
           <table class="table table-sm table-bordered table-condensed table-striped table-responsive one-line-table">
             <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
             <thead>
               <tr>
                 <th colspan="2"><%= "Fiscal year ends in #{Date::MONTHNAMES[Date.strptime(@filer.fye, '%m%d').month]}" %></th>
-                <% @periods[key].each do |period| %>
+                <% @periods.each do |period| %>
                   <th><%= period %></th>
                 <% end %>
               </tr>
               </thead>
               <tbody>
-              <% value.each do |pres| %>
-                <% unless pres.first.include?('[Table]') || pres.first.include?('[Line Items]') || pres.first.include?('[Axis]') %>
-                  <% all_nums = Precollection.get_nums(pres[1]) %>
-                  <% isAbstract = pres[1].first.get_tags.first.abstract if pres[1].first.get_tags.first%>
-                  <% hasNoNums = all_nums.count == 0 %>
-                  <% parenthetical = pres[1].first.inpth %>
-                  <% if pres[1].first.plabel && (!isAbstract && !hasNoNums) && !parenthetical %>
-                    <% isTotal = pres[1].first.plabel.downcase.include? "total" %>
-                    <tr class="<%= 'total' if isTotal %>">
-                      <% if isAbstract %>
-                        <th colspan="<%= @periods[key].count + 2%>"><span><%=pres[1].first.plabel%></span></th>
-                      <% else %>
-                        <td></td>
-                        <th data-field="<%=pres[1].first.tag%>"><%= pres[1].first.plabel %></th>
-                        <%Precollection.formatRows(all_nums, @periods[key]).each do |nums|%>
-                          <td>
-                            <% if nums %>
-                              <% nums = nums.uniq { |p| p.value } %>
-                              <% count = nums.count %>
-                              <% num = nums.first %>
-                              <% if num.uom && num.value %>
-                                <% if count == 1 %>
-                                  <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_pre(pres[1].first.stmt,pres[1].first.report).get_sec_table_link, :target => "_blank" %>
-                                <% elsif count > 1 %>
-                                  <% content = '<div style="position:relative">' %>
-                                  <% nums.each do|num| %>
-                                  <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_pre(pres[1].first.stmt,pres[1].first.report).get_sec_table_link, :target => "_blank"%>
-                                  <% content += "<br>"%>
-                                  <% end %>
-                                  <% content += '</div>' %>
-                                  <div class="modal-body">
-                                    <a href="javascript:void(0);" data-toggle="popover" data-placement="right" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
-                                  </div>
+              <% value.each do |key, pres| %>
+                <% all_nums = Precollection.get_nums(pres) %>
+                <% isAbstract = pres.first.get_tags.first.abstract if pres.first.get_tags.first%>
+                <% hasNoNums = all_nums.count == 0 %>
+                <% parenthetical = pres.first.inpth %>
+                <% isStructural = ['[Table]', '[Line Items]', '[Axis]', '[Domain]'].any? { |string| pres.first.plabel.include? string } %>
+                  <% isTotal = pres.first.plabel.downcase.include? "total" %>
+                  <% unless (hasNoNums && !isAbstract) || isAbstract && isStructural %> 
+                  <tr class="<%= 'total' if isTotal %>">
+                    <% if isAbstract %>
+                      <th style="color:red"colspan="<%= @periods.count + 2%>"><span><%="#{pres.first.plabel} - R: #{pres.first.report} - RLine: #{pres.first.get_report_line} Line: #{pres.first.line}"%></span></th>
+                    <% else %>
+                      <td></td>
+                      <th data-field="<%=pres.first.tag%>"><%= "#{pres.first.plabel} - R: #{pres.first.report} - #{pres.first.get_report_line}" %></th>
+                      <%Precollection.formatRows(all_nums, @periods).each do |nums|%>
+                        <td>
+                          <% if nums %>
+                            <% nums = nums.uniq { |p| p.value } %>
+                            <% count = nums.count %>
+                            <% num = nums.first %>
+                            <% if num.uom && num.value %>
+                              <% if count == 1 %>
+                                <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_pre(pres.first.stmt,pres.first.report).get_sec_table_link, :target => "_blank" %>
+                              <% elsif count > 1 %>
+                                <% content = '<div style="position:relative">' %>
+                                <% nums.each do|num| %>
+                                <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_pre(pres.first.stmt,pres.first.report).get_sec_table_link, :target => "_blank"%>
+                                <% content += "<br>"%>
                                 <% end %>
+                                <% content += '</div>' %>
+                                <div class="modal-body">
+                                  <a href="javascript:void(0);" data-toggle="popover" data-placement="right" title="Conflicting Values" data-html="true" data-content="<%=content%>">Conflicting Values</a>
+                                </div>
                               <% end %>
                             <% end %>
-                          </td>
-                        <% end %>
+                          <% end %>
+                        </td>
                       <% end %>
-                    </tr>
-                  <% end %>
+                    <% end %>
+                  </tr>
                 <% end %>
               <% end %>
             </tbody>
           </table>
         </div>
+        <% end %>
       <% end %>
     </div>
   </div>

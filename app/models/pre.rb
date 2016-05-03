@@ -11,6 +11,10 @@ class Pre < ActiveRecord::Base
 		Tag.find_by_sql("Select * FROM tags WHERE tag = '#{self.tag}' AND v = '#{self.v}'")
 	end
 
+	def get_tag
+		Tag.find_by_sql("Select * FROM tags WHERE tag = '#{self.tag}' AND v = '#{self.v}'").first
+	end
+
 	def get_tag_attr(attr)
 		Tag.find_by_sql("Select #{attr} FROM tags WHERE tag = '#{self.tag}' AND v = '#{self.v}'").first[attr.to_sym]
 	end
@@ -21,6 +25,10 @@ class Pre < ActiveRecord::Base
 
 	def get_sec_table_link
 		"#{self.sub.get_sub_data_path}R#{self.report}.#{self.rfile=='H' ? 'htm' : 'xml'}"
+	end
+
+	def get_report_line
+		self.line - self.sub.pres.where("report = #{self.report}").first.line
 	end
 
 	def self.to_csv

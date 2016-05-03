@@ -14,6 +14,9 @@ class Sub < ActiveRecord::Base
 	def get_sub_data_path
 		"#{Sec.get_data_path}#{self.cik}/#{self.adsh.gsub('-','')}/"
 	end
+	def get_excel_path
+		"#{self.get_sub_data_path}Financial_Report.xlsx"
+	end
 	def get_instance_path
 		"#{self.get_sub_data_path}#{self.instance}"
 	end

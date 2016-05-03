@@ -36,13 +36,7 @@ class Filer < ActiveRecord::Base
 	end
 
 	def get_periods
-		sql = "SELECT n.dd, p.stmt FROM nums AS n JOIN subs AS s ON s.adsh = n.adsh JOIN pres AS p ON (n.tag = p.tag AND n.adsh = p.adsh AND n.v = p.v) WHERE s.cik='#{self.cik}' AND EXTRACT(YEAR FROM n.dd) > 2013 GROUP BY n.dd, p.stmt ORDER BY n.dd;"
-		records_array = ActiveRecord::Base.connection.execute(sql)
-		hash = {}
-		records_array.each do |n| 
-			hash[n["stmt"]] ? hash[n["stmt"]].push(n["dd"]) : hash[n["stmt"]]=[n["dd"]]
-		end
-		hash
+		self.subs.map {|a| a.period}.sort.uniq.reject {|x| x.year < 2014}
 	end
 
 	def to_csv

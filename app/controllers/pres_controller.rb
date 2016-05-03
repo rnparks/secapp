@@ -1,7 +1,8 @@
 class PresController < ApplicationController
-	before_action :set_tag, only: [:show]
+	before_action :set_pre, only: [:show]
 	before_action :set_keys
   before_action :set_filer
+  before_action :set_subs
   before_action :set_statement_names, only: [:show, :index]
 
   # GET /tagss
@@ -20,8 +21,12 @@ class PresController < ApplicationController
   end
   private
     # Use callbacks to share common setup or constraints between actions.
-    def set_tag
+    def set_pre
       @pre = Pre.find(params[:id])
+    end
+
+    def set_subs
+      @subs = @filer.subs.where("form = ? OR form = ?", "10-K", "10-Q")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -40,8 +45,8 @@ class PresController < ApplicationController
     def set_table_data
       @periods = @filer.get_periods
       @tableData = @pres.order('line').group_by(&:stmt)
-      # @tableData.each {|key, value| @tableData[key].each{key} = value.map{group_by { |p| p.get_tags.first }}}
-      @tableData.each {|key, value| @tableData[key] = value.group_by { |p| "#{p.report}-#{p.plabel}-#{p.tag}" }}
+      @tableData.each {|key, value| @tableData[key] = value.group_by { |p| p.sub.form }}
+      @tableData.each {|key, value| value.each {|key2, value2| @tableData[key][key2] = value2.group_by { |p| "#{p.report}-#{p.plabel}-#{p.tag}" }}} 
     end
 
     def set_statement_names
