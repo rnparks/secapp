@@ -5,10 +5,10 @@ class Precollection < ActiveRecord::Base
 		array.flatten
 	end
 
-  def self.formatRows(collection, periods)
+  def self.format_rows(collection, periods)
 		array = Array.new(periods.size)
 			collection.each do |num|
-				dd = num.dd
+				dd = num.dd.strftime("%m%Y")
 				if periods.index(dd)
 					if array[periods.index(dd)]
 						array[periods.index(dd)].push(num)

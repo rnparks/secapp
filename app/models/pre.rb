@@ -4,7 +4,7 @@ class Pre < ActiveRecord::Base
 	validates :adsh, uniqueness: {scope: [:report, :line] }
 
 	def get_nums
-		Num.find_by_sql("Select * FROM nums WHERE adsh = '#{self.adsh}' AND v = '#{self.v}' AND tag = '#{self.tag}'").select { |nums| nums.dd.year > 2013 }
+		Num.find_by_sql("Select * FROM nums WHERE adsh = '#{self.adsh}' AND v = '#{self.v}' AND tag = '#{self.tag}'").select { |nums| nums.dd.year > 2013 }.select { |nums| nums.value }
 	end
 
 	def get_tags

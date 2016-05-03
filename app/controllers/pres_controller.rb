@@ -3,6 +3,7 @@ class PresController < ApplicationController
 	before_action :set_keys
   before_action :set_filer
   before_action :set_subs
+  before_action :set_sec_excel_links
   before_action :set_statement_names, only: [:show, :index]
 
   # GET /tagss
@@ -44,9 +45,9 @@ class PresController < ApplicationController
 
     def set_table_data
       @periods = @filer.get_periods
-      @tableData = @pres.order('line').group_by(&:stmt)
+      @tableData = @pres.group_by(&:stmt)
       @tableData.each {|key, value| @tableData[key] = value.group_by { |p| p.sub.form }}
-      @tableData.each {|key, value| value.each {|key2, value2| @tableData[key][key2] = value2.group_by { |p| "#{p.report}-#{p.plabel}-#{p.tag}" }}} 
+      @tableData.each {|key, value| value.each {|key2, value2| @tableData[key][key2] = value2.group_by { |p| "#{p.report}-#{p.tag}" }}}
     end
 
     def set_statement_names
@@ -59,5 +60,16 @@ class PresController < ApplicationController
         "UN" => "Unclassifiable Statement"
       }
     end
-       
+
+    def set_sec_excel_links
+      hash = {}
+      @subs.sort_by { |sub| sub.period }.each do |sub|
+        path = sub.get_excel_path
+        url = URI.parse(path)
+        req = Net::HTTP.new(url.host, url.port)
+        res = req.request_head(url.path)
+        hash["#{sub.form} | #{sub.fy} | #{sub.fp} | #{sub.period}"] = path if res.code == "200"
+      end
+      @excel_links = hash
+    end
 end
