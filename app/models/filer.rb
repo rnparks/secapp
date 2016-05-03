@@ -36,7 +36,7 @@ class Filer < ActiveRecord::Base
 	end
 
 	def get_periods
-		collection = self.subs.map {|a| a.period}.sort.uniq.reject {|x| x.year < 2014}.map{|date| date.strftime("%m%Y")}
+		collection = self.subs.map {|a| a.period}.sort.uniq.reject {|x| x.year < 2014}.map{|date| date.strftime("%m/%y")}
 	end
 
 	def to_csv
