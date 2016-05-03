@@ -22,6 +22,7 @@ gem 'pry'
 gem 'rails-perftest'
 gem 'ruby-prof'
 gem 'mechanize'
+gem 'roo', '~> 2.3.2'
 
 group :development, :test do
   gem 'byebug'
