@@ -12,6 +12,21 @@ class Filer < ActiveRecord::Base
   	self.connection.select_all("select id, name, username from users")
 	end
 
+	def get_excel
+		cik = "#{self.cik}"
+		ticker = self.symbol
+		mechanize = Mechanize::new
+		surface_page = mechanize.get("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=#{cik}&type=#{type}&dateb=&owner=exclude&count=100")
+		counter = 1
+		surface_page.links.each do |link|
+			if link.to_s.include? "Interactive"
+				level1 = link.click
+				level1.link_with(text: "View Excel Document").click.save "#{ticker}_#{type}_#{self.period.strftime('%d%b%Y')}_#{counter}.xlsx" if level1.link_with(text: "View Excel Document") != nil
+				counter += 1
+			end
+		end
+	end
+
 	def displayName
 		if self.stock
 			self.stock.name
@@ -21,13 +36,10 @@ class Filer < ActiveRecord::Base
 	end
 
 	def get_periods
-		sql = "SELECT n.dd, p.stmt FROM nums AS n JOIN subs AS s ON s.adsh = n.adsh JOIN pres AS p ON (n.tag = p.tag AND n.adsh = p.adsh AND n.v = p.v) WHERE s.cik='#{self.cik}' AND EXTRACT(YEAR FROM n.dd) > 2013 GROUP BY n.dd, p.stmt ORDER BY n.dd;"
-		records_array = ActiveRecord::Base.connection.execute(sql)
-		hash = {}
-		records_array.each do |n| 
-			hash[n["stmt"]] ? hash[n["stmt"]].push(n["dd"]) : hash[n["stmt"]]=[n["dd"]]
-		end
-		hash
+		collection = {}
+		forms = self.subs.group_by(&:form)
+		forms.each {|key, subs| collection[key.to_s] = subs.map {|a| a.period}.sort.uniq.reject {|x| x.year < 2014}.map{|date| date.strftime("%m/%y")}}
+		collection
 	end
 
 	def to_csv

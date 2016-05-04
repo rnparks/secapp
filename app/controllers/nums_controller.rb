@@ -5,7 +5,6 @@ class NumsController < ApplicationController
   before_action :set_tag_keys, only: [:index, :show]
 
   def index
-
     @nums = @filer.nums
     @numData = {}
     @periods = []

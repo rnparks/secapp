@@ -4,6 +4,11 @@
     padding: 0 4px;
 }
 
+.link-section li {
+    display: inline-block;
+    margin: 2px 0;
+}
+
 .one-line-table td {
     text-align: right;
 }

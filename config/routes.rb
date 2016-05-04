@@ -1,16 +1,17 @@
 Rails.application.routes.draw do
-
   
   resources :sics
   resources :tags
-
   resources :filers do
     resources :financials
+    get 'download_excel'
     resources :subs
     resources :nums
     resources :xbrls
     resources :pres
   end
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -15,9 +15,11 @@
 				<span class="price-change-percent">(<%= '%.2f' % @stockData[:data][:change_in_percent] %>%)</span>
 			</div>
 		</div>
+		<%= link_to "Download Financials for #{@filer.symbol} (Excel)", [@filer, :download_excel], class: "btn btn-success" %>
 	</div>
 
 	<%= render 'filer_stock_grid' %>
+
 
 	<h3>STOCK DATA FOR REFERENCE</h3>
 	<table>

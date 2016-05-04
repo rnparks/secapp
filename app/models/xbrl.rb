@@ -6,18 +6,19 @@ class Xbrl < ActiveRecord::Base
 	has_one :filer, :foreign_key => 'cik'
 	validates :cik, uniqueness: {scope: [:formtype, :datefiled, :filename] }
 	
-	def getXbrlLink
+	def get_xbrl_link
 		"ftp.sec.gov/#{self.filename}"
 	end
 
 	def getTables
 		self.parse_xbrl_data.css('table')
 	end
+	
 	def parse_xbrl_data
-		return Nokogiri::HTML(self.getRawData)
+		return Nokogiri::HTML(self.get_xbrl_data)
 	end
 	
-	def getRawData
+	def get_xbrl_data
 		begin
 			url      = "ftp.sec.gov"
 			split    = self.filename.rpartition('/')
