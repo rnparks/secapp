@@ -3,11 +3,12 @@ class PresController < ApplicationController
 	before_action :set_keys
   before_action :set_filer
   before_action :set_subs
+  before_action :set_periods, only: [:show, :index]
   before_action :set_sec_excel_links
   before_action :set_statement_names, only: [:show, :index]
+  before_action :set_period_names, only: [:show, :index]
 
-  # GET /tagss
-  # GET /tags.json
+
   def index
     @pres = @filer.pres
     @nums = @filer.nums.select { |nums| nums.dd.year > 2013 }
@@ -15,11 +16,6 @@ class PresController < ApplicationController
     set_table_data
   end
 
-  # GET /tags/1
-  # GET /tags/1.json
-  def show
-  	@preKeys = Pre.new.attributes.keys
-  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pre
@@ -44,10 +40,13 @@ class PresController < ApplicationController
     end
 
     def set_table_data
-      @periods = @filer.get_periods
-      @tableData = @pres.group_by(&:stmt)
+      @tableData = @pres.group_by(&:stmt).slice(*["IS", "BS", "CF"])
       @tableData.each {|key, value| @tableData[key] = value.group_by { |p| p.sub.form }}
       @tableData.each {|key, value| value.each {|key2, value2| @tableData[key][key2] = value2.group_by { |p| "#{p.report}-#{p.tag}" }}}
+    end
+
+    def set_periods
+      @periods = @filer.get_periods
     end
 
     def set_statement_names
@@ -59,6 +58,9 @@ class PresController < ApplicationController
         "CI" => "Comprehensive Income",
         "UN" => "Unclassifiable Statement"
       }
+    end
+
+    def set_period_names
       @periodNames = {
         "8-K" => "Current",
         "10-Q" => "Quarterly",
