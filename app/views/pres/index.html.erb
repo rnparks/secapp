@@ -22,7 +22,6 @@
         </li>
       <% end %>
     </ul>
-
     <div class="tab-content">
       <% @tableData.each_with_index do |(key, value), i| %>
         <% value.each_with_index do |(key2, value), i2| %>
@@ -31,54 +30,35 @@
               <caption><h4 class="report-heading"><%= @statementNames[key.to_s] %></h4></caption>
               <thead>
                 <tr>
-                <% value["headers"].each_with_index do |header, index| %>
+                  <% value["headers"].each_with_index do |header, index| %>
                     <th <%= "colspan=2" if index==0 %>><%= header %></th>
                   <% end %>
                 </tr>
-                </thead>
-                <tbody>
-                <% value.each do |key, pres| %>
-                  <% unless key == "headers" %>
-                    <% all_nums = Precollection.get_nums(pres) %>
-                    <% isAbstract = pres.first.get_tags.first.abstract if pres.first.get_tags.first %>
-                    <% hasNoNums = all_nums.count == 0 %>
-                    <% parenthetical = pres.first.inpth %>
-                    <% isStructural = ['[Table]', '[Line Items]', '[Axis]', '[Domain]'].any? { |string| pres.first.plabel.include? string } %>
-                      <% isTotal = pres.first.plabel.downcase.include? "total" %>
-                      <% unless (hasNoNums && !isAbstract) || isAbstract && isStructural %>
-                      <tr class="<%= 'total' if isTotal %>">
-                        <% if isAbstract %>
-                          <th style="color: white; background-color: black;"colspan="<%= @periods[key2].count + 2 %>">
-                          <% if pres.first.get_tag.doc %>
-                            <a href="#" data-toggle="tooltip" data-placement="top" title="<%= pres.first.get_tag.doc %>">
-                              <span><%= "#{pres.first.plabel}" %></span>
-                            </a>
+              </thead>
+              <tbody>
+                <% value.each do |key3, row| %>
+                  <% unless key3 == "headers" || row.count==0%>
+                    <tr>
+                      <% if row.count == 1 %>
+                        <th colspan=<%= @periods[key2].count + 2 %> data-field="<%=row.first.get_tag%>"><%= "#{row.first.plabel}" %></th>
+                      <% else %>
+                        <td></td>
+                        <%@tableData[key][key2][key3].each_with_index do |nums, index|%>
+                          <% if index == 0 %>
+                            <th data-field="<%=nums.get_tag%>"><%= "#{nums.plabel}" %></th>
                           <% else %>
-                            <span><%= "#{pres.first.plabel}" %></span>
-                          <% end %>
-                          </th>
-                        <% else %>
-                          <td></td>
-                          <th data-field="<%=pres.first.tag%>"><%= "#{pres.first.plabel}" %></th>
-                          <%Precollection.format_rows(all_nums, @periods[key2]).each do |nums|%>
                             <td>
-                            <% if nums %>
-                              <% nums = nums.uniq { |p| p.value } %>
-                                  <% if key2 == "10-Q" %>
-                                    <% nums = nums.reject { |num| num.qtrs > 1 } %>
-                                  <% else %>
-                                    <% nums = nums.reject { |num| num.qtrs == 1 } %>
-                                  <% end %>
-                                  <% count = nums.count %>
+                              <% if nums %>
+                                <% count = nums.count %>
                                 <% if nums.count > 0 %> 
                                   <% num = nums.first %>
                                   <% if num.uom && num.value %>
                                     <% if count == 1 %>
-                                      <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_pre(pres.first.stmt,pres.first.report).get_sec_table_link, :target => "_blank" %>
+                                      <%= link_to "#{number_with_delimiter(num.value)}   #{num.uom}", num.get_pre(row.first.stmt,row.first.report).get_sec_table_link, :target => "_blank" %>
                                     <% elsif count > 1 %>
                                       <% content = '<div style="position:relative">' %>
                                       <% nums.each do |num| %>
-                                        <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_pre(pres.first.stmt,pres.first.report).get_sec_table_link, :target => "_blank"%>
+                                        <% content += link_to "#{number_with_delimiter(num.value)}   #{num.uom} : #{num.qtrs} qtrs", num.get_pre(row.first.stmt,row.first.report).get_sec_table_link, :target => "_blank"%>
                                         <% content += "<br>"%>
                                       <% end %>
                                       <% content += '</div>' %>
@@ -88,12 +68,12 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
-                              </td>
-                            <% end %>
+                              <% end %>
+                            </td>
                           <% end %>
                         <% end %>
-                      </tr>
-                    <% end %>
+                      <% end %>
+                    </tr>
                   <% end %>
                 <% end %>
               </tbody>
