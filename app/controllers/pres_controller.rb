@@ -40,7 +40,7 @@ class PresController < ApplicationController
     end
 
     def set_table_data
-      @tableData = @pres.group_by(&:stmt)
+      @tableData = @pres.group_by(&:stmt).slice(*["IS", "BS", "CF"])
       @tableData.each {|key, value| @tableData[key] = value.group_by { |p| p.sub.form }}
       @tableData.each {|key, value| value.each {|key2, value2| @tableData[key][key2] = value2.group_by { |p| "#{p.report}-#{p.tag}" }}}
     end
