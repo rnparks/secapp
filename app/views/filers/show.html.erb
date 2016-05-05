@@ -1,5 +1,6 @@
 <%= render layout: 'filers_menu' do %>
 <% if @hasStock %>
+	<%= content_tag :div, class: "filers", data: {source: @historicalData} {} %>
 	<div class="stock-header">
 		<div class="hd">
 			<div class="title">
@@ -19,17 +20,18 @@
 	</div>
 
 	<%= render 'filer_stock_grid' %>
-
-
-	<h3>STOCK DATA FOR REFERENCE</h3>
-	<table>
-		<tbody>
-			<% @stockData[:data].each do |row| %>
-			<tr>
-				<th><%= @stockData[:labels][row.first] || row.first%></th><td><%=row.last%></td>
-			</tr>
-			<% end %>
-		</tbody>
-	</table>
+	<div class="d3-stock-graph"></div>
+	<div class="hidden">
+		<h3>STOCK DATA FOR REFERENCE</h3>
+		<table>
+			<tbody>
+				<% @stockData[:data].each do |row| %>
+				<tr>
+					<th><%= @stockData[:labels][row.first] || row.first%></th><td><%=row.last%></td>
+				</tr>
+				<% end %>
+			</tbody>
+		</table>
+	</div>
 <% end %>
 <% end %>

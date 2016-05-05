@@ -28,6 +28,7 @@ class FilersController < ApplicationController
       @stockData[:data][:change_in_percent] = @stockData[:data][:change_in_percent].to_f
       @stockData[:data][:change] = @stockData[:data][:change].to_f
       @stockState = @stockData[:data][:change] > 0 ? "up" : "down"
+      @historicalData = @stockData[:historical].map{|data| data.to_h}
     end
   end
   def set_download_filer
