@@ -5,7 +5,6 @@
       <li><%= link_to key, value, :class => "btn btn-success", :role => "button" %></li>
       <% end %>
     </ul>
-    <h4 class="report-heading">Compiled Financials<%= link_to "Download All", "#" %></h4>
     <ul class="nav nav-tabs" role="tablist">
       <% @tableData.each_with_index do |(key, value), i| %>
         <li role="presentation" class="<%= 'active' if i == 0 %> dropdown">
