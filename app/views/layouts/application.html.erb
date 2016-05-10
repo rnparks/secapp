@@ -24,7 +24,7 @@
 </head>
 <body>
 	<div class="site-wrap">
-		<div class="header-wrap bg-primary">
+		<div class="header-wrap bg-sec-primary">
 			<div class="logo"><%= link_to 'HOME', root_path %></div>
 			<form class="search-form">
 				<input class="typeahead" type="text" placeholder="Search SEC filers" autocomplete="off" spellcheck="false">
@@ -34,7 +34,9 @@
 			<%= yield %>
 		</div>
 		<footer class="footer bg-info">
-		<div class="container">FOOTER WRAP</div>	
+		<div class="container">
+			  <span class="copyright">&copy; <%= Time.new.year %> <%= link_to "Company Name", "#" %>  All Rights Reserved.</span>
+		</div>	
 		</footer>
 	</div>
 </body>

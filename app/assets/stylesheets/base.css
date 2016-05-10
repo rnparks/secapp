@@ -9,6 +9,14 @@ body {
     min-height: 100%;
 }
 
+table {
+    font-size: 12px;
+}
+
+.bg-sec-primary {
+    background-color: #26282f;
+}
+
 .site-wrap caption {
     padding-top: 0;
     padding-bottom: 0;
