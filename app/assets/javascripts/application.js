@@ -18,4 +18,5 @@
 //= require filer_search_dropdown_menu
 //= require filers
 //= require stock-graph
+//= require techan.min
 //= require_tree .
