@@ -1,5 +1,3 @@
-require 'Sec'
-
 class Sub < ActiveRecord::Base
 
 	self.primary_key = :adsh

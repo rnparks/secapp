@@ -6,7 +6,6 @@ class FilersController < ApplicationController
   before_action :set_stock, only: [:show, :download_excel]
 
   def index
-    @filers = Filer.all
   end
   def show
     redirect_to filer_pres_path(@filer) if !@hasStock

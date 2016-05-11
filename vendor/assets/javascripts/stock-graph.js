@@ -1,3 +1,4 @@
+if (window.location.pathname.indexOf("filers/") > 0) {
 var ready;
 ready = function() {
 data = $('.filers').data('source')
@@ -413,3 +414,4 @@ draw(data);
 }
 $(document).ready(ready);
 $(document).on('page:load', ready);
+}

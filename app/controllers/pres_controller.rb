@@ -2,28 +2,21 @@ class PresController < ApplicationController
 	before_action :set_pre, only: [:show]
 	before_action :set_keys
   before_action :set_filer
-  before_action :set_subs
   before_action :set_periods, only: [:show, :index]
+  before_action :set_table_data
   before_action :set_sec_excel_links
   before_action :set_statement_names, only: [:show, :index]
   before_action :set_period_names, only: [:show, :index]
 
 
   def index
-    @pres = @filer.pres
-    @nums = @filer.nums.select { |nums| nums.dd.year > 2013 }
     @hasStock = @filer.stock
-    set_table_data
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_pre
       @pre = Pre.find(params[:id])
-    end
-
-    def set_subs
-      @subs = @filer.subs.where("form = ? OR form = ?", "10-K", "10-Q")
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
@@ -40,9 +33,41 @@ class PresController < ApplicationController
     end
 
     def set_table_data
+      @subs = @filer.subs.where("form = ? OR form = ?", "10-K", "10-Q")
+      @pres = @filer.pres
+      @nums = @filer.nums.select { |nums| nums.dd.year > 2013 }
       @tableData = @pres.group_by(&:stmt).slice(*["IS", "BS", "CF"])
       @tableData.each {|key, value| @tableData[key] = value.group_by { |p| p.sub.form }}
-      @tableData.each {|key, value| value.each {|key2, value2| @tableData[key][key2] = value2.group_by { |p| "#{p.report}-#{p.tag}" }}}
+      @tableData.each do |key, value| 
+        value.each do |key2, value| 
+          @tableData[key][key2] = value.group_by { |p| "#{p.report}-#{p.tag}" }
+          # add header
+          @tableData[key][key2]["headers"] = ["Fiscal year ends in #{Date::MONTHNAMES[Date.strptime(@filer.fye, '%m%d').month]}"]
+          @periods[key2].each do |period|
+            @tableData[key][key2]["headers"].push(period)
+          end
+          # add nums
+          @tableData[key][key2]
+          @tableData[key][key2].each do |key3, pres|
+            unless key3 == "headers"
+              @tableData[key][key2][key3] = []
+              all_nums      = Precollection.get_nums(pres)
+              isAbstract    = pres.first.get_tags.first.abstract if pres.first.get_tags.first
+              hasNoNums     = all_nums.count == 0
+              parenthetical = pres.first.inpth
+              isStructural  = ['[Table]', '[Line Items]', '[Axis]', '[Domain]'].any? { |string| pres.first.plabel.include? string }
+              isTotal       = pres.first.plabel.downcase.include? "total"
+              unless (hasNoNums && !isAbstract) || isAbstract && isStructural
+                if isAbstract
+                  @tableData[key][key2][key3] = [pres.first]
+                else
+                  @tableData[key][key2][key3] = Precollection.format_rows(all_nums, @periods, key2).unshift(pres.first)
+                end
+              end
+            end
+          end
+        end
+      end
     end
 
     def set_periods

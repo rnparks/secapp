@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Secapp</title>
+	<title>Sec For Analysts</title>
+
 	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
 	<%= stylesheet_link_tag    'https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css' %>
 	<%= stylesheet_link_tag    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css' %>
 	<%= stylesheet_link_tag    'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css' %>
+	<%= stylesheet_link_tag    '//fonts.googleapis.com/css?family=Raleway' %>
 	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
 	<%= javascript_include_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js' %>
 	<%= javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js' %>
-	<%= javascript_include_tag 'http://d3js.org/d3.v3.min.js' %>
-	<%= javascript_include_tag 'http://techanjs.org/techan.min.js' %>
-<!-- 
-	<%= stylesheet_link_tag    '//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css' %>
-	<%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js' %>
-	<%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/locale/bootstrap-table-zh-CN.min.js' %> -->
+	<%= javascript_include_tag '//d3js.org/d3.v3.min.js' %>
 
 	<%= csrf_meta_tags %>
 	
@@ -24,7 +21,7 @@
 </head>
 <body>
 	<div class="site-wrap">
-		<div class="header-wrap bg-primary">
+		<div class="header-wrap bg-sec-primary">
 			<div class="logo"><%= link_to 'HOME', root_path %></div>
 			<form class="search-form">
 				<input class="typeahead" type="text" placeholder="Search SEC filers" autocomplete="off" spellcheck="false">
@@ -34,7 +31,9 @@
 			<%= yield %>
 		</div>
 		<footer class="footer bg-info">
-		<div class="container">FOOTER WRAP</div>	
+		<div class="container">
+			  <span class="copyright">&copy; <%= Time.new.year %> <%= link_to "Company Name", "#" %>  All Rights Reserved.</span>
+		</div>	
 		</footer>
 	</div>
 </body>
