@@ -9,8 +9,12 @@
     font: normal 12px arial;
 }
 
+ul.pager {
+    margin: 0;
+}
+
 .filer-index {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     text-align: center;
 }
 
