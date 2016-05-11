@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody id="filers-table">
-    <% @filers.each do |filer| %>
+    <% @filers.limit(4000).each do |filer| %>
       <tr data-link="<%="/filers/#{filer[:cik]}"%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
     <% end %>
     </tbody>
