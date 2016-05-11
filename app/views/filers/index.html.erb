@@ -3,14 +3,14 @@
   <caption><h4 class="report-heading">List of all Filers</h4></caption>
   <thead>
     <tr>
-      <th>cik</th>
+      <th>CIK</th>
       <th>Company Name</th>
       <th>Symbol</th>
     </tr>
   </thead>
   <tbody id="filers-table">
     <% @filers.each do |filer| %>
-      <tr data-link="<%=filer_url(filer)%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
+      <tr data-link="<%="/filers/#{filer[:cik]}"%>"><td><%=filer[:cik]%></td><td><%=filer.displayName%></td><td><%=filer[:symbol]%></td></tr>
     <% end %>
     </tbody>
   </table>
@@ -121,6 +121,6 @@
 
 $(document).ready(function(){
     
-  $('#filers-table').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:100});
+  $('#filers-table').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:400});
     
 });</script>
